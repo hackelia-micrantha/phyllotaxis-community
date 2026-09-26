@@ -1,0 +1,133 @@
+{
+  "$schema": "./public-interface.schema.json",
+  "schemaVersion": 1,
+  "package": "@hackelia-micrantha/phyllotaxis",
+  "maturity": "experimental",
+  "contracts": {
+    "venation": 1
+  },
+  "packageExports": [
+    ".",
+    "./chroma.css",
+    "./venation.css",
+    "./lamina.css"
+  ],
+  "runtimeExports": [
+    "ArticleHeader",
+    "ArticleMeta",
+    "Caption",
+    "Cluster",
+    "Container",
+    "Figure",
+    "Grid",
+    "Inline",
+    "PostSummary",
+    "Prose",
+    "Stack",
+    "Switcher",
+    "TaxonomyLink"
+  ],
+  "typeExports": [
+    "Align",
+    "ArticleHeaderProps",
+    "ArticleMetaProps",
+    "CaptionProps",
+    "ClusterProps",
+    "ContainerGutter",
+    "ContainerProps",
+    "ContentWidth",
+    "ElementTag",
+    "FigureProps",
+    "GridProps",
+    "InlineProps",
+    "Justify",
+    "PostSummaryProps",
+    "PostSummaryTitleLevel",
+    "ProseProps",
+    "Space",
+    "StackProps",
+    "StructuralLength",
+    "SwitcherProps",
+    "TaxonomyLinkProps"
+  ],
+  "css": {
+    "requiredPublicCustomProperties": [
+      "--phyllotaxis-space-none",
+      "--phyllotaxis-space-xs",
+      "--phyllotaxis-space-sm",
+      "--phyllotaxis-space-md",
+      "--phyllotaxis-space-lg",
+      "--phyllotaxis-space-xl",
+      "--phyllotaxis-gutter-page",
+      "--phyllotaxis-content-width-narrow",
+      "--phyllotaxis-content-width-readable",
+      "--phyllotaxis-content-width-wide",
+      "--phyllotaxis-content-width-full",
+      "--phyllotaxis-font-body",
+      "--phyllotaxis-font-display",
+      "--phyllotaxis-font-mono",
+      "--phyllotaxis-type-body-size",
+      "--phyllotaxis-type-body-line-height",
+      "--phyllotaxis-type-title-size",
+      "--phyllotaxis-type-title-line-height",
+      "--phyllotaxis-type-title-weight",
+      "--phyllotaxis-type-heading-size",
+      "--phyllotaxis-type-heading-line-height",
+      "--phyllotaxis-type-heading-weight",
+      "--phyllotaxis-type-meta-size",
+      "--phyllotaxis-type-meta-line-height",
+      "--phyllotaxis-type-caption-size",
+      "--phyllotaxis-type-caption-line-height",
+      "--phyllotaxis-color-canvas",
+      "--phyllotaxis-color-surface",
+      "--phyllotaxis-color-text",
+      "--phyllotaxis-color-text-muted",
+      "--phyllotaxis-color-border",
+      "--phyllotaxis-color-link",
+      "--phyllotaxis-color-link-visited",
+      "--phyllotaxis-color-focus",
+      "--phyllotaxis-color-selection",
+      "--phyllotaxis-color-selection-text"
+    ],
+    "profileAttribute": "data-phyllotaxis-profile",
+    "profiles": [
+      "utility",
+      "editorial"
+    ],
+    "schemeAttribute": "data-phyllotaxis-scheme",
+    "schemes": [
+      "light",
+      "dark"
+    ]
+  },
+  "cli": {
+    "status": "proposed",
+    "commands": [
+      "check",
+      "status",
+      "doctor",
+      "init"
+    ],
+    "formatFlag": "--format",
+    "formats": [
+      "text",
+      "json"
+    ],
+    "globalOptions": [
+      "--help",
+      "--version"
+    ],
+    "commonCommandOptions": [
+      "--format",
+      "--quiet"
+    ],
+    "exitStatuses": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      130
+    ]
+  }
+}

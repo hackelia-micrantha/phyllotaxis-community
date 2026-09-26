@@ -18,3 +18,10 @@ This index identifies the published Phyllotaxis surfaces that constrain implemen
 ## Authority rule
 
 Published contracts in this repository are authoritative for public design semantics. Private implementation may provide evidence that a contract needs revision, but implementation behavior does not change the public contract implicitly.
+
+
+## Machine-readable projection
+
+[\`contracts/public-interface-v1.json\`](../../contracts/public-interface-v1.json) is the machine-readable projection of the currently published package, CSS, type, and CLI interface surface. Its schema is [\`contracts/public-interface.schema.json\`](../../contracts/public-interface.schema.json).
+
+The JSON contract exists for deterministic cross-repository conformance checks. It does not replace the explanatory architecture documents above, and a private implementation difference does not silently rewrite it.
