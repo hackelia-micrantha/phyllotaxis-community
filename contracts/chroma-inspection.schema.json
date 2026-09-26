@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/contracts/chroma-inspection.schema.json",
+  "title": "Phyllotaxis Chroma inspection contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contractVersion",
+    "defaultProfile",
+    "roles",
+    "profiles"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "defaultProfile": {
+      "const": "utility"
+    },
+    "roles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/roleDefinition"
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "utility",
+        "editorial"
+      ],
+      "properties": {
+        "utility": {
+          "$ref": "#/$defs/profileResolution"
+        },
+        "editorial": {
+          "$ref": "#/$defs/profileResolution"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "roleDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cssProperty",
+        "category",
+        "kind",
+        "schemeAware"
+      ],
+      "properties": {
+        "cssProperty": {
+          "type": "string",
+          "pattern": "^--phyllotaxis-[a-z0-9-]+$"
+        },
+        "category": {
+          "enum": [
+            "structure",
+            "typography",
+            "color"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "dimension",
+            "font-family",
+            "number",
+            "color"
+          ]
+        },
+        "schemeAware": {
+          "type": "boolean"
+        }
+      }
+    },
+    "profileResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "values",
+        "schemes"
+      ],
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "schemes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "light",
+            "dark"
+          ],
+          "properties": {
+            "light": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "dark": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
