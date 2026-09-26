@@ -14,5 +14,6 @@ Delivery issues may remain private when they expose implementation details, but 
 ## Current records
 
 - [QART-0001 — Machine-readable Chroma inspection contract](QART-0001-chroma-inspection-contract.md) — alternatives resolved into RFC-0001.
-- [RFC-0001 — Static Chroma inspection contract](RFC-0001-chroma-inspection-contract.md) — proposed public contract extension; implementation must not treat it as accepted until an ADR incorporates the decision into the normative Chroma contract.
+- [RFC-0001 — Static Chroma inspection contract](RFC-0001-chroma-inspection-contract.md) — accepted by ADR-0001.
+- [ADR-0001 — Accept static Chroma inspection contract](ADR-0001-chroma-inspection-contract.md) — accepted durable decision.
 
