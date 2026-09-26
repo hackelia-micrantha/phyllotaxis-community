@@ -4,11 +4,13 @@
   "package": "@hackelia-micrantha/phyllotaxis",
   "maturity": "experimental",
   "contracts": {
-    "venation": 1
+    "venation": 1,
+    "chroma": 1
   },
   "packageExports": [
     ".",
     "./chroma.css",
+    "./chroma-contract.json",
     "./venation.css",
     "./lamina.css"
   ],

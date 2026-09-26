@@ -37,10 +37,15 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "venation"
+        "venation",
+        "chroma"
       ],
       "properties": {
         "venation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "chroma": {
           "type": "integer",
           "minimum": 1
         }

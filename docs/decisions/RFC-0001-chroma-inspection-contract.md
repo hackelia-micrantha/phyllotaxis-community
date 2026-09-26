@@ -1,6 +1,6 @@
 # RFC-0001 — Static Chroma inspection contract
 
-Status: **Proposed**
+Status: **Accepted by [ADR-0001](ADR-0001-chroma-inspection-contract.md)**
 
 Supersedes the recommendation phase of [QART-0001](QART-0001-chroma-inspection-contract.md).
 
