@@ -1,0 +1,27 @@
+# Phyllotaxis documentation
+
+This repository is the public source of truth for **published Phyllotaxis design work**. The private implementation repository must conform to these published contracts; implementation details do not silently redefine them.
+
+## Read by purpose
+
+| Need | Start here |
+| --- | --- |
+| Understand the layer model | [Venation](architecture/venation-layout-contract.md), [Chroma](architecture/chroma-profile-contract.md), [Lamina](architecture/lamina-editorial-contract.md) |
+| Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md) |
+| Understand the CLI | [CLI architecture](architecture/phyllo-cli.md), [command contract](cli/phyllo.md) |
+| Integrate project discovery/config | [Project configuration](architecture/phyllo-project-config.md) |
+| See normative contract status | [Contract index](contracts/README.md) |
+| See cross-cutting requirements | [Requirements index](requirements/README.md) |
+| Propose or record a decision | [Decision records](decisions/README.md) |
+| Understand public/private authority | [Repository boundary](../UPSTREAM.md) |
+
+## Document classes
+
+- **Contract** — normative behavior or interface that implementations must follow.
+- **Requirement** — cross-cutting constraint that applies to one or more contracts.
+- **Evidence** — observations used to justify a design; not itself normative.
+- **QART** — unresolved questions, alternatives, recommendations, and trade-offs.
+- **RFC** — substantial proposal under review.
+- **ADR** — accepted durable architecture decision.
+
+Each design document must distinguish accepted, proposed, experimental, and implemented claims. Public polish is not evidence of implementation maturity.
