@@ -1,6 +1,6 @@
 # Chroma profile resolution contract
 
-Status: **Accepted contract; implementation validation pending**  
+Status: **Accepted contract; CSS implementation validated; machine-readable inspection extension proposed in [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md)**  
 Depends on: [Lamina editorial semantic contract](lamina-editorial-contract.md)  
 Evidence: [Editorial profile evidence](editorial-evidence.md)
 
@@ -219,7 +219,7 @@ No `ThemeProvider`, `ProfileProvider`, hook, context, runtime registry, or JS to
 
 `venation.css` remains independently importable, but it is not independently valued: a consumer omitting `chroma.css` must supply every `VENATION_REQUIRED_CHROMA_PROPERTIES` value through its own Chroma-compatible theme boundary.
 
-No `phyllotaxis.contracts.chroma` metadata key is introduced in #22. The current CLI validator is Venation-scoped; machine-readable Chroma/Lamina validation remains a #24 decision.
+No machine-readable Chroma inspection surface is normative yet. [QART-0001](../decisions/QART-0001-chroma-inspection-contract.md) records the alternatives and [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md) proposes a static package-owned contract. Until that decision is accepted by ADR and incorporated here, implementations must not treat proposed metadata or JSON shapes as public contract.
 
 ## Lamina relationship
 
@@ -256,7 +256,7 @@ Lamina may own selector-specific presentation rules; values remain Chroma-owned.
 - #21 can consume roles without visual/profile props: **implemented**.
 - Profile/scheme inheritance and explicit override contract: **tested**.
 - Package delivery and absence of premature Chroma manifest metadata: **tested**.
-- Exact-head CI: **pending**.
+- Exact-head CSS implementation CI: **complete**.
 
 ## Main invariant
 

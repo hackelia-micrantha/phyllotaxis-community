@@ -1,6 +1,6 @@
 # Phyllotaxis visual profiles
 
-Status: **Accepted boundary; implementation details remain provisional**  
+Status: **Accepted boundary; core Venation/Chroma/Lamina implementation and representative validation complete**  
 
 ## Decision
 
@@ -78,19 +78,20 @@ Editorial may introduce a more expressive hierarchy, but values should remain se
 
 Lamina owns reusable visual/semantic components and compositions.
 
-For Editorial, candidate semantics include concepts such as:
+The first accepted Editorial-informed semantic surface is defined by the [Lamina editorial contract](lamina-editorial-contract.md) and is implemented as:
 
-- article and article header;
-- article metadata and byline;
-- prose/readable body treatment;
-- figure and caption;
-- post summary/list entry;
-- featured story;
-- editorial tag/category treatment.
+- `ArticleHeader`;
+- `ArticleMeta`;
+- `Prose`;
+- `Figure` / `Caption`;
+- `TaxonomyLink`;
+- `PostSummary`.
 
-These are candidates, not commitments. A semantic component should be promoted only when real use demonstrates reuse or when HTML/accessibility semantics justify a stable abstraction.
+The same semantic tree is valid under Utility and Editorial; profile selection remains external to component props.
 
-Lamina should not encode Ryan-specific author identity, Micrantha product identity, site navigation, or CMS/content-model concerns into generic editorial components.
+The following remain deliberately unpromoted without stronger evidence: `Article`, `PostList`, `FeaturedStory`, `Byline`, and generic `Tag`. Native HTML plus accepted Venation/Lamina semantics cover the current representative compositions.
+
+Lamina must not encode Ryan-specific author identity, Micrantha product identity, site navigation, CMS/content models, or framework-specific helpers into generic editorial components.
 
 ### Cambium
 
@@ -223,17 +224,20 @@ When reviewing a visual-profile proposal:
 6. treat existing site CSS/framework structure as evidence, not contract;
 7. prefer the smallest profile-specific surface that satisfies the editorial need.
 
-## Current implementation sequence
+## Current implementation status
 
 Completed:
 
-- visual-profile boundary accepted in #2;
-- public community profile guidance published in #6.
+- Utility/Editorial visual-profile boundary accepted;
+- Editorial evidence classified and bounded;
+- profile-neutral Venation primitives implemented and validated;
+- Lamina editorial semantic contract accepted and implemented;
+- bounded Utility/Editorial Chroma values implemented;
+- profile/scheme carrier behavior validated, including scheme-only coherent surfaces;
+- representative long-form article, archive/index, Utility, Editorial, and nested scheme compositions validated without expanding the stable Lamina or Venation surface.
 
-Next:
+Next design work should remain evidence-driven:
 
-1. implement and validate profile-neutral Venation primitives (#4);
-2. extract and classify ryanjennin.gs editorial evidence, including the minimal Chroma semantic roles (#3);
-3. define only the Lamina editorial semantics justified by that evidence (#5);
-4. implement bounded Utility/Editorial Chroma/Lamina behavior from the accepted contracts and evidence;
-5. define cross-posting/canonical-URL policy only when needed for shared publishing (#7).
+1. keep the stable Lamina surface unchanged unless repeated or accessibility-significant evidence justifies expansion;
+2. expose Chroma inspection metadata only through a Chroma-owned machine-readable contract rather than duplicating token authority in CLI code;
+3. define cross-posting/canonical-URL policy only when shared publishing actually requires it.
