@@ -72,6 +72,8 @@ Role IDs use the accepted Chroma vocabulary. Initial role families are:
 
 The precise v1 role ID list must map one-to-one to the stable custom properties already enumerated by the normative Chroma contract; an implementation may not omit a stable role or invent an additional stable role solely for tooling convenience.
 
+The canonical v1 role IDs, CSS-property mappings, and accepted Utility/Editorial values are published in [`contracts/chroma-inspection-v1.json`](../../contracts/chroma-inspection-v1.json). Its representation is constrained by [`contracts/chroma-inspection.schema.json`](../../contracts/chroma-inspection.schema.json). Implementations claiming Chroma contract v1 must conform to that canonical artifact; the prose type shape above does not permit an alternative role-ID vocabulary.
+
 ## Role model
 
 Role IDs are semantic and Chroma-owned. They must correspond to already accepted Chroma concepts such as structural spacing/width, typography and semantic color/state roles.
