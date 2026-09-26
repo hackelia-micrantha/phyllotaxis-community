@@ -6,6 +6,7 @@ phyllo-doctor \- diagnose project integration without mutation
 .RB [ --format
 .BR text | json ]
 .RB [ --quiet ]
+.RB [ --no-color ]
 .br
 .B phyllo doctor --help
 .SH DESCRIPTION
@@ -22,6 +23,9 @@ Select human-readable text or the versioned JSON result. Text is the default.
 .B --quiet
 Suppress non-error human success and informational output. It does not suppress
 errors, alter machine output, or change the exit status.
+.TP
+.B --no-color
+Disable ANSI color in human output. This is also implied by non-TTY output, NO_COLOR, or TERM=dumb.
 .TP
 .B --help
 Display command help without discovering a project.
