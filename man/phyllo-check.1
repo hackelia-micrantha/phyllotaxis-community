@@ -1,0 +1,58 @@
+.TH PHYLLO-CHECK 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo-check \- validate a project's canonical Venation contract
+.SH SYNOPSIS
+.B phyllo check
+.RB [ --format\ json ]
+.RB [ --quiet ]
+.RB [ --scope
+.BR venation ]
+.br
+.B phyllo check --help
+.SH DESCRIPTION
+.B phyllo check
+discovers the nearest project root and installed Phyllotaxis package,
+reads inert project configuration and canonical contract metadata, and
+validates the Venation CSS contract. It does not change project files.
+.SH OPTIONS
+.TP
+.B --format json
+Write one versioned JSON result to standard output; diagnostics are included
+in the result's diagnostics array.
+.TP
+.B --quiet
+Suppress non-error human-readable success and informational output. Errors remain on
+standard error. It does not alter the exit status.
+.TP
+.B --scope venation
+Select the Venation validation scope. This is the only supported scope.
+.TP
+.B --help
+Display command help on standard output without discovering a project.
+.SH OUTPUT
+In human mode, success is printed to standard output and errors to standard
+error. With --format json, the required envelope includes schemaVersion, command,
+ok, and diagnostics; paths, when present, are project-root-relative.
+.SH EXIT STATUS
+.TP
+.B 0
+Validation completed with no violations.
+.TP
+.B 1
+Validation completed with contract violations.
+.TP
+.B 2
+Usage, configuration, or required package resolution error.
+.TP
+.B 3
+Operational error prevented validation.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH SEE ALSO
+.BR phyllo (1)
+.br
+docs/cli/phyllo.md in the source repository documents the canonical command contract.
