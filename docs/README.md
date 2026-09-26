@@ -10,7 +10,9 @@ This repository is the public source of truth for **published Phyllotaxis design
 | Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md) |
 | Understand the CLI | [CLI architecture](architecture/phyllo-cli.md), [command contract](cli/phyllo.md) |
 | Integrate project discovery/config | [Project configuration](architecture/phyllo-project-config.md) |
+| Browse specifications and evidence | [Specification index](specs/README.md) |
 | See normative contract status | [Contract index](contracts/README.md) |
+| Browse public interfaces | [Interface index](interfaces/README.md) |
 | See cross-cutting requirements | [Requirements index](requirements/README.md) |
 | Propose or record a decision | [Decision records](decisions/README.md) |
 | Understand public/private authority | [Repository boundary](../UPSTREAM.md) |
