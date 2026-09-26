@@ -5,7 +5,7 @@ This index identifies the published Phyllotaxis surfaces that constrain implemen
 | Contract | Status | Normative scope |
 | --- | --- | --- |
 | [Venation layout](../architecture/venation-layout-contract.md) | Accepted | Structural layout primitives and bounded layout inputs |
-| [Chroma profile resolution](../architecture/chroma-profile-contract.md) | Accepted; CSS implementation validated; inspection extension proposed in [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md) | Semantic values, profile/scheme resolution, stable custom-property surface |
+| [Chroma profile resolution](../architecture/chroma-profile-contract.md) | Accepted; CSS implementation validated; inspection contract accepted by [ADR-0001](../decisions/ADR-0001-chroma-inspection-contract.md) | Semantic values, profile/scheme resolution, stable custom-property and inspection surface |
 | [Lamina editorial semantics](../architecture/lamina-editorial-contract.md) | Accepted | Reusable semantic editorial components and composition boundaries |
 | [Visual profiles](../architecture/visual-profiles.md) | Accepted boundary | Utility and Editorial profile semantics |
 | [Visual directive](../architecture/visual-directive.md) | Accepted | Default visual character and modern capability constraints |
