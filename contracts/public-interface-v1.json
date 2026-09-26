@@ -121,7 +121,8 @@
     ],
     "commonCommandOptions": [
       "--format",
-      "--quiet"
+      "--quiet",
+      "--no-color"
     ],
     "exitStatuses": [
       0,
@@ -131,5 +132,11 @@
       4,
       130
     ]
+  },
+  "chromaInspection": {
+    "packageExport": "./chroma-contract.json",
+    "schemaVersion": 1,
+    "contractVersion": 1,
+    "defaultProfile": "utility"
   }
 }
