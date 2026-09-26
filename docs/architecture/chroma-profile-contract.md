@@ -1,6 +1,6 @@
 # Chroma profile resolution contract
 
-Status: **Accepted contract; CSS implementation validated; machine-readable inspection extension proposed in [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md)**  
+Status: **Accepted contract; CSS implementation validated; machine-readable inspection contract accepted by [ADR-0001](../decisions/ADR-0001-chroma-inspection-contract.md)**  
 Depends on: [Lamina editorial semantic contract](lamina-editorial-contract.md)  
 Evidence: [Editorial profile evidence](editorial-evidence.md)
 
@@ -219,7 +219,7 @@ No `ThemeProvider`, `ProfileProvider`, hook, context, runtime registry, or JS to
 
 `venation.css` remains independently importable, but it is not independently valued: a consumer omitting `chroma.css` must supply every `VENATION_REQUIRED_CHROMA_PROPERTIES` value through its own Chroma-compatible theme boundary.
 
-No machine-readable Chroma inspection surface is normative yet. [QART-0001](../decisions/QART-0001-chroma-inspection-contract.md) records the alternatives and [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md) proposes a static package-owned contract. Until that decision is accepted by ADR and incorporated here, implementations must not treat proposed metadata or JSON shapes as public contract.
+The accepted machine-readable inspection surface is defined by [RFC-0001](../decisions/RFC-0001-chroma-inspection-contract.md) and [ADR-0001](../decisions/ADR-0001-chroma-inspection-contract.md): package metadata declares `phyllotaxis.contracts.chroma: 1` and the package exports static `./chroma-contract.json`. The artifact uses the RFC-0001 v1 schema, preserves Utility/Editorial role parity, represents scheme-aware light/dark values explicitly, and must remain mechanically synchronized with shipped `chroma.css`. No public executable Chroma inspection API is required by this contract.
 
 ## Lamina relationship
 
@@ -255,7 +255,7 @@ Lamina may own selector-specific presentation rules; values remain Chroma-owned.
 - Contrast/focus/visited/text-scaling/reduced-motion boundary: **implemented and tested**.
 - #21 can consume roles without visual/profile props: **implemented**.
 - Profile/scheme inheritance and explicit override contract: **tested**.
-- Package delivery and absence of premature Chroma manifest metadata: **tested**.
+- Package CSS delivery: **tested**. Chroma inspection metadata/artifact: **accepted for implementation by ADR-0001**.
 - Exact-head CSS implementation CI: **complete**.
 
 ## Main invariant
