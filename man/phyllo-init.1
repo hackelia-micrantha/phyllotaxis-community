@@ -9,6 +9,7 @@ phyllo-init \- create minimal declarative project configuration
 .RB [ --format
 .BR text | json ]
 .RB [ --quiet ]
+.RB [ --no-color ]
 .br
 .B phyllo init --help
 .SH DESCRIPTION
@@ -33,6 +34,9 @@ Select human-readable text or the versioned JSON result. Text is the default.
 .B --quiet
 Suppress non-error human success and informational output. It does not alter
 machine output, mutation semantics, or exit status.
+.TP
+.B --no-color
+Disable ANSI color in human output. This is also implied by non-TTY output, NO_COLOR, or TERM=dumb.
 .TP
 .B --help
 Display command help without discovering a project.

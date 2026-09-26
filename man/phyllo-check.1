@@ -6,6 +6,7 @@ phyllo-check \- validate a project's canonical Venation contract
 .RB [ --format
 .BR text | json ]
 .RB [ --quiet ]
+.RB [ --no-color ]
 .RB [ --scope
 .BR venation ]
 .br
@@ -27,6 +28,9 @@ standard error. It does not alter the exit status.
 .TP
 .B --scope venation
 Select the Venation validation scope. This is the only supported scope.
+.TP
+.B --no-color
+Disable ANSI color in human output. This is also implied by non-TTY output, NO_COLOR, or TERM=dumb.
 .TP
 .B --help
 Display command help on standard output without discovering a project.
