@@ -31,12 +31,13 @@ The public machine-readable Chroma inspection surface is:
 1. package metadata declares `phyllotaxis.contracts.chroma: 1`;
 2. package export `./chroma-contract.json` exposes the static contract artifact;
 3. `schemaVersion: 1` uses the exact shape and invariants defined by RFC-0001;
-4. Utility and Editorial expose the same stable semantic role set;
-5. light/dark values are explicit only for scheme-aware roles;
-6. public role mappings use stable `--phyllotaxis-*` properties;
-7. internal `--pt-*` helpers remain implementation detail;
-8. shipped `chroma.css` is mechanically derived from, or mechanically verified against, the canonical contract data;
-9. deterministic validation is required for contract completeness and profile/scheme parity.
+4. the canonical v1 role IDs, mappings, and profile/scheme values are published in `contracts/chroma-inspection-v1.json` under `contracts/chroma-inspection.schema.json`;
+5. Utility and Editorial expose the same stable semantic role set;
+6. light/dark values are explicit only for scheme-aware roles;
+7. public role mappings use stable `--phyllotaxis-*` properties;
+8. internal `--pt-*` helpers remain implementation detail;
+9. shipped `chroma.css` is mechanically derived from, or mechanically verified against, the canonical contract data;
+10. deterministic validation is required for contract completeness and profile/scheme parity.
 
 The public interface does **not** require an executable Chroma runtime inspection API. Implementations may use private helpers internally, but adding public runtime/type exports requires a separate public-interface change.
 

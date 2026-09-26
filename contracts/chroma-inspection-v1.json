@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": 1,
+  "defaultProfile": "utility",
+  "roles": {
+    "space.none": {
+      "cssProperty": "--phyllotaxis-space-none",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "space.xs": {
+      "cssProperty": "--phyllotaxis-space-xs",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "space.sm": {
+      "cssProperty": "--phyllotaxis-space-sm",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "space.md": {
+      "cssProperty": "--phyllotaxis-space-md",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "space.lg": {
+      "cssProperty": "--phyllotaxis-space-lg",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "space.xl": {
+      "cssProperty": "--phyllotaxis-space-xl",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "content.width.narrow": {
+      "cssProperty": "--phyllotaxis-content-width-narrow",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "content.width.readable": {
+      "cssProperty": "--phyllotaxis-content-width-readable",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "content.width.wide": {
+      "cssProperty": "--phyllotaxis-content-width-wide",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "content.width.full": {
+      "cssProperty": "--phyllotaxis-content-width-full",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "gutter.page": {
+      "cssProperty": "--phyllotaxis-gutter-page",
+      "category": "structure",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "font.body": {
+      "cssProperty": "--phyllotaxis-font-body",
+      "category": "typography",
+      "kind": "font-family",
+      "schemeAware": false
+    },
+    "font.display": {
+      "cssProperty": "--phyllotaxis-font-display",
+      "category": "typography",
+      "kind": "font-family",
+      "schemeAware": false
+    },
+    "font.mono": {
+      "cssProperty": "--phyllotaxis-font-mono",
+      "category": "typography",
+      "kind": "font-family",
+      "schemeAware": false
+    },
+    "type.body.size": {
+      "cssProperty": "--phyllotaxis-type-body-size",
+      "category": "typography",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "type.body.lineHeight": {
+      "cssProperty": "--phyllotaxis-type-body-line-height",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.title.size": {
+      "cssProperty": "--phyllotaxis-type-title-size",
+      "category": "typography",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "type.title.lineHeight": {
+      "cssProperty": "--phyllotaxis-type-title-line-height",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.title.weight": {
+      "cssProperty": "--phyllotaxis-type-title-weight",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.heading.size": {
+      "cssProperty": "--phyllotaxis-type-heading-size",
+      "category": "typography",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "type.heading.lineHeight": {
+      "cssProperty": "--phyllotaxis-type-heading-line-height",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.heading.weight": {
+      "cssProperty": "--phyllotaxis-type-heading-weight",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.meta.size": {
+      "cssProperty": "--phyllotaxis-type-meta-size",
+      "category": "typography",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "type.meta.lineHeight": {
+      "cssProperty": "--phyllotaxis-type-meta-line-height",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "type.caption.size": {
+      "cssProperty": "--phyllotaxis-type-caption-size",
+      "category": "typography",
+      "kind": "dimension",
+      "schemeAware": false
+    },
+    "type.caption.lineHeight": {
+      "cssProperty": "--phyllotaxis-type-caption-line-height",
+      "category": "typography",
+      "kind": "number",
+      "schemeAware": false
+    },
+    "color.canvas": {
+      "cssProperty": "--phyllotaxis-color-canvas",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.surface": {
+      "cssProperty": "--phyllotaxis-color-surface",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.text": {
+      "cssProperty": "--phyllotaxis-color-text",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.textMuted": {
+      "cssProperty": "--phyllotaxis-color-text-muted",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.border": {
+      "cssProperty": "--phyllotaxis-color-border",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.link": {
+      "cssProperty": "--phyllotaxis-color-link",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.linkVisited": {
+      "cssProperty": "--phyllotaxis-color-link-visited",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.focus": {
+      "cssProperty": "--phyllotaxis-color-focus",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.selection": {
+      "cssProperty": "--phyllotaxis-color-selection",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    },
+    "color.selectionText": {
+      "cssProperty": "--phyllotaxis-color-selection-text",
+      "category": "color",
+      "kind": "color",
+      "schemeAware": true
+    }
+  },
+  "profiles": {
+    "utility": {
+      "values": {
+        "space.none": "0",
+        "space.xs": "0.25rem",
+        "space.sm": "0.5rem",
+        "space.md": "1rem",
+        "space.lg": "1.5rem",
+        "space.xl": "2rem",
+        "content.width.narrow": "46rem",
+        "content.width.readable": "70rem",
+        "content.width.wide": "82rem",
+        "content.width.full": "100%",
+        "gutter.page": "1rem",
+        "font.body": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "font.display": "var(--phyllotaxis-font-body)",
+        "font.mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+        "type.body.size": "1rem",
+        "type.body.lineHeight": "1.45",
+        "type.title.size": "1.75rem",
+        "type.title.lineHeight": "1.15",
+        "type.title.weight": "700",
+        "type.heading.size": "1.25rem",
+        "type.heading.lineHeight": "1.25",
+        "type.heading.weight": "700",
+        "type.meta.size": "0.875rem",
+        "type.meta.lineHeight": "1.35",
+        "type.caption.size": "0.875rem",
+        "type.caption.lineHeight": "1.4"
+      },
+      "schemes": {
+        "light": {
+          "color.canvas": "#ffffff",
+          "color.surface": "#f5f5f5",
+          "color.text": "#111111",
+          "color.textMuted": "#555555",
+          "color.border": "#a0a0a0",
+          "color.link": "#0000ee",
+          "color.linkVisited": "#551a8b",
+          "color.focus": "#111111",
+          "color.selection": "#cfe3ff",
+          "color.selectionText": "#111111"
+        },
+        "dark": {
+          "color.canvas": "#111111",
+          "color.surface": "#1b1b1b",
+          "color.text": "#eeeeee",
+          "color.textMuted": "#bbbbbb",
+          "color.border": "#666666",
+          "color.link": "#8ab4f8",
+          "color.linkVisited": "#c58af9",
+          "color.focus": "#ffffff",
+          "color.selection": "#294a70",
+          "color.selectionText": "#ffffff"
+        }
+      }
+    },
+    "editorial": {
+      "values": {
+        "space.none": "0",
+        "space.xs": "0.375rem",
+        "space.sm": "0.75rem",
+        "space.md": "1rem",
+        "space.lg": "1.5rem",
+        "space.xl": "2.25rem",
+        "content.width.narrow": "34rem",
+        "content.width.readable": "44rem",
+        "content.width.wide": "68rem",
+        "content.width.full": "100%",
+        "gutter.page": "1.25rem",
+        "font.body": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "font.display": "ui-serif, Georgia, Cambria, \"Times New Roman\", serif",
+        "font.mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+        "type.body.size": "1.0625rem",
+        "type.body.lineHeight": "1.7",
+        "type.title.size": "2.5rem",
+        "type.title.lineHeight": "1.1",
+        "type.title.weight": "700",
+        "type.heading.size": "1.625rem",
+        "type.heading.lineHeight": "1.25",
+        "type.heading.weight": "700",
+        "type.meta.size": "0.875rem",
+        "type.meta.lineHeight": "1.4",
+        "type.caption.size": "0.9375rem",
+        "type.caption.lineHeight": "1.45"
+      },
+      "schemes": {
+        "light": {
+          "color.canvas": "#fdfcf8",
+          "color.surface": "#f4f0e8",
+          "color.text": "#1f2528",
+          "color.textMuted": "#5f6a6f",
+          "color.border": "#d7d0c4",
+          "color.link": "#075a80",
+          "color.linkVisited": "#6d4b7e",
+          "color.focus": "#8a3500",
+          "color.selection": "#d9e8ef",
+          "color.selectionText": "#1f2528"
+        },
+        "dark": {
+          "color.canvas": "#0f1618",
+          "color.surface": "#172126",
+          "color.text": "#e8e3d8",
+          "color.textMuted": "#b1aaa0",
+          "color.border": "#3c494e",
+          "color.link": "#7cc4e4",
+          "color.linkVisited": "#c2a5d6",
+          "color.focus": "#f4c15d",
+          "color.selection": "#264956",
+          "color.selectionText": "#ffffff"
+        }
+      }
+    }
+  }
+}
