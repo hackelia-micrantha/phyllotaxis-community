@@ -53,7 +53,9 @@ Read:
 - [Venation layout contract](docs/architecture/venation-layout-contract.md)
 - [Chroma profile resolution contract](docs/architecture/chroma-profile-contract.md)
 - [Lamina editorial semantic contract](docs/architecture/lamina-editorial-contract.md)
+- [Specification index](docs/specs/README.md)
 - [Public contract index](docs/contracts/README.md)
+- [Public interface index](docs/interfaces/README.md)
 - [Requirements index](docs/requirements/README.md)
 
 ### CLI
