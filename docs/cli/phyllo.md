@@ -276,7 +276,7 @@ Stable CLI documentation should be the source for man-page generation or remain 
 
 This public contract repository maintains `man/phyllo.1` and `man/phyllo-check.1` alongside this canonical command contract. A CLI black-box parity test checks documented implemented commands and options against `--help`; a change to command syntax must update the command contract, help, man pages, and test in the same PR. The man pages are documentation sources, **not yet installed or distributed** by a release artifact.
 
-The first usable release should provide `phyllo(1)` and command man-page coverage, including installed access to `phyllo-check(1)`. `status`, `doctor`, and `init` need man-page coverage before calling the full stable command surface documented. Rendering and packaging validation remain release-conformance work in the private canonical repository.
+The public source now includes section-1 pages for the currently implemented command surface: `phyllo(1)`, `phyllo-check(1)`, `phyllo-status(1)`, `phyllo-doctor(1)`, and `phyllo-init(1)`. These pages follow the public `--format text|json` contract. Rendering, packaging, installation, and black-box parity against the private implementation remain release-conformance work in the private canonical repository.
 
 ## Deferred surface
 

@@ -1,0 +1,48 @@
+.TH PHYLLO-STATUS 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo-status \- inspect resolved project integration state
+.SH SYNOPSIS
+.B phyllo status
+.RB [ --format
+.BR text | json ]
+.RB [ --quiet ]
+.br
+.B phyllo status --help
+.SH DESCRIPTION
+.B phyllo status
+reports the invoked phyllo CLI version, discovered project root, adapter,
+configuration source, selected semantic profile, installed Phyllotaxis package
+version/path, and installed/configured Venation contract values.
+Status is an inspection command: success does not establish contract validity.
+It does not modify the project or execute project-provided scripts.
+.SH OPTIONS
+.TP
+.B --format text|json
+Select human-readable text or the versioned JSON result. Text is the default.
+.TP
+.B --quiet
+Suppress non-error human success and informational output. It does not suppress
+errors, alter machine output, or change the exit status.
+.TP
+.B --help
+Display command help without discovering a project.
+.SH EXIT STATUS
+.TP
+.B 0
+Project and package metadata were inspected successfully.
+.TP
+.B 2
+Usage, configuration, or required package resolution error.
+.TP
+.B 3
+Operational error prevented inspection.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH SEE ALSO
+.BR phyllo (1),
+.BR phyllo-check (1),
+.BR phyllo-doctor (1)
