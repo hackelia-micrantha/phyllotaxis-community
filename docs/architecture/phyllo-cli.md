@@ -108,7 +108,14 @@ Create the smallest explicit Phyllotaxis integration/configuration needed by an 
 
 ### `tokens`
 
-Expose Chroma validation/inspection/export operations by delegating to canonical Chroma contracts. The CLI is not the token source of truth.
+Expose read-only Chroma validation/inspection by delegating to the canonical static Chroma inspection contract. The CLI is not the token source of truth.
+
+The v1 surface is intentionally limited to:
+
+- `phyllo tokens check` — validate installed Chroma metadata/artifact compatibility and canonical contract invariants;
+- `phyllo tokens inspect` — return the validated installed static contract for inspection, with full role/value data available through `--format json`.
+
+The command reads package metadata and `chroma-contract.json` statically. It does not import package code, parse consumer CSS, generate alternate token formats, or mutate tokens/configuration. Export/generation/filtering require separate evidence and public contract work.
 
 ### `migrate`
 

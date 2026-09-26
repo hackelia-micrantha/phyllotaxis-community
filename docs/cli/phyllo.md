@@ -196,14 +196,111 @@ Initial contract:
 
 ## `phyllo tokens`
 
-Expose Chroma token validation/inspection operations without becoming the Chroma source of truth.
+Expose **read-only** Chroma contract validation and inspection without becoming the Chroma source of truth.
 
 ```bash
-phyllo tokens check
-phyllo tokens inspect --format json
+phyllo tokens check [--format text|json] [--quiet] [--no-color]
+phyllo tokens inspect [--format text|json] [--quiet] [--no-color]
 ```
 
-Export/generation operations should be introduced only from a real consumer requirement and canonical Chroma behavior.
+The v1 command has exactly two subcommands: `check` and `inspect`. Unknown subcommands and unsupported options are usage errors.
+
+### `phyllo tokens check`
+
+Validate the installed Phyllotaxis package's machine-readable Chroma contract using the accepted public Chroma inspection contract.
+
+Required flow:
+
+1. resolve the project and installed `@hackelia-micrantha/phyllotaxis` package using the same inert project discovery as `check` and `status`;
+2. read package metadata and the static exported `chroma-contract.json` artifact without importing/executing package or consumer code;
+3. verify the package `phyllotaxis.contracts.chroma` version matches the artifact `contractVersion`;
+4. validate the artifact against the accepted Chroma v1 shape and semantic completeness/profile/scheme invariants;
+5. emit deterministic diagnostics.
+
+This command does **not** parse consumer CSS, mutate token values, execute lifecycle scripts, or run project code.
+
+Successful human output is bounded:
+
+```text
+phyllo tokens check: ok (Chroma contract v1)
+```
+
+Successful JSON output uses the normal envelope and has no required `data` payload:
+
+```json
+{
+  "schemaVersion": 1,
+  "command": "tokens check",
+  "ok": true,
+  "diagnostics": []
+}
+```
+
+### `phyllo tokens inspect`
+
+Read and validate the same installed static Chroma artifact, then expose it for inspection.
+
+JSON output returns the **complete installed Chroma artifact unchanged** under `data.contract`:
+
+```json
+{
+  "schemaVersion": 1,
+  "command": "tokens inspect",
+  "ok": true,
+  "diagnostics": [],
+  "data": {
+    "contract": {
+      "schemaVersion": 1,
+      "contractVersion": 1,
+      "defaultProfile": "utility",
+      "roles": {},
+      "profiles": {}
+    }
+  }
+}
+```
+
+The abbreviated object above documents nesting only; `data.contract` contains the full artifact, including all role and profile/scheme values.
+
+Text mode is intentionally a summary rather than a second token serialization format:
+
+```text
+chroma-contract: 1
+schema: 1
+default-profile: utility
+profiles: utility, editorial
+roles: <count>
+```
+
+Consumers needing role/value data should use `--format json`.
+
+### Diagnostics and exit behavior
+
+`tokens check` and `tokens inspect` use the common result envelope and exit-status contract.
+
+Relevant deterministic diagnostics include:
+
+- `phyllotaxis.package-not-found` — project/package discovery failure;
+- `chroma.contract-not-found` — the installed static artifact is absent;
+- `chroma.contract-invalid-json` — the artifact cannot be parsed as JSON;
+- `chroma.package-contract-mismatch` — package metadata and artifact contract versions disagree;
+- canonical `chroma.*` validation diagnostics produced by the accepted Chroma contract validator.
+
+Semantic contract violations exit `1`. Usage/configuration failures exit `2`. Operational I/O failures exit `3`.
+
+`--quiet` suppresses successful text output only; it does not suppress semantic or usage diagnostics. `--no-color` is accepted consistently with other commands.
+
+### Deferred token operations
+
+No v1 token command:
+
+- generates or rewrites tokens;
+- exports alternate token formats;
+- filters by profile/role/scheme;
+- edits consumer configuration;
+- installs/updates packages.
+
+Those operations require a concrete consumer need and a separate public contract change.
 
 ## `phyllo migrate`
 
