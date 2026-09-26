@@ -1,0 +1,74 @@
+.TH PHYLLO 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo \- inspect and validate Phyllotaxis project integration
+.SH SYNOPSIS
+.B phyllo
+.B --help
+.br
+.B phyllo
+.B --version
+.br
+.B phyllo
+.I command
+.RI [ options ]
+.SH DESCRIPTION
+.B phyllo
+is a local, non-interactive integration CLI. Inspection does not install packages,
+execute consumer configuration or lifecycle scripts, or mutate project files.
+.SH COMMANDS
+.TP
+.B check
+Validate the installed Venation contract. See
+.BR phyllo-check (1).
+.TP
+.B status
+Report discovered project, adapter, configuration, installed package, profile,
+and Venation contract information.
+.TP
+.B doctor
+Compose status inspection and canonical check without mutation.
+.TP
+.B init
+Create a minimal declarative phyllotaxis.json file only if it does not already exist.
+Use --dry-run to preview the exact proposed configuration.
+.SH GLOBAL OPTIONS
+.TP
+.B --help
+Show global usage on standard output; no consuming project is required.
+.TP
+.B --version
+Show the invoked CLI package version, independent of the consumer package version.
+.TP
+.BI "command " --help
+Show help for one implemented command.
+.SH STRUCTURED OUTPUT
+Commands with machine output use --format json; text is the default format. A JSON result includes schemaVersion,
+command, ok, and diagnostics; command-specific data is optional.
+Primary structured output goes to standard output. Process diagnostics go to standard error. Terminal presentation respects NO_COLOR, TERM=dumb, --no-color, and non-TTY output.
+.SH EXIT STATUS
+.TP
+.B 0
+Successful operation or valid requested contract.
+.TP
+.B 1
+Contract validation found violations.
+.TP
+.B 2
+Usage or configuration error.
+.TP
+.B 3
+Operational failure.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH FILES
+.TP
+.B phyllotaxis.json
+Optional inert, repository-local integration configuration.
+.SH SEE ALSO
+.BR phyllo-check (1)
+.br
+docs/cli/phyllo.md in the source repository documents the canonical command contract.
