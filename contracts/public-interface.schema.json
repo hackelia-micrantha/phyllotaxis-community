@@ -13,7 +13,8 @@
     "runtimeExports",
     "typeExports",
     "css",
-    "cli"
+    "cli",
+    "chromaInspection"
   ],
   "properties": {
     "$schema": {
@@ -195,6 +196,30 @@
             "minimum": 0,
             "maximum": 255
           }
+        }
+      }
+    },
+    "chromaInspection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageExport",
+        "schemaVersion",
+        "contractVersion",
+        "defaultProfile"
+      ],
+      "properties": {
+        "packageExport": {
+          "const": "./chroma-contract.json"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "defaultProfile": {
+          "const": "utility"
         }
       }
     }
