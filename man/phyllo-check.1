@@ -3,7 +3,8 @@
 phyllo-check \- validate a project's canonical Venation contract
 .SH SYNOPSIS
 .B phyllo check
-.RB [ --format\ json ]
+.RB [ --format
+.BR text | json ]
 .RB [ --quiet ]
 .RB [ --scope
 .BR venation ]
@@ -16,9 +17,9 @@ reads inert project configuration and canonical contract metadata, and
 validates the Venation CSS contract. It does not change project files.
 .SH OPTIONS
 .TP
-.B --format json
-Write one versioned JSON result to standard output; diagnostics are included
-in the result's diagnostics array.
+.B --format text|json
+Select human-readable text or the versioned JSON result. Text is the default.
+JSON diagnostics are included in the result's diagnostics array.
 .TP
 .B --quiet
 Suppress non-error human-readable success and informational output. Errors remain on

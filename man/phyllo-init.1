@@ -1,0 +1,61 @@
+.TH PHYLLO-INIT 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo-init \- create minimal declarative project configuration
+.SH SYNOPSIS
+.B phyllo init
+.RB [ --profile
+.BR utility | editorial ]
+.RB [ --dry-run ]
+.RB [ --format
+.BR text | json ]
+.RB [ --quiet ]
+.br
+.B phyllo init --help
+.SH DESCRIPTION
+.B phyllo init
+discovers the nearest project root containing package.json and proposes or
+creates only phyllotaxis.json. The default configuration selects the generic
+adapter; the optional semantic profile is utility or editorial.
+Initialization refuses to overwrite an existing configuration and never
+installs packages or runs project scripts.
+.SH OPTIONS
+.TP
+.B --profile utility|editorial
+Select an accepted semantic Chroma profile in the generated configuration.
+Omitting this option leaves the profile unspecified.
+.TP
+.B --dry-run
+Preview the exact proposed configuration without writing a file.
+.TP
+.B --format text|json
+Select human-readable text or the versioned JSON result. Text is the default.
+.TP
+.B --quiet
+Suppress non-error human success and informational output. It does not alter
+machine output, mutation semantics, or exit status.
+.TP
+.B --help
+Display command help without discovering a project.
+.SH EXIT STATUS
+.TP
+.B 0
+Configuration was created or its dry-run preview completed.
+.TP
+.B 2
+Invalid usage, missing project root, or pre-existing configuration.
+.TP
+.B 3
+Operational failure prevented creating the configuration.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH FILES
+.TP
+.B phyllotaxis.json
+Only file created by this command; exclusive creation prevents overwrite.
+.SH SEE ALSO
+.BR phyllo (1),
+.BR phyllo-status (1)

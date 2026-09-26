@@ -1,0 +1,50 @@
+.TH PHYLLO-DOCTOR 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo-doctor \- diagnose project integration without mutation
+.SH SYNOPSIS
+.B phyllo doctor
+.RB [ --format
+.BR text | json ]
+.RB [ --quiet ]
+.br
+.B phyllo doctor --help
+.SH DESCRIPTION
+.B phyllo doctor
+composes canonical status resolution and contract validation.
+It may include resolved status context in the versioned JSON result.
+Doctor does not modify project files, execute project-provided scripts,
+or apply automatic remediation.
+.SH OPTIONS
+.TP
+.B --format text|json
+Select human-readable text or the versioned JSON result. Text is the default.
+.TP
+.B --quiet
+Suppress non-error human success and informational output. It does not suppress
+errors, alter machine output, or change the exit status.
+.TP
+.B --help
+Display command help without discovering a project.
+.SH EXIT STATUS
+.TP
+.B 0
+Inspection and canonical validation succeeded.
+.TP
+.B 1
+Contract validation found violations.
+.TP
+.B 2
+Usage, configuration, or required package resolution error.
+.TP
+.B 3
+Operational error prevented diagnosis.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH SEE ALSO
+.BR phyllo (1),
+.BR phyllo-status (1),
+.BR phyllo-check (1)

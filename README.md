@@ -65,6 +65,9 @@ Read:
 - [`phyllo` command contract](docs/cli/phyllo.md)
 - [`phyllo(1)`](man/phyllo.1)
 - [`phyllo-check(1)`](man/phyllo-check.1)
+- [`phyllo-status(1)`](man/phyllo-status.1)
+- [`phyllo-doctor(1)`](man/phyllo-doctor.1)
+- [`phyllo-init(1)`](man/phyllo-init.1)
 
 The CLI contract follows the Micrantha CLI standards: deterministic exit semantics, strict stdout/stderr separation, explicit machine-readable formats, safe non-interactive behavior, discoverable help, no implicit authority escalation, and section-1 manual-page coverage before a supported release.
 
