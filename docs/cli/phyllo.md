@@ -29,7 +29,7 @@ Global requirements:
 
 ### Help and CLI version
 
-`phyllo --help` and `phyllo <command> --help` display only implemented command usage on stdout and exit successfully without discovering a consuming project. The initial command-help surface is `check`, `status`, `doctor`, and `init`.
+`phyllo --help` and `phyllo <command> --help` display only implemented command usage on stdout and exit successfully without discovering a consuming project. The implemented command-help surface covered by the current public contract is `check`, `status`, `doctor`, `init`, and `tokens`.
 
 `phyllo --version` reports the **invoked CLI package's own** version from the installed CLI artifact, not the version of a Phyllotaxis package found in the current consumer project. It succeeds without project discovery. Other combinations involving `--version` or `--help` are not implicitly interpreted as these standalone requests; the normal argument contract applies.
 
