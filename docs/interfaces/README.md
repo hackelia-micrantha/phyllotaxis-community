@@ -41,7 +41,8 @@ The public `phyllo` interface is defined by:
 - [`phyllo-check(1)`](../../man/phyllo-check.1);
 - [`phyllo-status(1)`](../../man/phyllo-status.1);
 - [`phyllo-doctor(1)`](../../man/phyllo-doctor.1);
-- [`phyllo-init(1)`](../../man/phyllo-init.1).
+- [`phyllo-init(1)`](../../man/phyllo-init.1);
+- [`phyllo-tokens(1)`](../../man/phyllo-tokens.1).
 
 The proposed machine interface uses explicit `--format text|json`, versioned deterministic results where compatibility matters, stable exit semantics, and strict process-stream discipline.
 
