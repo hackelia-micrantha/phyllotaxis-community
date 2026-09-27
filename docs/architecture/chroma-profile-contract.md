@@ -47,6 +47,7 @@ Accepted explicit values are only `light` and `dark`. Absence means automatic sy
 - Each profile defines paired light/dark source values and exposes public semantic color roles with CSS `light-dark()`.
 - Explicit `data-phyllotaxis-scheme="light|dark"` sets `color-scheme` on that coherent surface.
 - `color-scheme` inheritance carries an explicit root choice into nested coherent profile surfaces unless that surface explicitly overrides the scheme.
+- A coherent surface that declares only `data-phyllotaxis-scheme="light|dark"` also receives the carrier-level canvas, text, typography, and selection treatment using the inherited/default Utility role set unless it independently selects Editorial.
 
 This avoids the scheme-inheritance defect of attribute-sensitive dark-media remapping: a nested Editorial surface must not lose an explicit ancestor light/dark choice merely because it has a different profile attribute.
 
@@ -194,6 +195,7 @@ Executable tests enforce at least 4.5:1 contrast for body, muted, link, visited-
 4. `:root { color-scheme: light dark; }` follows browser/user preference by default.
 5. Public color roles use `light-dark(light-value, dark-value)` and follow inherited `color-scheme`.
 6. `data-phyllotaxis-scheme="light|dark"` explicitly narrows `color-scheme` and is inherited unless a descendant coherent surface overrides it.
+7. Scheme-only coherent surfaces participate in the same carrier-level canvas/text/typography/selection selector as `:root` and explicit profile surfaces, so an explicit nested scheme does not leave foreground/background treatment split across different surfaces.
 
 Profile changes semantic visual character; scheme changes light/dark values. Neither changes content or layout APIs.
 
