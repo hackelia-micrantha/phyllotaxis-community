@@ -1,6 +1,6 @@
 # Lamina editorial semantic contract
 
-Status: **Accepted**  
+Status: **Accepted; private implementation merged and exact-head validated**  
 Evidence: [Editorial profile evidence](editorial-evidence.md)
 
 ## Purpose
@@ -394,12 +394,14 @@ No new Venation primitive or prop is required.
 
 Internal and consumer composition uses the accepted `Stack`, `Inline`, `Cluster`, `Grid`, `Switcher` and `Container` contracts. Lamina must not introduce a visual-profile branch into Venation.
 
-## Implementation and validation split
+## Implementation and validation status
 
-- #21 — implement the accepted Lamina editorial semantics;
-- #22 — define bounded Editorial Chroma value resolutions;
-- #23 — validate the semantic contracts against representative consumers;
+- #21 / private PR #35 — accepted Lamina semantics implemented, exact-head validated, and merged;
+- #22 / private Chroma delivery — bounded Editorial Chroma value resolutions implemented and validated;
+- #23 — representative real-consumer validation remains active and must not broaden the contract without evidence;
 - #24 — later decide whether `phyllo check` should validate machine-readable Lamina contract metadata.
+
+Implementation evidence does not change the public authority boundary: this document remains normative for the published Lamina semantics, while private source/tests remain implementation evidence.
 
 ## Acceptance mapping for #5
 
