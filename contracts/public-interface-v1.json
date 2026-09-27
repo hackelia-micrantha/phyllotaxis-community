@@ -137,6 +137,7 @@
     "packageExport": "./chroma-contract.json",
     "schemaVersion": 1,
     "contractVersion": 1,
-    "defaultProfile": "utility"
+    "defaultProfile": "utility",
+    "canonicalArtifact": "./chroma-inspection-v1.json"
   }
 }
