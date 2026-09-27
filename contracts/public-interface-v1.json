@@ -108,7 +108,8 @@
       "check",
       "status",
       "doctor",
-      "init"
+      "init",
+      "tokens"
     ],
     "formatFlag": "--format",
     "formats": [
