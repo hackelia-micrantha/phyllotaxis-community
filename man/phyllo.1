@@ -31,6 +31,10 @@ Compose status inspection and canonical check without mutation.
 .B init
 Create a minimal declarative phyllotaxis.json file only if it does not already exist.
 Use --dry-run to preview the exact proposed configuration.
+.TP
+.B tokens
+Validate or inspect the installed static Chroma contract without mutation. See
+.BR phyllo-tokens (1).
 .SH GLOBAL OPTIONS
 .TP
 .B --help
@@ -69,6 +73,7 @@ Interrupted by SIGINT where the platform/runtime uses conventional signal propag
 .B phyllotaxis.json
 Optional inert, repository-local integration configuration.
 .SH SEE ALSO
-.BR phyllo-check (1)
+.BR phyllo-check (1),
+.BR phyllo-tokens (1)
 .br
 docs/cli/phyllo.md in the source repository documents the canonical command contract.
