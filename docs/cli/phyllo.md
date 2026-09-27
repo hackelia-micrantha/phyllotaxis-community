@@ -278,15 +278,30 @@ Consumers needing role/value data should use `--format json`.
 
 `tokens check` and `tokens inspect` use the common result envelope and exit-status contract.
 
-Relevant deterministic diagnostics include:
+The diagnostic/exit mapping is part of the automation contract:
 
-- `phyllotaxis.package-not-found` — project/package discovery failure;
-- `chroma.contract-not-found` — the installed static artifact is absent;
-- `chroma.contract-invalid-json` — the artifact cannot be parsed as JSON;
-- `chroma.package-contract-mismatch` — package metadata and artifact contract versions disagree;
-- canonical `chroma.*` validation diagnostics produced by the accepted Chroma contract validator.
+| Diagnostic | Meaning | Exit |
+| --- | --- | ---: |
+| `project.root-not-found` and other `project.*` discovery/configuration diagnostics | project/configuration cannot be resolved safely | `2` |
+| `phyllotaxis.package-not-found` | the project resolved, but the installed Phyllotaxis package could not be located | `2` |
+| `chroma.contract-not-found` | the installed package is missing its required exported Chroma contract artifact | `1` |
+| `chroma.contract-invalid-json` | the required Chroma artifact exists but is not valid JSON | `1` |
+| `chroma.package-contract-mismatch` | package metadata and artifact contract versions disagree or package Chroma contract metadata is absent | `1` |
+| canonical Chroma validation diagnostics listed below | the artifact violates the accepted Chroma v1 semantic contract | `1` |
+| `cli.operational-failure` | an actual I/O/runtime failure prevented reading otherwise-addressable package state | `3` |
 
-Semantic contract violations exit `1`. Usage/configuration failures exit `2`. Operational I/O failures exit `3`.
+The canonical Chroma v1 validation diagnostic identifiers consumed by `phyllo tokens` are:
+
+- `chroma.contract-invalid`;
+- `chroma.contract-version-mismatch`;
+- `chroma.default-profile-invalid`;
+- `chroma.role-invalid`;
+- `chroma.profile-invalid`;
+- `chroma.profile-unsupported`;
+- `chroma.role-value-missing`;
+- `chroma.role-value-extra`.
+
+A required file being absent is a deterministic installed-package contract defect, not an incidental I/O error. By contrast, permission failures and other unexpected read failures use `cli.operational-failure` and exit `3`.
 
 `--quiet` suppresses successful text output only; it does not suppress semantic or usage diagnostics. `--no-color` is accepted consistently with other commands.
 

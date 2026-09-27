@@ -70,19 +70,22 @@ NO_COLOR, or TERM=dumb.
 Relevant deterministic diagnostics include:
 .TP
 .B phyllotaxis.package-not-found
-Project/package discovery could not find the installed package.
+The project resolved, but the installed package could not be located. Exit 2.
 .TP
 .B chroma.contract-not-found
-The installed static Chroma artifact is absent.
+The installed package is missing its required exported Chroma artifact. Exit 1.
 .TP
 .B chroma.contract-invalid-json
-The installed static Chroma artifact cannot be parsed as JSON.
+The required Chroma artifact cannot be parsed as JSON. Exit 1.
 .TP
 .B chroma.package-contract-mismatch
-Package metadata and artifact contract versions disagree.
+Package metadata and artifact contract versions disagree or metadata is absent. Exit 1.
 .TP
 .B chroma.*
-Canonical Chroma validation diagnostics defined by the accepted inspection contract.
+Canonical Chroma validation diagnostics defined by the accepted inspection contract. Exit 1.
+.TP
+.B cli.operational-failure
+An actual permission, read, or runtime failure prevented inspection. Exit 3.
 .SH EXIT STATUS
 .TP
 .B 0
