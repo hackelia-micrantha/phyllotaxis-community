@@ -12,7 +12,7 @@ Phyllotaxis defines the shared UI substrate used across Micrantha projects. This
 | **Venation** | Structural layout relationships and primitives | Contract accepted |
 | **Lamina** | Reusable semantic UI components and compositions | Contract accepted; private implementation merged and validated |
 | **Cambium** | Contract migration and codemod semantics | Design surface; implementation evolves privately |
-| **`phyllo`** | Inspection, validation, diagnostics, initialization, migration orchestration | Mixed maturity: core commands implemented privately; tokens accepted/pending implementation; migration proposed |
+| **`phyllo`** | Inspection, validation, diagnostics, initialization, migration orchestration | Mixed maturity: core commands and tokens implemented privately; migration proposed |
 
 ## Repository role
 
