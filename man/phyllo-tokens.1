@@ -13,6 +13,8 @@ phyllo-tokens \- validate and inspect the installed Chroma contract
 .BR text | json ]
 .RB [ --quiet ]
 .RB [ --no-color ]
+.br
+.B phyllo tokens --help
 .SH DESCRIPTION
 .B phyllo tokens
 is a read-only view over the installed package's canonical machine-readable
@@ -66,6 +68,9 @@ Suppress successful human text only. Semantic and usage diagnostics remain visib
 .B --no-color
 Disable ANSI color in human output. This is also implied by non-TTY output,
 NO_COLOR, or TERM=dumb.
+.TP
+.B --help
+Display help for the bounded tokens command family without discovering a project.
 .SH DIAGNOSTICS
 Relevant deterministic diagnostics include:
 .TP
