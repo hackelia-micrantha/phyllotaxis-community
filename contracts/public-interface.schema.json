@@ -206,7 +206,8 @@
         "packageExport",
         "schemaVersion",
         "contractVersion",
-        "defaultProfile"
+        "defaultProfile",
+        "canonicalArtifact"
       ],
       "properties": {
         "packageExport": {
@@ -220,6 +221,9 @@
         },
         "defaultProfile": {
           "const": "utility"
+        },
+        "canonicalArtifact": {
+          "const": "./chroma-inspection-v1.json"
         }
       }
     }
