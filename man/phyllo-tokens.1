@@ -1,0 +1,108 @@
+.TH PHYLLO-TOKENS 1 "Phyllotaxis" "phyllo" "User Commands"
+.SH NAME
+phyllo-tokens \- validate and inspect the installed Chroma contract
+.SH SYNOPSIS
+.B phyllo tokens check
+.RB [ --format
+.BR text | json ]
+.RB [ --quiet ]
+.RB [ --no-color ]
+.br
+.B phyllo tokens inspect
+.RB [ --format
+.BR text | json ]
+.RB [ --quiet ]
+.RB [ --no-color ]
+.SH DESCRIPTION
+.B phyllo tokens
+is a read-only view over the installed package's canonical machine-readable
+Chroma contract. It never derives token authority from consumer CSS, executes
+project code, rewrites token values, or installs packages.
+.PP
+The v1 family has exactly two subcommands:
+.B check
+and
+.BR inspect .
+Unknown subcommands and unsupported options are usage errors.
+.SH CHECK
+.B phyllo tokens check
+resolves the project and installed Phyllotaxis package using ordinary inert
+project discovery, reads package metadata and the static chroma-contract.json
+artifact, verifies package/artifact Chroma contract versions agree, and runs
+the accepted canonical Chroma validator.
+.PP
+Successful text output is:
+.PP
+.nf
+phyllo tokens check: ok (Chroma contract v1)
+.fi
+.SH INSPECT
+.B phyllo tokens inspect
+performs the same validation, then exposes the installed artifact.
+With
+.B --format json
+the complete artifact is returned unchanged under
+.BR data.contract .
+Text mode is a bounded summary:
+.PP
+.nf
+chroma-contract: 1
+schema: 1
+default-profile: utility
+profiles: utility, editorial
+roles: <count>
+.fi
+.PP
+Consumers needing role/value data should use
+.BR "--format json" .
+.SH OPTIONS
+.TP
+.B --format text|json
+Select human-readable text or the common versioned JSON result. Text is the default.
+.TP
+.B --quiet
+Suppress successful human text only. Semantic and usage diagnostics remain visible.
+.TP
+.B --no-color
+Disable ANSI color in human output. This is also implied by non-TTY output,
+NO_COLOR, or TERM=dumb.
+.SH DIAGNOSTICS
+Relevant deterministic diagnostics include:
+.TP
+.B phyllotaxis.package-not-found
+Project/package discovery could not find the installed package.
+.TP
+.B chroma.contract-not-found
+The installed static Chroma artifact is absent.
+.TP
+.B chroma.contract-invalid-json
+The installed static Chroma artifact cannot be parsed as JSON.
+.TP
+.B chroma.package-contract-mismatch
+Package metadata and artifact contract versions disagree.
+.TP
+.B chroma.*
+Canonical Chroma validation diagnostics defined by the accepted inspection contract.
+.SH EXIT STATUS
+.TP
+.B 0
+Validation/inspection completed successfully.
+.TP
+.B 1
+Semantic Chroma contract validation failed.
+.TP
+.B 2
+Usage, configuration, or package discovery error.
+.TP
+.B 3
+Operational I/O failure prevented completion.
+.TP
+.B 4
+Unexpected internal CLI failure.
+.TP
+.B 130
+Interrupted by SIGINT where the platform/runtime uses conventional signal propagation.
+.SH SEE ALSO
+.BR phyllo (1),
+.BR phyllo-check (1),
+.BR phyllo-status (1)
