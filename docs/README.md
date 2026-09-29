@@ -16,6 +16,7 @@ This repository is the public source of truth for **published Phyllotaxis design
 | See cross-cutting requirements | [Requirements index](requirements/README.md) |
 | Propose or record a decision | [Decision records](decisions/README.md) |
 | Understand public/private authority | [Repository boundary](../UPSTREAM.md) |
+| Review public package consumer documentation | [Package README](../package/README.md) |
 
 ## Document classes
 
