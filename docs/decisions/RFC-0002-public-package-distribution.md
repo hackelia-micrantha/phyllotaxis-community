@@ -105,6 +105,18 @@ This proposal follows the organization release and source-exposure standards:
 
 The current private-source Nix package is valuable producer/install evidence, but it is **not** the eventual public Nix distribution contract. A future public Nix surface must fetch and cryptographically pin the exact reviewed public release artifact.
 
+## Repository-registry transition
+
+Acceptance of this RFC requires an explicit organization-registry update before publication.
+
+The intended topology is:
+
+- private canonical `hackelia-micrantha/phyllotaxis`: keep `repositoryRole: canonical` and `sourceExposure: private`, change `distributionMode` from `internal` to `package` when the public package path is accepted;
+- public `hackelia-micrantha/phyllotaxis-community`: remain `repositoryRole: projection` with `distributionMode: none`; it remains design/contract authority and must not become a second implementation or package-host authority merely to satisfy topology metadata;
+- public acquisition occurs through the approved npm-compatible registry artifact, with the private canonical repository retaining release authority.
+
+The registry change and RFC/ADR must land in dependency order so organization release-readiness tooling does not observe a public package path that contradicts declared repository posture.
+
 ## Release identity and provenance
 
 One immutable release identity must connect:
@@ -216,7 +228,9 @@ Not required by current evidence. Public package artifacts are explicitly source
 - [ ] clean anonymous/public package acquisition succeeds;
 - [ ] first consumer can pin the artifact without private-repository credentials;
 - [ ] rollback to a prior immutable version is documented and testable;
-- [ ] public contract pin verification remains part of producer release validation.
+- [ ] public contract pin verification remains part of producer release validation;
+- [ ] organization repository registry reflects the accepted package-distribution topology before publication;
+- [ ] normalized release-readiness evidence uses `acquisition.mode: package`, `sourceBuild: false`, `immutable: true`, and `requiresPrivateCredentials: false`, with clean/cache-miss consumer evidence.
 
 ## Non-goals
 
