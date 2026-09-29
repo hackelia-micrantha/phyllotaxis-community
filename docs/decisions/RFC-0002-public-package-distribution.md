@@ -137,10 +137,25 @@ The release workflow must verify the pinned public contract revision before pack
 
 The current private repository README is suitable implementation-facing documentation but must not become the package's accidental public documentation authority merely because npm includes README files automatically.
 
-Before public release:
+The authoritative consumer-facing package README is:
 
-- define or generate a package README from the public documentation surface;
-- verify the packed artifact contains that intended README;
+`package/README.md`
+
+in this public community repository.
+
+Private release tooling must:
+
+1. resolve the immutable public-contract revision recorded by the producer;
+2. read `package/README.md` from that exact public revision;
+3. stage it byte-for-byte as package-root `README.md` before packing;
+4. verify the packed `README.md` matches the pinned public source;
+5. fail closed on missing or mismatched content.
+
+The private implementation README is never an implicit fallback. A package README change therefore follows the normal public design/documentation review path before private release tooling mirrors it.
+
+The README rule is resolved independently from licensing. Before public release:
+
+- verify the packed artifact contains the pinned public README;
 - choose and record the package license;
 - add matching LICENSE content and package metadata.
 
@@ -220,7 +235,7 @@ Not required by current evidence. Public package artifacts are explicitly source
 ## Acceptance before ADR
 
 - [ ] package license and LICENSE text are explicitly selected;
-- [ ] public package README source/derivation is defined;
+- [x] public package README source/derivation is defined: `package/README.md` is authoritative and private release tooling must stage/verify it byte-for-byte from the pinned public revision;
 - [ ] packed-artifact allowlist is mechanically enforced, including source-map policy;
 - [ ] exact release versioning and registry namespace ownership are confirmed;
 - [ ] trusted/publication identity and provenance path are demonstrated;
