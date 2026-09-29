@@ -92,6 +92,19 @@ Consumers:
 
 A public consumer must not depend on `main`, a moving tag, or an authenticated private Git URL.
 
+## Alignment with Micrantha release standards
+
+This proposal follows the organization release and source-exposure standards:
+
+- the private canonical repository owns implementation truth and release authorization;
+- the public consumer path acquires an immutable reviewed artifact rather than buildable private source;
+- packaging is validated **after** artifact creation;
+- clean/cache-miss acquisition is tested with private-repository credentials unavailable;
+- release-readiness evidence records the canonical identity, artifact inspection, consumer acquisition mode, and applicable CLI/man-page checks;
+- public package or Nix metadata must not silently rebuild from private source.
+
+The current private-source Nix package is valuable producer/install evidence, but it is **not** the eventual public Nix distribution contract. A future public Nix surface must fetch and cryptographically pin the exact reviewed public release artifact.
+
 ## Release identity and provenance
 
 One immutable release identity must connect:
@@ -145,6 +158,21 @@ A bad release is corrected by:
 4. allowing consumers to restore a prior exact known-good version.
 
 Release recovery must not depend on rewriting an existing package version.
+
+## Release-readiness evidence
+
+Before publication, repository-owned release tooling must produce bounded evidence compatible with the Micrantha release-readiness model, including at minimum:
+
+- canonical release identity and mechanically observed package/executable claims;
+- packed artifact file allowlist/prohibited-material result;
+- artifact digest;
+- clean consumer acquisition with private credentials unavailable;
+- public-contract revision verified by the producer;
+- package import smoke test for the runtime/CSS surface;
+- CLI help/version/man-page smoke evidence when the CLI is claimed as supported;
+- rollback target or prior known-good identity when one exists.
+
+Do not embed private source, secret candidates, security corpora, or signing material in the evidence document.
 
 ## Consumer qualification
 
