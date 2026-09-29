@@ -1,6 +1,6 @@
 # QART-0002 — Public runtime and `phyllo` distribution boundary
 
-Status: **Open**
+Status: **Resolved into RFC-0002**
 
 ## Question
 
@@ -99,15 +99,19 @@ This alternative is rejected.
 
 It creates two implementation authorities, guarantees drift pressure, weakens contract attribution, and violates the existing public-design/private-implementation boundary.
 
-## Recommendation
+## Resolution
 
-Use **A — keep v1 packages internal** while Phyllotaxis is qualified through its first representative Micrantha consumer.
+The first-consumer evidence changed the recommendation.
 
-Treat that consumer work as evidence gathering, not implicit authorization to publish npm artifacts. A public web deployment may expose bundled JavaScript; this is expected runtime observability and must not be confused with a supported public package-acquisition contract.
+`hackelia-micrantha/web` is the selected first consumer and is itself public. Requiring it to fetch the private canonical implementation would introduce private-repository credentials or a custom trusted-build dependency into a public consumer path. The private implementation has also demonstrated a bounded npm artifact surface that excludes private source/tests while exposing only the compiled/runtime material a browser package necessarily makes inspectable.
 
-If a concrete external need for `phyllo` appears before a public UI/runtime package is justified, evaluate **C** in a separate RFC because the CLI can have a different distribution posture from the browser/runtime library.
+That satisfies this QART's RFC trigger.
 
-Do not select **B** or **D** without an explicit source-exposure/topology decision. Do not use **E**.
+Proceed to **[RFC-0002](RFC-0002-public-package-distribution.md)** with **B — publish the npm-compatible runtime/package artifact** as the proposed first public consumer path, while preserving the private canonical implementation repository and public community design authority.
+
+This is not publication authorization. RFC-0002 keeps licensing, public package README, artifact allowlisting/source-map policy, registry identity, provenance/SBOM, anonymous acquisition, and rollback as explicit pre-ADR gates.
+
+Option **C** remains available later if the CLI needs an independently versioned distribution model. Do not use **E**.
 
 ## Release invariants for any future public path
 

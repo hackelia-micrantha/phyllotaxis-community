@@ -16,5 +16,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0001 — Machine-readable Chroma inspection contract](QART-0001-chroma-inspection-contract.md) — alternatives resolved into RFC-0001.
 - [RFC-0001 — Static Chroma inspection contract](RFC-0001-chroma-inspection-contract.md) — accepted by ADR-0001.
 - [ADR-0001 — Accept static Chroma inspection contract](ADR-0001-chroma-inspection-contract.md) — accepted durable decision.
-- [QART-0002 — Public runtime and `phyllo` distribution boundary](QART-0002-public-distribution-boundary.md) — open; recommends keeping v1 packages internal while consumer evidence is gathered.
+- [QART-0002 — Public runtime and `phyllo` distribution boundary](QART-0002-public-distribution-boundary.md) — resolved into RFC-0002 after first-consumer evidence required credential-free public acquisition.
+- [RFC-0002 — Public npm-compatible Phyllotaxis package distribution](RFC-0002-public-package-distribution.md) — proposed; defines the package/artifact boundary and pre-ADR release gates.
 
