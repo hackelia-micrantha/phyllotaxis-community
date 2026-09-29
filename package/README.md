@@ -34,6 +34,11 @@ For browser/library use, consumers should pin an exact package version in their 
 
 For CLI use, `phyllo --help` and the installed section-1 manuals describe the supported command surface. Machine consumers should use explicit `--format json` where defined.
 
+Canonical CLI documentation:
+
+- command contract: https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/docs/cli/phyllo.md
+- section-1 manual sources: https://github.com/hackelia-micrantha/phyllotaxis-community/tree/main/man
+
 ## Compatibility
 
 A package release is compatible only with the public contract revision recorded by its producer release evidence. Consumers should validate upgrades in their own CI and roll back by restoring a previously known-good immutable package version.
