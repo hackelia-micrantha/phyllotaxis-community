@@ -117,6 +117,28 @@ The intended topology is:
 
 The registry change and RFC/ADR must land in dependency order so organization release-readiness tooling does not observe a public package path that contradicts declared repository posture.
 
+## Registry and publication trust boundary
+
+The concrete candidate registry is the public npm registry (`https://registry.npmjs.org`) using the scoped public package identity:
+
+```text
+@hackelia-micrantha/phyllotaxis
+```
+
+This remains a proposal until the RFC is accepted and the corresponding npm scope/package ownership is verified by the release owner. Scoped packages must be explicitly published as public; the release workflow must fail closed rather than rely on an ambient npm client default.
+
+Preferred publication authentication is npm trusted publishing from one dedicated GitHub Actions release workflow in the private canonical repository, using GitHub OIDC and a GitHub-hosted runner. The publication job should have only the permissions needed for checkout plus OIDC (`contents: read`, `id-token: write`) unless a reviewed release step demonstrates another permission is required. Ordinary pull-request CI, self-hosted runners, forks, and reusable validation jobs must not receive package publication authority.
+
+The trusted-publisher binding must name the canonical GitHub organization/repository and exact release workflow filename. If a protected GitHub environment is used, its name is part of that binding and its approval policy remains a separate release-authority control.
+
+No long-lived npm publish token is part of the intended steady-state path. Bootstrap/owner actions required to establish npm scope/package ownership or the first trusted-publisher binding remain explicit human release-owner actions and are not delegated by this RFC.
+
+### Provenance limitation
+
+npm trusted publishing and npm provenance are related but not equivalent controls. npm currently supports OIDC trusted publishing from GitHub Actions, but npm's automatic provenance generation is not available when the publishing repository is private. Because the canonical Phyllotaxis producer is intentionally private, this RFC must not claim that npm trusted publishing alone satisfies the provenance requirement.
+
+The producer must therefore generate a separate reviewed provenance/attestation that binds the canonical source revision, package identity/version, and packed artifact digest. #66 owns that delivery evidence. The public registry publication may additionally expose whatever registry metadata npm provides, but that metadata is not a substitute for the Micrantha provenance record.
+
 ## Release identity and provenance
 
 One immutable release identity must connect:
@@ -237,8 +259,8 @@ Not required by current evidence. Public package artifacts are explicitly source
 - [ ] package license and LICENSE text are explicitly selected;
 - [x] public package README source/derivation is defined: `package/README.md` is authoritative and private release tooling must stage/verify it byte-for-byte from the pinned public revision;
 - [ ] packed-artifact allowlist is mechanically enforced, including source-map policy;
-- [ ] exact release versioning and registry namespace ownership are confirmed;
-- [ ] trusted/publication identity and provenance path are demonstrated;
+- [ ] exact release versioning and npm registry namespace ownership are confirmed by the release owner;
+- [ ] npm trusted-publisher identity is demonstrated from the dedicated canonical release workflow; separate provenance is demonstrated because the canonical repository is private;
 - [ ] SBOM/checksum requirements from Micrantha release policy are mapped;
 - [ ] clean anonymous/public package acquisition succeeds;
 - [ ] first consumer can pin the artifact without private-repository credentials;
