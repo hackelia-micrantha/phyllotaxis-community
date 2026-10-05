@@ -53,6 +53,8 @@ Where a host uses stable assignment, it should prefer deterministic selection an
 
 Experiment lifecycle should be bounded: start, measure, decide, remove losing branches, and retain only the evidence needed for the resulting decision.
 
+Experiment assignment is presentation state, not an authorization boundary. Every variant must preserve the same access-control and privacy guarantees, and hosts should minimize identifiers and telemetry used only for bucketing or measurement.
+
 ## Deterministic validation still applies
 
 A/B testing complements normal conformance testing; it does not replace it.
