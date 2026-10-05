@@ -203,6 +203,18 @@ Published versions are immutable. A released package version is never overwritte
 
 Every consumer pins an exact package version and commits its package-manager lock/integrity state. A rollback is a normal reviewed dependency change that restores the last known-good exact version and its corresponding lockfile/integrity resolution, then reruns the consumer's compatibility checks.
 
+For the selected first consumer, `hackelia-micrantha/web`, the package manager authority is Yarn 1.22.22: `package.json` records the exact Phyllotaxis version and `yarn.lock` records the resolved registry artifact and integrity. The initial adoption PR must preserve the pre-Phyllotaxis implementation as the rollback baseline until the public package has passed consumer qualification.
+
+A forward pin and a rollback are both ordinary reviewed consumer changes:
+
+1. change `@hackelia-micrantha/phyllotaxis` only to the intended exact version (no range);
+2. regenerate `yarn.lock` from a clean/cache-miss install against the public registry, with private Phyllotaxis repository credentials unavailable;
+3. review the lockfile diff so the Phyllotaxis resolved artifact/integrity changes are attributable to that version change;
+4. run the consumer's repository-owned typecheck, build, unit/integration checks, and the bounded Phyllotaxis characterization/compatibility checks;
+5. for rollback, restore the prior known-good exact version and its reviewed lock/integrity state rather than editing cache contents or substituting a mutable Git/private-repository dependency.
+
+Before the first Phyllotaxis package release there is no prior public package version. In that case rollback means reverting the bounded adoption change and restoring `web`'s pre-Phyllotaxis implementation; after a known-good public version exists, rollback means pinning that exact prior version and its corresponding reviewed lock/integrity state.
+
 The first consumer, `hackelia-micrantha/web`, must prove both the forward pin and restoration of the prior known-good dependency state before its initial Phyllotaxis adoption is considered qualified.
 
 ### Bad release
