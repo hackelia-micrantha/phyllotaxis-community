@@ -1,6 +1,7 @@
 # RFC-0003 — Consumer experimentation boundary
 
-Status: **Proposed**
+Status: **Proposed**  
+Origin: [QART-0003](QART-0003-consumer-experimentation-boundary.md)  
 Tracks: #29
 
 ## Decision under review
@@ -32,12 +33,12 @@ Example:
 
 ```css
 [data-ui-variant="pastel"] {
-  --phyllotaxis-color-surface: #f4f1fb;
-  --phyllotaxis-color-border: #b8afca;
+  --phyllotaxis-color-surface: light-dark(#f4f1fb, #251f2d);
+  --phyllotaxis-color-border: light-dark(#b8afca, #6c6078);
 }
 ```
 
-The `data-ui-variant` attribute above is illustrative consumer markup, not Phyllotaxis API.
+The `data-ui-variant` attribute above is illustrative consumer markup, not Phyllotaxis API. Scheme-aware overrides must preserve Chroma's accepted light/dark resolution model and be contrast-validated against the semantic foreground roles they affect.
 
 ## Layout and semantic experiments
 
