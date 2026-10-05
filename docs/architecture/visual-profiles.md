@@ -26,7 +26,7 @@ Profile selection follows the **primary user task and content model**, not the h
 Use **Utility** when the primary task is to:
 
 - navigate software, projects, tools, or community resources;
-- read reference or operational documentation;
+- read reference or operational documentation, including technical whitepapers, RFCs, specifications, API references, and runbooks;
 - inspect status, metadata, downloads, support, or structured information;
 - complete direct application or administrative tasks.
 
@@ -110,14 +110,14 @@ Prefer:
 - system/browser-native typography;
 - obvious links and controls;
 - compact readable information density;
-- restrained color;
-- simple borders and separators;
+- restrained color, including bounded low-chroma section rhythm where it improves scanning;
+- simple borders and separators, including contiguous border-sharing information grids;
 - limited radii and elevation;
 - normal document flow;
 - intrinsic responsive layout;
 - little or no ornamental motion.
 
-Utility is the default for Micrantha software/project/docs/community surfaces unless a concrete surface has an editorial content model.
+Utility is the default for Micrantha software/project/docs/community surfaces unless a concrete surface has an editorial content model. Long-form technical/reference content does not become Editorial merely because it is long.
 
 ### Editorial
 
@@ -222,7 +222,8 @@ When reviewing a visual-profile proposal:
 4. promote Lamina semantics only from repeated or accessibility-significant patterns;
 5. keep host/brand-specific identity outside reusable APIs;
 6. treat existing site CSS/framework structure as evidence, not contract;
-7. prefer the smallest profile-specific surface that satisfies the editorial need.
+7. prefer the smallest profile-specific surface that satisfies the editorial need;
+8. for Utility, prefer flat section rhythm and shared separators over independent card chrome when visual grouping is needed.
 
 ## Current implementation status
 
