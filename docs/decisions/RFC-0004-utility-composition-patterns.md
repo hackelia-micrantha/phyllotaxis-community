@@ -1,6 +1,7 @@
 # RFC-0004 — Utility composition patterns from consumer evidence
 
 Status: **Proposed**  
+Origin: [QART-0004](QART-0004-utility-composition-patterns.md)  
 Evidence: [Utility consumer evidence — Digitalis community](../architecture/utility-evidence.md)  
 Builds on: [Visual directive](../architecture/visual-directive.md), [Visual profiles](../architecture/visual-profiles.md), [RFC-0003](RFC-0003-consumer-experimentation-boundary.md)  
 Tracks: #34  
@@ -146,17 +147,22 @@ It intentionally:
 - keeps navigation/actions link-first;
 - contains no Digitalis branding or exact production palette.
 
+## Decision lifecycle
+
+While this RFC is proposed, the accepted [visual directive](../architecture/visual-directive.md) and [visual profiles](../architecture/visual-profiles.md) remain unchanged. If this RFC is accepted, an ADR must record the durable decision before those accepted contracts are updated.
+
 ## Validation
 
-Before acceptance:
+Before ADR acceptance:
 
-- [ ] public docs clearly distinguish composition guidance from stable API;
-- [ ] reference fixture is usable without JavaScript;
-- [ ] reference fixture remains understandable with CSS disabled;
+- [x] public docs clearly distinguish composition guidance from stable API;
+- [x] reference fixture is usable without JavaScript;
+- [x] reference fixture remains understandable with CSS disabled;
 - [x] text/link/focus contrast is checked for the documented sample values; the weakest fixture foreground/background pair remains above 5:1;
-- [ ] no Digitalis-specific names/classes/copy are promoted;
-- [ ] no new stable Chroma/Lamina/Venation export is implied;
+- [x] no Digitalis-specific names/classes/copy are promoted;
+- [x] no new stable Chroma/Lamina/Venation export is implied;
 - [x] Cambium follow-up is tracked in private `phyllotaxis#70`.
+- [ ] ADR accepts or rejects RFC-0004 before accepted visual contracts change.
 
 ## Non-goals
 
