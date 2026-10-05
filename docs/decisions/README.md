@@ -19,5 +19,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0002 — Public runtime and `phyllo` distribution boundary](QART-0002-public-distribution-boundary.md) — resolved into RFC-0002 after first-consumer evidence required credential-free public acquisition.
 - [RFC-0002 — Public npm-compatible Phyllotaxis package distribution](RFC-0002-public-package-distribution.md) — proposed; defines the package/artifact boundary and pre-ADR release gates.
 - [QART-0003 — Consumer experimentation boundary](QART-0003-consumer-experimentation-boundary.md) — resolved into RFC-0003 after comparing unspecified, host-owned, runtime-API, and profile-based approaches.
-- [RFC-0003 — Consumer experimentation and validation boundary](RFC-0003-consumer-experimentation-boundary.md) — proposed; keeps A/B assignment and measurement host-owned while experiments use existing Phyllotaxis semantic seams.
+- [RFC-0003 — Consumer experimentation and validation boundary](RFC-0003-consumer-experimentation-boundary.md) — accepted by ADR-0002; keeps A/B assignment and measurement host-owned while experiments use existing Phyllotaxis semantic seams.
+- [ADR-0002 — Keep Phyllotaxis experimentation host-owned](ADR-0002-consumer-experimentation-boundary.md) — accepted durable decision.
 

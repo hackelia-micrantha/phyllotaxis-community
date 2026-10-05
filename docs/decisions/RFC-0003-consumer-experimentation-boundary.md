@@ -1,6 +1,6 @@
 # RFC-0003 — Consumer experimentation boundary
 
-Status: **Proposed**  
+Status: **Accepted by [ADR-0002](ADR-0002-consumer-experimentation-boundary.md)**  
 Origin: [QART-0003](QART-0003-consumer-experimentation-boundary.md)  
 Tracks: #29
 
@@ -117,12 +117,12 @@ A first-class variant abstraction should be reconsidered only after repeated con
 
 ## Acceptance before ADR
 
-- [ ] profiles remain semantic and distinct from experiment buckets;
-- [ ] public Chroma values are the preferred visual experimentation seam;
-- [ ] host assignment and measurement ownership is explicit;
-- [ ] Venation and Lamina remain experiment-neutral;
-- [ ] each variant passes applicable deterministic validation;
-- [ ] the Utility-versus-pastel reference experiment requires no new runtime API.
+- [x] profiles remain semantic and distinct from experiment buckets;
+- [x] public Chroma values are the preferred visual experimentation seam;
+- [x] host assignment and measurement ownership is explicit;
+- [x] Venation and Lamina remain experiment-neutral;
+- [x] each variant passes applicable deterministic validation;
+- [x] the Utility-versus-pastel reference experiment requires no new runtime API.
 
 ## Non-goals
 
