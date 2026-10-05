@@ -9,6 +9,7 @@ This index identifies the published Phyllotaxis surfaces that constrain implemen
 | [Lamina editorial semantics](../architecture/lamina-editorial-contract.md) | Accepted | Reusable semantic editorial components and composition boundaries |
 | [Visual profiles](../architecture/visual-profiles.md) | Accepted boundary | Utility and Editorial profile semantics |
 | [Visual directive](../architecture/visual-directive.md) | Accepted | Default visual character and modern capability constraints |
+| [Consumer experimentation boundary](../decisions/ADR-0002-consumer-experimentation-boundary.md) | Accepted | Host-owned A/B/multivariate experiment assignment and measurement; Phyllotaxis-owned semantic experimentation seams and conformance invariants |
 | [`phyllo` CLI architecture](../architecture/phyllo-cli.md) | Proposed | CLI responsibility, dependency direction, safety boundary |
 | [`phyllo` project configuration](../architecture/phyllo-project-config.md) | Proposed | Project discovery and inert configuration |
 | [`phyllo` command contract](../cli/phyllo.md) | Proposed | Commands, machine output, diagnostics, exit semantics, terminal behavior |
