@@ -173,18 +173,36 @@ This does not replace system-install conformance:
 
 A later RFC may split CLI distribution if independent release requirements justify it.
 
-## Rollback and correction
+## Rollback, deprecation, and revocation
 
-Published versions are immutable.
+Published versions are immutable. A released package version is never overwritten or silently replaced.
 
-A bad release is corrected by:
+### Consumer rollback
 
-1. marking/deprecating the bad version where the registry supports it;
-2. publishing a new corrected version;
-3. preserving provenance for both;
-4. allowing consumers to restore a prior exact known-good version.
+Every consumer pins an exact package version and commits its package-manager lock/integrity state. A rollback is a normal reviewed dependency change that restores the last known-good exact version and its corresponding lockfile/integrity resolution, then reruns the consumer's compatibility checks.
 
-Release recovery must not depend on rewriting an existing package version.
+The first consumer, `hackelia-micrantha/web`, must prove both the forward pin and restoration of the prior known-good dependency state before its initial Phyllotaxis adoption is considered qualified.
+
+### Bad release
+
+If post-publication smoke or consumer evidence shows a release is broken or unsafe:
+
+1. stop any further promotion/publication activity;
+2. deprecate the bad package version in the registry with a concise operator-facing reason when registry controls permit;
+3. preserve the bad version, digest, provenance, SBOM, validation evidence, and incident context rather than deleting history;
+4. direct consumers to the last known-good immutable version when rollback is safe;
+5. publish a new corrected version only from a newly reviewed canonical revision;
+6. repeat release-readiness and clean-consumer validation for the corrected artifact.
+
+Unpublishing or erasing a released version is not the normal rollback mechanism.
+
+### Publication-identity compromise
+
+If the publication identity or release workflow is suspected to be compromised, pause publication, revoke/remove the affected trusted-publisher binding or credential, preserve evidence for incident review, and treat artifacts whose integrity cannot be established as unsafe until re-qualified. Restoring publication authority requires a reviewed replacement identity/binding; it must not silently reuse compromised authority.
+
+### No prior release
+
+For the first public release there is no prior public Phyllotaxis package to roll back to. The safe recovery state is therefore to deprecate the bad version, stop first-consumer adoption (or revert the consumer to its pre-Phyllotaxis implementation), and publish a corrected new version only after review. The release record must state this limitation explicitly.
 
 ## Release-readiness evidence
 
