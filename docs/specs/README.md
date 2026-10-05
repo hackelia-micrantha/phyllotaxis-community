@@ -16,6 +16,7 @@ Phyllotaxis specifications are organized by responsibility rather than duplicate
 ## Evidence
 
 - [Editorial profile evidence](../architecture/editorial-evidence.md) — source observations used to derive reusable Editorial contracts. Evidence is not itself normative.
+- [Utility consumer evidence](../architecture/utility-evidence.md) — observations from a production Utility consumer used to refine composition guidance without promoting product-specific styling.
 
 ## Decision lifecycle
 
