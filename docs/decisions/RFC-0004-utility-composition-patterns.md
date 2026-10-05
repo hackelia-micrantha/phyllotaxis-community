@@ -2,7 +2,9 @@
 
 Status: **Proposed**  
 Evidence: [Utility consumer evidence — Digitalis community](../architecture/utility-evidence.md)  
-Builds on: [Visual directive](../architecture/visual-directive.md), [Visual profiles](../architecture/visual-profiles.md), [RFC-0003](RFC-0003-consumer-experimentation-boundary.md)
+Builds on: [Visual directive](../architecture/visual-directive.md), [Visual profiles](../architecture/visual-profiles.md), [RFC-0003](RFC-0003-consumer-experimentation-boundary.md)  
+Tracks: #34  
+Implementation follow-up: private `phyllotaxis#70`
 
 ## Decision under review
 
@@ -151,10 +153,10 @@ Before acceptance:
 - [ ] public docs clearly distinguish composition guidance from stable API;
 - [ ] reference fixture is usable without JavaScript;
 - [ ] reference fixture remains understandable with CSS disabled;
-- [ ] text/link/focus contrast is checked for the documented sample values;
+- [x] text/link/focus contrast is checked for the documented sample values; the weakest fixture foreground/background pair remains above 5:1;
 - [ ] no Digitalis-specific names/classes/copy are promoted;
 - [ ] no new stable Chroma/Lamina/Venation export is implied;
-- [ ] Cambium follow-up is tracked in the private implementation repository.
+- [x] Cambium follow-up is tracked in private `phyllotaxis#70`.
 
 ## Non-goals
 
