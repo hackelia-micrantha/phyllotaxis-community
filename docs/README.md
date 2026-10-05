@@ -8,6 +8,7 @@ This repository is the public source of truth for **published Phyllotaxis design
 | --- | --- |
 | Understand the layer model | [Venation](architecture/venation-layout-contract.md), [Chroma](architecture/chroma-profile-contract.md), [Lamina](architecture/lamina-editorial-contract.md) |
 | Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md) |
+| Review consumer experimentation / A/B testing | [RFC-0003](decisions/RFC-0003-consumer-experimentation-boundary.md) |
 | Understand the CLI | [CLI architecture](architecture/phyllo-cli.md), [command contract](cli/phyllo.md) |
 | Integrate project discovery/config | [Project configuration](architecture/phyllo-project-config.md) |
 | Browse specifications and evidence | [Specification index](specs/README.md) |
