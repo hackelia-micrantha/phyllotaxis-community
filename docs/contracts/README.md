@@ -8,7 +8,7 @@ This index identifies the published Phyllotaxis surfaces that constrain implemen
 | [Chroma profile resolution](../architecture/chroma-profile-contract.md) | Accepted; CSS implementation validated; inspection contract accepted by [ADR-0001](../decisions/ADR-0001-chroma-inspection-contract.md) | Semantic values, profile/scheme resolution, stable custom-property and inspection surface |
 | [Lamina editorial semantics](../architecture/lamina-editorial-contract.md) | Accepted | Reusable semantic editorial components and composition boundaries |
 | [Visual profiles](../architecture/visual-profiles.md) | Accepted boundary | Utility and Editorial profile semantics |
-| [Visual directive](../architecture/visual-directive.md) | Accepted | Default visual character and modern capability constraints |
+| [Visual directive](../architecture/visual-directive.md) | Accepted; Utility composition guidance refined by [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md) | Default visual character and modern capability constraints |
 | [Consumer experimentation boundary](../decisions/ADR-0002-consumer-experimentation-boundary.md) | Accepted | Host-owned A/B/multivariate experiment assignment and measurement; Phyllotaxis-owned semantic experimentation seams and conformance invariants |
 | [`phyllo` CLI architecture](../architecture/phyllo-cli.md) | Proposed | CLI responsibility, dependency direction, safety boundary |
 | [`phyllo` project configuration](../architecture/phyllo-project-config.md) | Proposed | Project discovery and inert configuration |

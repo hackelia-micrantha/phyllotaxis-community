@@ -1,6 +1,6 @@
 # RFC-0004 — Utility composition patterns from consumer evidence
 
-Status: **Proposed**  
+Status: **Accepted by [ADR-0003](ADR-0003-utility-composition-patterns.md)**  
 Origin: [QART-0004](QART-0004-utility-composition-patterns.md)  
 Evidence: [Utility consumer evidence — Digitalis community](../architecture/utility-evidence.md)  
 Builds on: [Visual directive](../architecture/visual-directive.md), [Visual profiles](../architecture/visual-profiles.md), [RFC-0003](RFC-0003-consumer-experimentation-boundary.md)  
@@ -149,7 +149,7 @@ It intentionally:
 
 ## Decision lifecycle
 
-While this RFC is proposed, the accepted [visual directive](../architecture/visual-directive.md) and [visual profiles](../architecture/visual-profiles.md) remain unchanged. If this RFC is accepted, an ADR must record the durable decision before those accepted contracts are updated.
+ADR-0003 accepts this RFC. The accepted [visual directive](../architecture/visual-directive.md) and [visual profiles](../architecture/visual-profiles.md) are updated in the ADR delivery slice.
 
 ## Validation
 
@@ -162,7 +162,7 @@ Before ADR acceptance:
 - [x] no Digitalis-specific names/classes/copy are promoted;
 - [x] no new stable Chroma/Lamina/Venation export is implied;
 - [x] Cambium follow-up is tracked in private `phyllotaxis#70`.
-- [ ] ADR accepts or rejects RFC-0004 before accepted visual contracts change.
+- [x] ADR-0003 accepts RFC-0004 before accepted visual contracts change.
 
 ## Non-goals
 

@@ -22,5 +22,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [RFC-0003 — Consumer experimentation and validation boundary](RFC-0003-consumer-experimentation-boundary.md) — accepted by ADR-0002; keeps A/B assignment and measurement host-owned while experiments use existing Phyllotaxis semantic seams.
 - [ADR-0002 — Keep Phyllotaxis experimentation host-owned](ADR-0002-consumer-experimentation-boundary.md) — accepted durable decision.
 - [QART-0004 — Utility composition promotion from consumer evidence](QART-0004-utility-composition-patterns.md) — resolved into RFC-0004 after comparing consumer-only, composition-guidance, Chroma-role, and generic-component options.
-- [RFC-0004 — Utility composition patterns from consumer evidence](RFC-0004-utility-composition-patterns.md) — proposed; promotes reusable composition lessons without changing accepted contracts or stable APIs before ADR acceptance.
+- [RFC-0004 — Utility composition patterns from consumer evidence](RFC-0004-utility-composition-patterns.md) — accepted by ADR-0003; promotes reusable composition lessons without expanding stable Chroma/Lamina/Venation APIs.
+- [ADR-0003 — Accept Utility composition guidance from consumer evidence](ADR-0003-utility-composition-patterns.md) — accepted durable decision.
 

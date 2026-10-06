@@ -23,6 +23,7 @@ For Utility, prefer:
 - system and browser-native typography;
 - obvious text links and familiar browser affordances;
 - restrained colour use with strong link and state distinction;
+- flat low-chroma surface variation when it materially improves scanning between adjacent regions;
 - compact, readable information density;
 - simple borders and separators where structure needs reinforcement;
 - natural document flow and intrinsic layout;
@@ -43,6 +44,8 @@ Avoid by default:
 
 These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent deviations should be considered for a named semantic profile rather than accumulated as local exceptions.
 
+Utility may use restrained flat section rhythm rather than monochrome presentation. Low-chroma adjacent surfaces can distinguish information regions while preserving square/simple borders, compact spacing, normal flow, and no elevation. Exact palettes remain consumer-owned unless separately promoted into Chroma.
+
 ## Visual profiles
 
 Phyllotaxis is one design system with semantic visual profiles rather than site-specific themes.
@@ -52,7 +55,7 @@ Initial profiles:
 - **Utility** — the organization/default profile described by this directive;
 - **Editorial** — a richer media/blog profile for long-form reading, narrative, imagery, and publishing surfaces.
 
-Profile selection follows the primary task/content model, not the host name and not a desire for more decoration.
+Profile selection follows the primary task/content model, not the host name and not a desire for more decoration. Content length alone does not select Editorial: technical whitepapers, RFCs, specifications, runbooks, API/reference documentation, and other inspection-oriented long-form material remain Utility by default.
 
 `ryanjennin.gs` is the primary evidence source/reference consumer for Editorial, but stable design-system APIs must use semantic names such as `editorial`, not personal or site branding.
 
@@ -103,7 +106,9 @@ Editorial may justify reusable article/media semantics and richer presentation, 
 
 Migration tooling should prefer removing accidental visual complexity over mechanically reproducing it. Existing decoration is not automatically part of the target design contract.
 
-Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API.
+Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API. Profile-aware advisory checks may flag mechanically detectable Utility anti-patterns such as external webfonts, decorative gradients, blur/glass treatment, broad elevation, repeated large-radius content containers, and ornamental reveal motion; heuristic findings must not rewrite code automatically.
+
+See [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md) and [Utility consumer evidence](utility-evidence.md) for the accepted decision and its evidence.
 
 ## Non-goals
 
