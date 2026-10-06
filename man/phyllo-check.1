@@ -1,6 +1,6 @@
 .TH PHYLLO-CHECK 1 "Phyllotaxis" "phyllo" "User Commands"
 .SH NAME
-phyllo-check \- validate a project's canonical Venation contract
+phyllo-check \- validate project integration and report Utility advisories
 .SH SYNOPSIS
 .B phyllo check
 .RB [ --format
@@ -15,7 +15,11 @@ phyllo-check \- validate a project's canonical Venation contract
 .B phyllo check
 discovers the nearest project root and installed Phyllotaxis package,
 reads inert project configuration and canonical contract metadata, and
-validates the Venation CSS contract. It does not change project files.
+validates the Venation CSS contract. With no explicit scope and an effective
+Utility visual profile, it also inspects local consumer CSS and HTML for
+non-failing visual-conformance advisories. Editorial projects skip Utility
+visual advisories. It does not change project files, execute project code, or
+perform network lookups for advisory analysis.
 .SH OPTIONS
 .TP
 .B --format text|json
@@ -23,11 +27,13 @@ Select human-readable text or the versioned JSON result. Text is the default.
 JSON diagnostics are included in the result's diagnostics array.
 .TP
 .B --quiet
-Suppress non-error human-readable success and informational output. Errors remain on
-standard error. It does not alter the exit status.
+Suppress successful human-readable output and informational diagnostics.
+Warnings and errors remain on standard error. Quiet mode does not change JSON
+diagnostics or alter the exit status.
 .TP
 .B --scope venation
-Select the Venation validation scope. This is the only supported scope.
+Select the Venation-only validation scope. This is the only supported explicit
+scope and does not run Utility visual advisories.
 .TP
 .B --no-color
 Disable ANSI color in human output. This is also implied by non-TTY output, NO_COLOR, or TERM=dumb.
@@ -35,13 +41,17 @@ Disable ANSI color in human output. This is also implied by non-TTY output, NO_C
 .B --help
 Display command help on standard output without discovering a project.
 .SH OUTPUT
-In human mode, success is printed to standard output and errors to standard
-error. With --format json, the required envelope includes schemaVersion, command,
-ok, and diagnostics; paths, when present, are project-root-relative.
+In human mode, success is printed to standard output and warning/error
+diagnostics to standard error; informational diagnostics are also printed unless
+--quiet is set. With --format json, the required envelope includes schemaVersion,
+command, ok, and diagnostics regardless of --quiet. Paths, when present, are
+project-root-relative; line, when present, is 1-based. Warning and informational
+advisories do not make ok false.
 .SH EXIT STATUS
 .TP
 .B 0
-Validation completed with no violations.
+Validation completed with no error-level violations. Warning/informational
+advisories may be present.
 .TP
 .B 1
 Validation completed with contract violations.
