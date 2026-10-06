@@ -48,7 +48,7 @@ Human-oriented output defaults to text. Commands with a machine-readable contrac
 
 Human presentation must respect terminal width, `NO_COLOR`, `TERM=dumb`, `--no-color`, and redirected output. ANSI escapes and progress animation are disabled on non-TTY output unless explicitly requested. Color or Unicode must never be the only carrier of meaning.
 
-`--quiet` suppresses non-error human success/informational output. It does not suppress errors, change the machine contract, or alter exit status.
+`--quiet` suppresses successful human output and human diagnostics with severity `info`. Diagnostics with severity `warning` or `error` remain visible. Quiet mode does not change the JSON machine contract or alter exit status.
 
 Semantic validation diagnostics are part of a command's primary structured result when the command contract defines them as data. Process logging, progress, incidental warnings, stack traces, and other non-result diagnostics remain on stderr and must not corrupt machine-readable stdout.
 
@@ -95,7 +95,7 @@ Every JSON result uses the same required top-level envelope:
 
 - `schemaVersion: number` — schema version for the complete JSON result contract.
 - `command: string` — canonical command name that produced the result, such as `check` or `status`.
-- `ok: boolean` — `true` only when the command completed successfully and its requested validity condition is satisfied.
+- `ok: boolean` — `true` only when the command completed successfully and its requested validity condition is satisfied. Advisory `warning` and `info` diagnostics do not make `ok` false when the requested contract/state remains valid.
 - `diagnostics: Diagnostic[]` — always present; empty when there are no diagnostics.
 
 Commands may add command-specific fields, such as a `data` object for `status`, without removing or renaming the common envelope fields.
@@ -110,7 +110,8 @@ Each diagnostic has:
 - `severity: "error" | "warning" | "info"` — required;
 - `message: string` — required human-readable explanation;
 - `path?: string` — optional normalized repository path when the diagnostic has a file location;
-- future optional location fields may identify line/column/range without changing path semantics.
+- `line?: number` — optional 1-based source line when the location is deterministic;
+- future optional location fields may identify column/range without changing path semantics.
 
 Diagnostic ordering is deterministic. Human messages may improve without a schema-version change when stable semantic fields remain compatible. Terminal escape sequences, stack traces, internal exception objects, and dependency-specific AST structures are not part of the stable JSON contract.
 
@@ -145,11 +146,15 @@ Initial behavior:
 1. resolve project root/configuration;
 2. discover installed Phyllotaxis packages and contract metadata;
 3. invoke canonical validators for the requested scope;
-4. aggregate deterministic diagnostics;
-5. render human output or the common JSON envelope;
-6. return the documented exit status.
+4. when no explicit scope is supplied and the effective visual profile is Utility, inspect local consumer CSS/HTML source roots for non-mutating advisory signals accepted by [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md);
+5. skip Utility visual advisories when the configured profile is Editorial; `--scope venation` remains explicitly Venation-only;
+6. aggregate deterministic diagnostics;
+7. render human output or the common JSON envelope;
+8. return the documented exit status.
 
-`check` must not mutate files, install dependencies, execute lifecycle scripts, or auto-fix violations.
+Utility advisories may identify mechanically detectable patterns such as external webfonts, decorative gradients, blur/glass treatment, elevation, large-radius composition, or motion that merits review. Exact deterministic signals may use `warning`; heuristic review signals should remain `info`. Warnings and informational advisories are non-failing: when no `error` diagnostic exists, `ok` remains true and the exit status remains `0`.
+
+`check` must not mutate files, install dependencies, execute lifecycle scripts, auto-fix violations, perform network lookups for advisory analysis, or execute consumer project code.
 
 ## `phyllo status`
 
@@ -303,7 +308,7 @@ The canonical Chroma v1 validation diagnostic identifiers consumed by `phyllo to
 
 A required file being absent is a deterministic installed-package contract defect, not an incidental I/O error. By contrast, permission failures and other unexpected read failures use `cli.operational-failure` and exit `3`.
 
-`--quiet` suppresses successful text output only; it does not suppress semantic or usage diagnostics. `--no-color` is accepted consistently with other commands.
+`--quiet` follows the global severity rule: successful text and informational human diagnostics are suppressed, while warning/error diagnostics remain. It does not change structured JSON diagnostics. `--no-color` is accepted consistently with other commands.
 
 ### Deferred token operations
 
