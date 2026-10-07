@@ -14,7 +14,7 @@ Subject to RFC-0005/ADR acceptance, reusable Phyllotaxis behavior must preserve:
 
 - native semantic HTML first, with ARIA only where it adds required semantics;
 - keyboard operability for equivalent reusable pointer interactions;
-- visible, unobscured focus;
+- visible focus that is not entirely obscured by Phyllotaxis-owned content, with full visibility preferred;
 - AA text/link contrast and 3:1 non-text contrast where visual information is required to identify controls/states;
 - meaning/state that does not depend on color alone;
 - WCAG 2.5.8 target-size or valid spacing/exception behavior;
