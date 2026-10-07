@@ -24,4 +24,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0004 — Utility composition promotion from consumer evidence](QART-0004-utility-composition-patterns.md) — resolved into RFC-0004 after comparing consumer-only, composition-guidance, Chroma-role, and generic-component options.
 - [RFC-0004 — Utility composition patterns from consumer evidence](RFC-0004-utility-composition-patterns.md) — accepted by ADR-0003; promotes reusable composition lessons without expanding stable Chroma/Lamina/Venation APIs.
 - [ADR-0003 — Accept Utility composition guidance from consumer evidence](ADR-0003-utility-composition-patterns.md) — accepted durable decision.
+- [QART-0005 — Cross-layer accessibility capability floor](QART-0005-accessibility-capability-floor.md) — resolves scattered, consumer-only, and cross-layer alternatives into RFC-0005.
+- [RFC-0005 — Cross-layer accessibility capability contract](RFC-0005-accessibility-capability-contract.md) — proposed; defines the WCAG 2.2 AA reusable capability floor, stronger package-authored focus/motion defaults, ownership, and evidence model.
 
