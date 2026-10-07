@@ -31,3 +31,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0006 — Bounded interaction motion alternatives](QART-0006-interaction-motion.md) — resolves prohibition, bounded-behavior, stable-token, generic-component, and consumer-only alternatives into RFC-0006.
 - [RFC-0006 — Bounded interaction motion](RFC-0006-interaction-motion.md) — accepted by ADR-0005; permits restrained semantic interaction feedback under the accepted accessibility capability floor without expanding stable APIs.
 - [ADR-0005 — Accept bounded interaction motion](ADR-0005-interaction-motion.md) — accepted durable decision.
+- [QART-0007 — First npm package bootstrap](QART-0007-first-package-bootstrap.md) — resolves the first-package bootstrap constraint into RFC-0007.
+- [RFC-0007 — One-time npm package bootstrap](RFC-0007-first-package-bootstrap.md) — accepted by ADR-0007.
+- [ADR-0007 — Permit one-time interactive npm package bootstrap](ADR-0007-first-package-bootstrap.md) — specializes the first package-creation sequence while preserving the normal release authority boundary.
