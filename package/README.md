@@ -34,7 +34,7 @@ For browser/library use, consumers should pin an exact package version in their 
 
 ### Build integration boundary
 
-Phyllotaxis is a package consumed by the application's existing framework and build pipeline. It does not replace the consumer's package manager, bundler, dev server, framework configuration, or deployment system.
+After RFC-0002 is accepted and a public package release exists, Phyllotaxis is consumed by the application's existing framework and build pipeline. Until then, this section describes the intended post-release integration boundary rather than an available installation path. Phyllotaxis does not replace the consumer's package manager, bundler, dev server, framework configuration, or deployment system.
 
 Consumers import the compiled runtime from `@hackelia-micrantha/phyllotaxis` and import the exported stylesheets they need through their normal build tooling:
 
