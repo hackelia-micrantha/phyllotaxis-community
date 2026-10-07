@@ -49,7 +49,7 @@ Where Phyllotaxis authors a focus indicator, the proposed design-system default 
 
 This adopts the measurable appearance model from WCAG 2.4.13 as a Phyllotaxis presentation default without claiming application-wide AAA conformance.
 
-Focus MUST remain unobscured by Phyllotaxis-owned sticky/fixed presentation at the AA level.
+Focus MUST not be entirely obscured by Phyllotaxis-owned sticky/fixed presentation, matching WCAG 2.4.11 at Level AA. Keeping the complete focused component visible remains the preferred Phyllotaxis behavior.
 
 ### Text and non-text contrast
 
