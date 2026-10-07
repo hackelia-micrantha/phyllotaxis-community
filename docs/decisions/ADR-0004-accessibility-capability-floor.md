@@ -124,17 +124,19 @@ Existing Chroma, Venation, Lamina, visual-profile, and machine-readable package 
 
 ## Implementation follow-up
 
-Private `hackelia-micrantha/phyllotaxis#73` owns package-side enforcement and browser/interaction evidence.
+Package-side enforcement tracked by private `hackelia-micrantha/phyllotaxis#73` is complete.
 
-That implementation must:
+The private implementation now reports layered package evidence matching this ADR:
 
-- pin the accepted public contract revision before claiming conformance;
-- preserve existing deterministic semantic/contrast tests;
-- add browser accessibility scanning as one evidence layer rather than the whole contract;
-- add explicit keyboard/focus/reflow/text-spacing/target/forced-colors checks where the package owns behavior;
-- require reduced-motion evidence before any reusable motion is merged.
+- the accepted public contract is pinned immutably before conformance is claimed;
+- deterministic semantic, contrast, focus, DOM-order, forced-colors, and motion-boundary checks remain blocking;
+- browser accessibility scanning is one blocking evidence layer rather than the whole contract;
+- representative keyboard/focus/reflow/text-spacing/target/reduced-motion/forced-colors checks are exercised where the package owns behavior;
+- the repository's canonical quality entry point invokes the required accessibility evidence transitively.
 
-First-consumer integrated qualification remains with private `phyllotaxis#57` and its consumer-owned follow-up work.
+This status statement is non-normative: the public requirement above remains the authority, and private evidence does not redefine it.
+
+First-consumer integrated qualification remains with private `phyllotaxis#57` and its consumer-owned follow-up work. Application semantics, authored names/descriptions, workflow focus management, media alternatives, third-party widgets, and final integrated conformance remain consumer responsibilities.
 
 ## Reassessment triggers
 
