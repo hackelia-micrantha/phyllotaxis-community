@@ -63,6 +63,21 @@ a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
   border: 1px solid var(--line);
   background: var(--surface);
   font-weight: 700;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out,
+    transform 120ms ease-out;
+}
+@media (hover: hover) {
+  .primary-action:hover {
+    background: var(--surface-c);
+    transform: translateY(-1px);
+  }
+}
+.primary-action:active {
+  background: var(--surface);
+  border-color: var(--focus);
+  transform: translateY(0);
 }
 
 .summary-grid,
@@ -114,4 +129,13 @@ a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
   .site-header { flex-direction: column; }
   .summary-grid, .info-grid { grid-template-columns: 1fr; }
   .rows article { grid-template-columns: 1fr; gap: 0.35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-action,
+  .primary-action:hover,
+  .primary-action:active {
+    transition-duration: 0ms;
+    transform: none;
+  }
 }
