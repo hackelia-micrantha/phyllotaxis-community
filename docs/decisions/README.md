@@ -17,7 +17,8 @@ Delivery issues may remain private when they expose implementation details, but 
 - [RFC-0001 — Static Chroma inspection contract](RFC-0001-chroma-inspection-contract.md) — accepted by ADR-0001.
 - [ADR-0001 — Accept static Chroma inspection contract](ADR-0001-chroma-inspection-contract.md) — accepted durable decision.
 - [QART-0002 — Public runtime and `phyllo` distribution boundary](QART-0002-public-distribution-boundary.md) — resolved into RFC-0002 after first-consumer evidence required credential-free public acquisition.
-- [RFC-0002 — Public npm-compatible Phyllotaxis package distribution](RFC-0002-public-package-distribution.md) — proposed; defines the package/artifact boundary and pre-ADR release gates.
+- [RFC-0002 — Public npm-compatible Phyllotaxis package distribution](RFC-0002-public-package-distribution.md) — accepted by ADR-0006; defines the private-canonical/public-package boundary and first-release delivery gates.
+- [ADR-0006 — Accept public npm-compatible Phyllotaxis package distribution](ADR-0006-public-package-distribution.md) — accepts the distribution architecture while preserving separate publication and first-consumer qualification authority.
 - [QART-0003 — Consumer experimentation boundary](QART-0003-consumer-experimentation-boundary.md) — resolved into RFC-0003 after comparing unspecified, host-owned, runtime-API, and profile-based approaches.
 - [RFC-0003 — Consumer experimentation and validation boundary](RFC-0003-consumer-experimentation-boundary.md) — accepted by ADR-0002; keeps A/B assignment and measurement host-owned while experiments use existing Phyllotaxis semantic seams.
 - [ADR-0002 — Keep Phyllotaxis experimentation host-owned](ADR-0002-consumer-experimentation-boundary.md) — accepted durable decision.
