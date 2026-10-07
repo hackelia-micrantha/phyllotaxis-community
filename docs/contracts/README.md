@@ -10,6 +10,7 @@ This index identifies the published Phyllotaxis surfaces that constrain implemen
 | [Visual profiles](../architecture/visual-profiles.md) | Accepted boundary | Utility and Editorial profile semantics |
 | [Visual directive](../architecture/visual-directive.md) | Accepted; Utility composition guidance refined by [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md) | Default visual character and modern capability constraints |
 | [Consumer experimentation boundary](../decisions/ADR-0002-consumer-experimentation-boundary.md) | Accepted | Host-owned A/B/multivariate experiment assignment and measurement; Phyllotaxis-owned semantic experimentation seams and conformance invariants |
+| [Accessibility capability](../requirements/accessibility.md) | Accepted by [ADR-0004](../decisions/ADR-0004-accessibility-capability-floor.md) | WCAG 2.2 AA reusable capability floor, stronger package-authored focus/motion defaults, package/consumer ownership, and layered validation |
 | [`phyllo` CLI architecture](../architecture/phyllo-cli.md) | Proposed | CLI responsibility, dependency direction, safety boundary |
 | [`phyllo` project configuration](../architecture/phyllo-project-config.md) | Proposed | Project discovery and inert configuration |
 | [`phyllo` command contract](../cli/phyllo.md) | Proposed | Commands, machine output, diagnostics, exit semantics, terminal behavior |
