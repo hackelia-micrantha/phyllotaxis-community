@@ -42,7 +42,7 @@ Use the existing package identity:
 
 The first public release remains pre-1.0. Consumers must pin an exact released version rather than a mutable Git ref.
 
-A release candidate may use a SemVer prerelease such as `0.1.0-alpha.1`; the exact first version is a delivery decision, but `0.0.0` is not a publishable release identity.
+The first public candidate is `0.1.0-alpha.1`, mapped to immutable source tag `v0.1.0-alpha.1`. `0.0.0` is not a publishable release identity. Stable `0.1.0` is reserved until the bounded first-consumer qualification succeeds and its post-publication evidence is recorded.
 
 ### Canonical producer
 
@@ -129,7 +129,18 @@ This remains a proposal until the RFC is accepted and the corresponding npm scop
 
 Preferred publication authentication is npm trusted publishing from one dedicated GitHub Actions release workflow in the private canonical repository, using GitHub OIDC and a GitHub-hosted runner. The publication job should have only the permissions needed for checkout plus OIDC (`contents: read`, `id-token: write`) unless a reviewed release step demonstrates another permission is required. Ordinary pull-request CI, self-hosted runners, forks, and reusable validation jobs must not receive package publication authority.
 
-The trusted-publisher binding must name the canonical GitHub organization/repository and exact release workflow filename. If a protected GitHub environment is used, its name is part of that binding and its approval policy remains a separate release-authority control.
+The initial trusted-publisher binding is fixed to:
+
+- GitHub organization: `hackelia-micrantha`;
+- repository: `phyllotaxis`;
+- workflow filename: `release.yml` under `.github/workflows/`;
+- protected GitHub environment: `npm-public-release`;
+- GitHub-hosted release runner only;
+- npm trusted-publisher authority: staged publication only for the initial release path.
+
+The release workflow must use Node `>=22.14.0` and npm `>=11.15.0` so both OIDC trusted publishing and `npm stage publish` are supported, explicitly stage the scoped package for public access, and keep package metadata aligned with the canonical repository. In particular, the candidate `package.json` must record a `repository.url` that resolves exactly to the canonical GitHub repository and must not rely on an ambient scoped-package access default.
+
+For the initial release train, automation may run `npm stage publish` but does not receive direct-publication authority. A human release owner separately reviews and approves the staged package using npm's interactive approval path. This preserves the distinction between automation producing a reviewed candidate and a human authorizing public release.
 
 No long-lived npm publish token is part of the intended steady-state path. Bootstrap/owner actions required to establish npm scope/package ownership or the first trusted-publisher binding remain explicit human release-owner actions and are not delegated by this RFC.
 
@@ -293,18 +304,45 @@ Not required by current evidence. Public package artifacts are explicitly source
 
 ## Acceptance before ADR
 
-- [ ] package license and LICENSE text are explicitly selected;
+ADR acceptance authorizes the distribution architecture; it does not itself authorize or claim a successful public publication. First-release delivery evidence that can exist only after the package path is authorized is gated separately below.
+
+- [x] package license and LICENSE text are explicitly selected: Apache-2.0 via authoritative `package/LICENSE`;
 - [x] public package README source/derivation is defined: `package/README.md` is authoritative and private release tooling must stage/verify it byte-for-byte from the pinned public revision;
-- [ ] packed-artifact allowlist is mechanically enforced, including source-map policy;
-- [ ] exact release versioning and npm registry namespace ownership are confirmed by the release owner;
-- [ ] npm trusted-publisher identity is demonstrated from the dedicated canonical release workflow; separate provenance is demonstrated because the canonical repository is private;
-- [ ] SBOM/checksum requirements from Micrantha release policy are mapped;
-- [ ] clean anonymous/public package acquisition succeeds;
-- [ ] first consumer can pin the artifact without private-repository credentials;
-- [ ] rollback to a prior immutable version is documented and testable;
-- [ ] public contract pin verification remains part of producer release validation;
-- [ ] organization repository registry reflects the accepted package-distribution topology before publication;
-- [ ] normalized release-readiness evidence uses `acquisition.mode: package`, `sourceBuild: false`, `immutable: true`, and `requiresPrivateCredentials: false`, with clean/cache-miss consumer evidence.
+- [x] packed-artifact allowlist is mechanically enforced, including source-map policy;
+- [ ] npm registry/package identity, canonical publisher, exact trusted workflow/environment binding, and least-privilege staged-publication authority are explicitly defined;
+- [x] release version/tag rules and the intended first prerelease identity are explicit;
+- [ ] SBOM, digest, separate private-repository provenance/attestation, package smoke, and normalized evidence requirements are mapped to repository-owned tooling;
+- [x] rollback, deprecation, compromised-publisher revocation, and first-release no-prior-version recovery are documented;
+- [x] public contract pin verification remains part of producer release validation;
+- [ ] organization repository-registry transition required before publication is identified;
+- [ ] normalized release-readiness evidence contract uses `acquisition.mode: package`, `sourceBuild: false`, `immutable: true`, and `requiresPrivateCredentials: false`.
+
+## First-release delivery gates after ADR
+
+The first release train then proves the authorized design in dependency order.
+
+Before a staged package can be approved publicly:
+
+- update organization repository posture to the accepted `distributionMode: package` topology;
+- set the reviewed non-`0.0.0` prerelease identity, public package metadata, LICENSE, and exact canonical `repository.url`;
+- land and independently review the dedicated `.github/workflows/release.yml` GitHub-hosted OIDC workflow;
+- configure the npm trusted-publisher binding to that exact repository/workflow/environment with stage-only authority;
+- generate the real packed candidate from the reviewed canonical revision;
+- record the candidate digest, SBOM, separate provenance/attestation, public-contract revision, artifact inspection, and runtime/CLI/CSS/man-page smoke evidence;
+- pass the applicable producer CI and normalized release-readiness pre-publication checks.
+
+Automation may then stage the candidate. Public approval remains a separate human release-owner action.
+
+Immediately after the staged candidate is approved and becomes publicly available:
+
+- perform an anonymous clean/cache-miss install from the public registry with private-repository credentials unavailable;
+- verify the exact registry artifact/integrity resolves to the approved candidate identity;
+- pin the exact prerelease in the bounded first consumer and run its build, accessibility, responsive, and applicable visual qualification;
+- prove the documented first-release recovery path by restoring the consumer's pre-Phyllotaxis baseline if qualification fails;
+- deprecate the prerelease and stop promotion if public smoke or consumer qualification fails;
+- record the post-publication evidence before promoting a stable `0.1.0`.
+
+This sequencing avoids treating publication-dependent evidence as a prerequisite for the decision that authorizes publication while preserving fail-closed recovery and human release authority.
 
 ## Non-goals
 
