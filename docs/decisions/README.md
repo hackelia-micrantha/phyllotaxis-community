@@ -27,4 +27,6 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0005 — Cross-layer accessibility capability floor](QART-0005-accessibility-capability-floor.md) — resolves scattered, consumer-only, and cross-layer alternatives into RFC-0005.
 - [RFC-0005 — Cross-layer accessibility capability contract](RFC-0005-accessibility-capability-contract.md) — accepted by ADR-0004; defines the WCAG 2.2 AA reusable capability floor, stronger package-authored focus/motion defaults, ownership, and evidence model.
 - [ADR-0004 — Accept cross-layer accessibility capability floor](ADR-0004-accessibility-capability-floor.md) — accepted durable decision.
-
+- [QART-0006 — Bounded interaction motion alternatives](QART-0006-interaction-motion.md) — resolves prohibition, bounded-behavior, stable-token, generic-component, and consumer-only alternatives into RFC-0006.
+- [RFC-0006 — Bounded interaction motion](RFC-0006-interaction-motion.md) — accepted by ADR-0005; permits restrained semantic interaction feedback under the accepted accessibility capability floor without expanding stable APIs.
+- [ADR-0005 — Accept bounded interaction motion](ADR-0005-interaction-motion.md) — accepted durable decision.
