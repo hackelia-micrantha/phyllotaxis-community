@@ -1,6 +1,6 @@
 # RFC-0002 — Public npm-compatible Phyllotaxis package distribution
 
-Status: **Proposed**  
+Status: **Accepted by [ADR-0006](ADR-0006-public-package-distribution.md)**  
 Origin: [QART-0002](QART-0002-public-distribution-boundary.md)
 
 ## Summary
