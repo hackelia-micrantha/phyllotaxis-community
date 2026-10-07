@@ -1,16 +1,16 @@
 # Accessibility capability requirement
 
-Status: **Proposed by [RFC-0005](../decisions/RFC-0005-accessibility-capability-contract.md)**
+Status: **Accepted by [ADR-0004](../decisions/ADR-0004-accessibility-capability-floor.md)**
 
 ## Requirement
 
 Phyllotaxis-controlled reusable web behavior must provide a modern accessibility capability floor independent of visual profile.
 
-The proposed baseline is **WCAG 2.2 Level AA** for behavior and presentation controlled by Phyllotaxis. Importing Phyllotaxis does not by itself make a consuming application conformant; application-specific content, workflows, labels, state management, media alternatives, page composition, and third-party integrations remain consumer responsibilities.
+The baseline is **WCAG 2.2 Level AA** for behavior and presentation controlled by Phyllotaxis. Importing Phyllotaxis does not by itself make a consuming application conformant; application-specific content, workflows, labels, state management, media alternatives, page composition, and third-party integrations remain consumer responsibilities.
 
 ## Required reusable properties
 
-Subject to RFC-0005/ADR acceptance, reusable Phyllotaxis behavior must preserve:
+Reusable Phyllotaxis behavior must preserve:
 
 - native semantic HTML first, with ARIA only where it adds required semantics;
 - keyboard operability for equivalent reusable pointer interactions;
@@ -25,7 +25,7 @@ Subject to RFC-0005/ADR acceptance, reusable Phyllotaxis behavior must preserve:
 - disabled non-essential Phyllotaxis-authored motion under `prefers-reduced-motion: reduce`;
 - no hover-only reusable information/actions and keyboard-focus parity where hover/focus express the same state.
 
-Where Phyllotaxis authors a focus indicator, the proposed stronger default is the WCAG 2.4.13 appearance model: at least a 2 CSS px perimeter-equivalent indicator with at least a 3:1 focused-vs-unfocused change. This is a design-system default, not a claim of application-wide AAA conformance.
+Where Phyllotaxis authors a focus indicator, the stronger default is the WCAG 2.4.13 appearance model: at least a 2 CSS px perimeter-equivalent indicator with at least a 3:1 focused-vs-unfocused change. This is a design-system default, not a claim of application-wide AAA conformance.
 
 ## Ownership
 
@@ -48,7 +48,8 @@ An automated accessibility engine is useful evidence but is not a substitute for
 
 ## Normative detail
 
-Until an ADR accepts RFC-0005, this requirement is proposed. The complete proposal and rationale are in:
+The accepted decision and its rationale are in:
 
 - [QART-0005](../decisions/QART-0005-accessibility-capability-floor.md)
 - [RFC-0005](../decisions/RFC-0005-accessibility-capability-contract.md)
+- [ADR-0004](../decisions/ADR-0004-accessibility-capability-floor.md)
