@@ -21,6 +21,7 @@ This repository is the public source of truth for **published Phyllotaxis design
 | Propose or record a decision | [Decision records](decisions/README.md) |
 | Understand public/private authority | [Repository boundary](../UPSTREAM.md) |
 | Review public package consumer documentation | [Package README](../package/README.md) |
+| Implement host-owned System/Light/Dark preference | [Package README — color-scheme preference integration](../package/README.md#color-scheme-preference-integration) |
 
 ## Document classes
 
