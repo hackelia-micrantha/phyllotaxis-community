@@ -42,7 +42,7 @@ Consumers import the compiled runtime from `@hackelia-micrantha/phyllotaxis` and
 - `@hackelia-micrantha/phyllotaxis/venation.css`
 - `@hackelia-micrantha/phyllotaxis/lamina.css`
 
-Consumers must not copy or vendor those stylesheets as a competing implementation. `phyllo` may inspect, validate, diagnose, initialize bounded configuration, and orchestrate accepted migrations; it is not a site builder or deployment tool.
+Consumers must not copy or vendor those stylesheets as a competing implementation. `phyllo` may inspect, validate, diagnose, and initialize bounded configuration; it is not a site builder or deployment tool. Migration orchestration is not part of the currently implemented command surface.
 
 For CLI use, `phyllo --help` and the installed section-1 manuals describe the supported command surface. Machine consumers should use explicit `--format json` where defined.
 
