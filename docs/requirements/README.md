@@ -5,7 +5,7 @@
 1. **Single ownership per concern.** Chroma owns values, Venation owns relationships, Lamina owns reusable semantics, and Cambium owns migrations between stable contracts.
 2. **Profile semantics, not site themes.** Utility and Editorial describe content/task intent; host names and personal brands are not public profile APIs.
 3. **Bounded interfaces.** Stable primitives expose semantic, constrained inputs rather than arbitrary CSS/style-system escape hatches.
-4. **Accessible modern capability.** The Utility profile may evoke late-1990s visual restraint, but semantics, accessibility, responsiveness, reduced-motion support, and browser capability remain modern.
+4. **Accessible modern capability.** The Utility profile may evoke late-1990s visual restraint, but semantics, accessibility, responsiveness, reduced-motion support, and browser capability remain modern. The proposed cross-layer capability floor is defined in [Accessibility capability requirement](accessibility.md) / [RFC-0005](../decisions/RFC-0005-accessibility-capability-contract.md).
 5. **Consumer-owned content.** Navigation, CMS models, authored content, media loading policy, and application-specific brand/content decisions remain outside reusable component semantics.
 
 ## CLI requirements
