@@ -1,6 +1,6 @@
 # RFC-0005 — Cross-layer accessibility capability contract
 
-Status: **Proposed**  
+Status: **Accepted by [ADR-0004](ADR-0004-accessibility-capability-floor.md)**  
 Origin: [QART-0005](QART-0005-accessibility-capability-floor.md)  
 Tracks: #41  
 Builds on: [Visual directive](../architecture/visual-directive.md), [Chroma profile contract](../architecture/chroma-profile-contract.md), [Venation layout contract](../architecture/venation-layout-contract.md), [Lamina editorial contract](../architecture/lamina-editorial-contract.md), [ADR-0002](ADR-0002-consumer-experimentation-boundary.md)
@@ -216,17 +216,17 @@ Implementation may need additional tests and bounded CSS changes to prove the ac
 
 ## Acceptance criteria for ADR consideration
 
-- [ ] public requirement clearly distinguishes package-controlled and consumer-controlled obligations;
-- [ ] WCAG 2.2 AA is the baseline without claiming automatic application conformance;
-- [ ] authored focus appearance uses a measurable stronger default without claiming AAA;
-- [ ] non-text contrast and low-contrast decorative-border distinction are explicit;
-- [ ] 24 CSS px target-size/spacing rule is explicit;
-- [ ] reflow, resize, text-spacing, forced-colors, keyboard, semantics, and state signalling are covered;
-- [ ] hover/motion rules require focus parity and reduced-motion behavior;
-- [ ] validation explicitly combines deterministic, browser, interaction, and consumer evidence;
-- [ ] no generic accessibility provider, ARIA abstraction, or animation system is introduced;
-- [ ] private implementation work is tracked separately;
-- [ ] exact-head public CI passes.
+- [x] public requirement clearly distinguishes package-controlled and consumer-controlled obligations;
+- [x] WCAG 2.2 AA is the baseline without claiming automatic application conformance;
+- [x] authored focus appearance uses a measurable stronger default without claiming AAA;
+- [x] non-text contrast and low-contrast decorative-border distinction are explicit;
+- [x] 24 CSS px target-size/spacing rule is explicit;
+- [x] reflow, resize, text-spacing, forced-colors, keyboard, semantics, and state signalling are covered;
+- [x] hover/motion rules require focus parity and reduced-motion behavior;
+- [x] validation explicitly combines deterministic, browser, interaction, and consumer evidence;
+- [x] no generic accessibility provider, ARIA abstraction, or animation system is introduced;
+- [x] private implementation work is tracked separately;
+- [x] exact-head public CI passes.
 
 ## Non-goals
 
