@@ -53,7 +53,7 @@ Read:
 - [Venation layout contract](docs/architecture/venation-layout-contract.md)
 - [Chroma profile resolution contract](docs/architecture/chroma-profile-contract.md)
 - [Lamina editorial semantic contract](docs/architecture/lamina-editorial-contract.md)
-- [Accessibility capability requirement](docs/requirements/accessibility.md) — proposed by RFC-0005
+- [Accessibility capability requirement](docs/requirements/accessibility.md) — accepted by ADR-0004
 - [Specification index](docs/specs/README.md)
 - [Public contract index](docs/contracts/README.md)
 - [Public interface index](docs/interfaces/README.md)
