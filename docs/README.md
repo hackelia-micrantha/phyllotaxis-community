@@ -7,10 +7,11 @@ This repository is the public source of truth for **published Phyllotaxis design
 | Need | Start here |
 | --- | --- |
 | Understand the layer model | [Venation](architecture/venation-layout-contract.md), [Chroma](architecture/chroma-profile-contract.md), [Lamina](architecture/lamina-editorial-contract.md) |
-| Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md), [Utility consumer evidence](architecture/utility-evidence.md) |
+| Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md), [Interaction motion](architecture/interaction-motion.md), [Utility consumer evidence](architecture/utility-evidence.md) |
 | Review consumer experimentation / A/B testing | [ADR-0002](decisions/ADR-0002-consumer-experimentation-boundary.md), [RFC-0003](decisions/RFC-0003-consumer-experimentation-boundary.md) |
 | Review Utility composition refinement | [RFC-0004](decisions/RFC-0004-utility-composition-patterns.md), [reference fixture](examples/utility-reference.html) |
 | Review accessibility capability floor | [Accessibility requirement](requirements/accessibility.md), [RFC-0005](decisions/RFC-0005-accessibility-capability-contract.md) |
+| Review interaction-motion boundary | [ADR-0005](decisions/ADR-0005-interaction-motion.md), [RFC-0006](decisions/RFC-0006-interaction-motion.md) |
 | Understand the CLI | [CLI architecture](architecture/phyllo-cli.md), [command contract](cli/phyllo.md) |
 | Integrate project discovery/config | [Project configuration](architecture/phyllo-project-config.md) |
 | Browse specifications and evidence | [Specification index](specs/README.md) |

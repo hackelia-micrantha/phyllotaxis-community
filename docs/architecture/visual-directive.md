@@ -44,6 +44,19 @@ Avoid by default:
 
 These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent deviations should be considered for a named semantic profile rather than accumulated as local exceptions.
 
+## Interaction motion
+
+The prohibition on ornamental animation does not prohibit restrained interaction feedback. Motion may reinforce an interaction or state that already exists semantically; it must not create the appearance of interactivity on static content.
+
+The bounded cross-profile rules are defined in [Interaction motion](interaction-motion.md). In particular:
+
+- prefer non-motion state changes first;
+- default interactive-surface translation is at most 1px and short-lived;
+- static cards, panels, pills, and labels do not move merely because they are visually bounded;
+- whole-surface motion requires whole-surface interactive semantics;
+- `prefers-reduced-motion: reduce` removes non-essential movement while preserving visible state/focus feedback;
+- no new generic Lamina Card/Pill/Badge/Tag API or stable Chroma v1 motion roles are implied.
+
 Utility may use restrained flat section rhythm rather than monochrome presentation. Low-chroma adjacent surfaces can distinguish information regions while preserving square/simple borders, compact spacing, normal flow, and no elevation. Exact palettes remain consumer-owned unless separately promoted into Chroma.
 
 ## Visual profiles
