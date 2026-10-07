@@ -44,6 +44,57 @@ Consumers import the compiled runtime from `@hackelia-micrantha/phyllotaxis` and
 
 Consumers must not copy or vendor those stylesheets as a competing implementation. `phyllo` may inspect, validate, diagnose, and initialize bounded configuration; it is not a site builder or deployment tool. Migration orchestration is not part of the currently implemented command surface.
 
+### Color-scheme preference integration
+
+Chroma already supports automatic and explicit light/dark resolution. Consumers should model a user preference as `system | light | dark` without adding another Phyllotaxis runtime API:
+
+| Host preference | Chroma carrier |
+| --- | --- |
+| `system` | omit/remove `data-phyllotaxis-scheme` |
+| `light` | `data-phyllotaxis-scheme="light"` |
+| `dark` | `data-phyllotaxis-scheme="dark"` |
+
+Absence of the attribute is the public System behavior; there is intentionally no `data-phyllotaxis-scheme="system"` or `"auto"` value. With the attribute absent, `:root { color-scheme: light dark; }` and Chroma's scheme-aware semantic roles follow the browser/user preference automatically.
+
+The **host application** owns the control, persistence mechanism, SSR/hydration behavior, and application settings. Phyllotaxis does not define a storage key, cookie name, `ThemeProvider`, hook, context, runtime registry, or package-owned toggle component.
+
+A host control may be as small as a native three-state select:
+
+```html
+<label>
+  Color scheme
+  <select id="color-scheme">
+    <option value="system">System</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</label>
+```
+
+The host applies that preference by setting or removing the public carrier on a coherent surface, normally the document root:
+
+```js
+function applyColorScheme(preference) {
+  const root = document.documentElement;
+
+  if (preference === "light" || preference === "dark") {
+    root.dataset.phyllotaxisScheme = preference;
+  } else {
+    root.removeAttribute("data-phyllotaxis-scheme");
+  }
+}
+```
+
+Persistence is intentionally consumer-owned. If an explicit preference is persisted, apply it early enough to avoid visibly painting the opposite explicit scheme first. Choose a mechanism compatible with the application's security and rendering model:
+
+- server-render the explicit carrier from a host-owned cookie or preference when SSR already has that state;
+- use a nonce/hash-authorized bootstrap when the site's Content Security Policy permits it;
+- or load a small blocking external bootstrap from an allowed origin/path.
+
+Do not weaken CSP merely to avoid a theme flash. Keep server-rendered markup and client hydration consistent with the same resolved host preference. System mode should normally leave the carrier absent rather than resolving the OS preference into a persisted explicit light/dark value; this lets later browser/OS preference changes continue to apply automatically.
+
+Consumer validation should cover explicit Light and Dark plus System under both browser/OS light and dark preferences. Representative browser/accessibility evidence should also preserve focus and contrast behavior, reduced-motion handling where interaction exists, and forced-colors/high-contrast behavior. Consumers must not copy Chroma's light/dark role values into a parallel local theme contract.
+
 For CLI use, `phyllo --help` and the installed section-1 manuals describe the supported command surface. Machine consumers should use explicit `--format json` where defined.
 
 Canonical CLI documentation:
