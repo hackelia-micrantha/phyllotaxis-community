@@ -175,13 +175,19 @@ Private release tooling must:
 
 The private implementation README is never an implicit fallback. A package README change therefore follows the normal public design/documentation review path before private release tooling mirrors it.
 
-The README rule is resolved independently from licensing. Before public release:
+The README rule is resolved independently from licensing.
+
+The public package artifact is licensed under **Apache License 2.0** (`Apache-2.0`). The authoritative package license text is `package/LICENSE` in this public contract repository, using the same reviewed Apache-2.0 text already used by Micrantha public projects. This package-artifact license does not make the private canonical Git repository or unpublished source history a public source distribution.
+
+Private release tooling must:
 
 - verify the packed artifact contains the pinned public README;
-- choose and record the package license;
-- add matching LICENSE content and package metadata.
+- stage the pinned `package/LICENSE` byte-for-byte as package-root `LICENSE`;
+- verify the packed `LICENSE` matches the pinned public source;
+- set `package.json` license metadata to the SPDX identifier `Apache-2.0`;
+- fail closed if the license file or metadata is missing or mismatched.
 
-**No explicit license means no public package release.**
+**No explicit matching package license means no public package release.**
 
 ## CLI relationship
 
