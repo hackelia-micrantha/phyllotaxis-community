@@ -309,13 +309,13 @@ ADR acceptance authorizes the distribution architecture; it does not itself auth
 - [x] package license and LICENSE text are explicitly selected: Apache-2.0 via authoritative `package/LICENSE`;
 - [x] public package README source/derivation is defined: `package/README.md` is authoritative and private release tooling must stage/verify it byte-for-byte from the pinned public revision;
 - [x] packed-artifact allowlist is mechanically enforced, including source-map policy;
-- [ ] npm registry/package identity, canonical publisher, exact trusted workflow/environment binding, and least-privilege staged-publication authority are explicitly defined;
+- [x] npm registry/package identity, canonical publisher, exact trusted workflow/environment binding, and least-privilege staged-publication authority are explicitly defined;
 - [x] release version/tag rules and the intended first prerelease identity are explicit;
 - [ ] SBOM, digest, separate private-repository provenance/attestation, package smoke, and normalized evidence requirements are mapped to repository-owned tooling;
 - [x] rollback, deprecation, compromised-publisher revocation, and first-release no-prior-version recovery are documented;
 - [x] public contract pin verification remains part of producer release validation;
-- [ ] organization repository-registry transition required before publication is identified;
-- [ ] normalized release-readiness evidence contract uses `acquisition.mode: package`, `sourceBuild: false`, `immutable: true`, and `requiresPrivateCredentials: false`.
+- [x] organization repository-registry transition required before publication is identified;
+- [x] normalized release-readiness evidence contract uses `acquisition.mode: package`, `sourceBuild: false`, `immutable: true`, and `requiresPrivateCredentials: false`.
 
 ## First-release delivery gates after ADR
 
