@@ -1,6 +1,6 @@
 # RFC-0008 — preliminary composition assessment (B1–B3)
 
-Status: **Review candidate, non-normative — not an accepted decision or a human sign-off**.
+Status: **Preliminary, non-normative qualitative assessment — not independent human sign-off**. The subsequent decision [ADR-0008](../decisions/ADR-0008-dimensional-utility-advisory-guidance.md) accepted **only the limited advisory review direction**; it did not validate the examples or close the accessibility/human-review gaps.
 
 This assessment considers the published [RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md), [fixture plan](dimensional-utility-fixtures.md), and the isolated public [B1–B3 HTML](../examples/dimensional-utility-boundaries.html). Its purpose is to support the design decision in [issue #55](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/55), not to declare conformance or an approved visual standard.
 

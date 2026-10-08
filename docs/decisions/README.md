@@ -35,4 +35,5 @@ Delivery issues may remain private when they expose implementation details, but 
 - [RFC-0007 — One-time npm package bootstrap](RFC-0007-first-package-bootstrap.md) — accepted by ADR-0007.
 - [ADR-0007 — Permit one-time interactive npm package bootstrap](ADR-0007-first-package-bootstrap.md) — specializes the first package-creation sequence while preserving the normal release authority boundary.
 - [QART-0008 — Bounded dimensional Utility materials](QART-0008-dimensional-utility-materials.md) — alternatives resolved into RFC-0008; accepted Utility guidance remains unchanged.
-- [RFC-0008 — Bounded dimensional material for Utility (proposed)](RFC-0008-dimensional-utility-materials.md) — proposes permissive, non-normative material treatment boundaries.
+- [RFC-0008 — Bounded dimensional material for Utility](RFC-0008-dimensional-utility-materials.md) — accepted by ADR-0008 **only as advisory composition-review guidance**, not as a new Utility default or stable token/component API.
+- [ADR-0008 — Accept advisory bounds for dimensional Utility composition](ADR-0008-dimensional-utility-advisory-guidance.md) — accepted advisory decision preserving ADR-0003's flat-first norm and all existing public interfaces.

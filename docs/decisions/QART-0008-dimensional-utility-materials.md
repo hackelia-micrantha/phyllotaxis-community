@@ -1,6 +1,6 @@
 # QART-0008 — Bounded dimensional Utility treatments
 
-- **Status:** Resolved into RFC-0008; RFC proposal remains under review
+- **Status:** Resolved into RFC-0008; limited advisory guidance accepted by [ADR-0008](ADR-0008-dimensional-utility-advisory-guidance.md)
 - **Date:** 2026-10-07
 - **Authority:** Public design evidence; no stable API decision
 
@@ -26,4 +26,4 @@ Public consumer evidence now shows both ends of the permitted Utility range. Dig
 Test F0–F5 in [reference fixtures](../architecture/dimensional-utility-fixtures.md), record measured accessibility and rendering outcomes, and require independent consumer evidence before stable API promotion. No production consumer restyling implied.
 
 ## Disposition
-The alternatives analysis is complete and advances to [RFC-0008](RFC-0008-dimensional-utility-materials.md) because repeated independent consumer evidence justifies reviewing whether explicit shared bounds improve consistency over the already-valid local-deviation path. The RFC is **proposed, not accepted**; [ADR-0003](ADR-0003-utility-composition-patterns.md) and the current Utility visual directive remain authoritative.
+The alternatives analysis is complete and advances to [RFC-0008](RFC-0008-dimensional-utility-materials.md) because repeated independent consumer evidence justifies reviewing whether explicit shared bounds improve consistency over the already-valid local-deviation path. The limited **advisory** review direction is accepted by [ADR-0008](ADR-0008-dimensional-utility-advisory-guidance.md); [ADR-0003](ADR-0003-utility-composition-patterns.md) and the current Utility visual directive remain the unchanged normative baseline.
