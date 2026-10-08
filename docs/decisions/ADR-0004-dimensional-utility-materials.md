@@ -8,6 +8,9 @@
 
 ## Context
 
+This proposed decision follows [QART-0005](QART-0005-dimensional-utility-materials.md) and [RFC-0005](RFC-0005-dimensional-utility-materials.md). It remains non-normative until accepted.
+
+
 ADR-0003 accepted flat low-chroma Utility composition guidance based on a first consumer. Subsequent Digitalis and Envuscator community site styles demonstrate another coherent visual pattern: selective gradient-backed panels, slight bevel/highlight, soft shadows, clear borders, rounded action/status pills, and occasional left-edge emphasis. These are evidence rather than automatic public contract requirements.
 
 The original Utility directive discouraged most gradients and elevation. This unnecessarily restricts a restrained late-1990s desktop/web-inspired material language, provided native semantics, legibility and content-first hierarchy remain intact.
