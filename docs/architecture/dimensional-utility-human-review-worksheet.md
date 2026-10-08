@@ -15,7 +15,7 @@ This worksheet is the remaining human-evidence task in [issue #63](https://githu
 | Evidence link (screenshots, notes or recording with consent) | *Unrecorded* |
 | Limitations, conflicts of interest, accessibility accommodations | *Unrecorded* |
 
-Use a reproducible checked-in fixture. Do not rely on a time-limited GitHub Actions artifact without recording the source commit and test conditions. Remove or protect user-identifying details from any shared notes.
+Use a reproducible checked-in fixture. For a **locally runnable, matched-content reviewer session with downloadable anonymous self-report**, see the [participant review page](../examples/dimensional-utility-review-session.html) and [execution guide](dimensional-utility-independent-review-runbook.md). The participant page uses controlled re-presentations, not the canonical B1–B3 markup, and its locally shuffled order must be interpreted using the exported condition map. The reviewer packet is not independent approval and has no network upload. Do not rely on a time-limited GitHub Actions artifact without recording the source commit and test conditions. Remove or protect user-identifying details from any shared notes.
 
 ## Protocol
 
