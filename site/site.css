@@ -53,8 +53,8 @@ h3 { font-size: 1.13rem; margin: .15rem 0 .7rem; }
 .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); border-inline-start: 1px solid var(--line); }
 .example { padding: 1.25rem; background: var(--paper); border-inline-end: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
 .example:nth-child(even) { background: var(--soft); }
-.example-link { display: inline-block; border: 1px solid currentColor; padding: .3rem .55rem; background: var(--paper); transition: background-color 120ms ease-out, border-color 120ms ease-out, transform 120ms ease-out; }
-.example-link:hover, .example-link:focus-visible { background: var(--soft); }
+.example-link { display: inline-block; border: 1px solid currentColor; padding: .3rem .55rem; background: transparent; transition: border-color 120ms ease-out, transform 120ms ease-out; }
+.example-link:hover, .example-link:focus-visible { border-color: var(--focus); }
 .example-link:active { border-color: var(--focus); transform: none; }
 @media (hover: hover) { .example-link:hover { transform: translateY(-1px); } }
 .footnote { font-size: .82rem; color: var(--muted); margin-bottom: 0; }

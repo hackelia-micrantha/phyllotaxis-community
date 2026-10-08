@@ -160,7 +160,8 @@ try {
     `);
     backgrounds.push(colors.page);
     record(scheme + " text contrast", ratio(colors.ink, colors.page) >= 4.5);
-    record(scheme + " link contrast (" + ratio(colors.link, colors.anchor).toFixed(2) + "; " + JSON.stringify(colors) + ")", ratio(colors.link, colors.anchor) >= 4.5);
+    record(scheme + " link background transparent", colors.anchor === "rgba(0, 0, 0, 0)");
+    record(scheme + " link contrast (" + ratio(colors.link, colors.base).toFixed(2) + "; " + JSON.stringify(colors) + ")", ratio(colors.link, colors.base) >= 4.5);
   }
   record("light and dark use different backgrounds", backgrounds[0] !== backgrounds[1]);
 
