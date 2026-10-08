@@ -21,9 +21,9 @@ A candidate may combine F1/F2 once the isolated variants pass; the initial refer
 
 ## Consumer evidence mapping
 
-- `digitalis-community/web/styles.css`: paper/tinted surfaces, gradient hero, pill/status, shadowed panels, left-edge status metadata.
-- `envuscator-community/web/styles.css`: bounded tinted card treatments, gradient action buttons, rounded panels, diffuse shadow.
-- `envuscator-community/web/micrantha.css`: highlight gradient and bounded mark.
+- [Digitalis community styles](https://github.com/hackelia-micrantha/digitalis-community/blob/c03570962a89f5d77e37ff5e0a7b37a514f59a27/web/styles.css): paper/tinted surfaces, gradient hero, pill/status, shadowed panels, left-edge status metadata.
+- [Envuscator community styles](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/styles.css): bounded tinted card treatments, gradient action buttons, rounded panels, diffuse shadow.
+- [Envuscator Micrantha styles](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/micrantha.css): highlight gradient and bounded mark.
 
 These files are **input evidence**, not normative tokens, framework requirements, or mandatory restyling instructions for those consumers. Compare against current source/commit when capturing screenshots; production deployment state may differ.
 
