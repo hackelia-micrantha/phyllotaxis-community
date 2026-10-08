@@ -21,11 +21,11 @@ Accept RFC-0002.
 
 The durable distribution architecture is:
 
-1. **Package identity:** the supported public browser/library/CLI artifact is `@hackelia-micrantha/phyllotaxis` on the public npm registry.
+1. **Package identity:** the supported public browser/library/CLI artifact is `@micrantha/phyllotaxis` on the public npm registry.
 2. **Canonical producer:** `hackelia-micrantha/phyllotaxis` remains the private implementation and release authority.
 3. **Public contract authority:** `hackelia-micrantha/phyllotaxis-community` remains authoritative for published requirements, interfaces, manuals, package README/license policy, and decisions; it is not a second implementation repository.
 4. **Package license:** the public package artifact is Apache-2.0 using authoritative `package/LICENSE`; this does not make unpublished private source/history a public source distribution.
-5. **Immutable release identity:** the first public candidate is `0.1.0-alpha.1` mapped to `v0.1.0-alpha.1`; consumers pin exact versions plus lock/integrity state.
+5. **Immutable release identity:** the first public candidate is `0.1.0-alpha.2` mapped to `v0.1.0-alpha.2`; consumers pin exact versions plus lock/integrity state.
 6. **Trusted publication:** publication originates only from the private canonical repository through the dedicated `.github/workflows/release.yml` GitHub-hosted OIDC workflow and protected `npm-public-release` environment.
 7. **Separated authority:** initial automation has staged-publication authority only. Human release-owner approval remains a distinct authorization step.
 8. **No ambient long-lived publish token:** steady-state publication uses trusted publishing rather than a broadly reusable npm token.
@@ -41,13 +41,21 @@ This ADR authorizes the **architecture**, not a publication.
 It does not by itself authorize:
 
 - changing the private package from `0.0.0` / `private: true`;
-- creating `v0.1.0-alpha.1` or any release tag;
+- creating `v0.1.0-alpha.2` or any release tag;
 - changing organization repository posture before the corresponding producer/release changes are reviewed;
 - configuring or exercising npm publication authority;
 - staging or approving a package;
 - claiming anonymous acquisition, provenance, SBOM, or consumer qualification evidence that has not actually been produced.
 
 Those remain fail-closed first-release delivery gates in RFC-0002.
+
+## Release-identity correction — 2026-10-08
+
+The first reviewed `0.1.0-alpha.1` candidate used the incorrect npm scope `@hackelia-micrantha/phyllotaxis`. Bootstrap staging failed before package creation with npm `E404 Scope not found`; no package was staged or published.
+
+The immutable Git tag `v0.1.0-alpha.1` remains attached to that abandoned, unpublished candidate and must not be moved. The first publishable candidate under the corrected package identity is `@micrantha/phyllotaxis@0.1.0-alpha.2`, mapped to `v0.1.0-alpha.2`.
+
+This correction changes npm package identity only. Canonical GitHub repositories remain under the `hackelia-micrantha` organization.
 
 ## Consequences
 
@@ -72,7 +80,7 @@ The first release proceeds in three authority-separated phases:
 
 1. **Producer preparation:** pin the accepted public revision; stage/verify README and LICENSE; set reviewed package metadata; generate digest/SBOM/separate attestation/smoke evidence; land the dedicated release workflow; transition organization posture.
 2. **Staged publication:** automation stages the exact reviewed candidate; a human release owner independently approves public availability.
-3. **Post-publication qualification:** verify anonymous clean/cache-miss acquisition, pin `0.1.0-alpha.1` in `hackelia-micrantha/web`, run bounded compatibility/accessibility/responsive/visual evidence, and prove recovery. Only then may stable `0.1.0` be considered.
+3. **Post-publication qualification:** verify anonymous clean/cache-miss acquisition, pin `0.1.0-alpha.2` in `hackelia-micrantha/web`, run bounded compatibility/accessibility/responsive/visual evidence, and prove recovery. Only then may stable `0.1.0` be considered.
 
 ## Reassessment triggers
 
