@@ -1,10 +1,10 @@
 # Phyllotaxis visual directive
 
-Status: **Accepted baseline; dimensional extension proposed in ADR-0004**
+Status: **Accepted**
 
 ## Goal
 
-Phyllotaxis should default to a **restrained, utilitarian, late-1990s software/web-inspired aesthetic**, with Craigslist as a useful reference point for visual restraint and information density.
+Phyllotaxis should default to a **minimal, utilitarian, late-1990s web aesthetic**, with Craigslist as a useful reference point for visual restraint and information density.
 
 This default is the **Utility** visual profile. Phyllotaxis may also define bounded purpose-specific profiles, beginning with **Editorial** for genuine long-form/media surfaces. See [`visual-profiles.md`](visual-profiles.md).
 
@@ -23,26 +23,26 @@ For Utility, prefer:
 - system and browser-native typography;
 - obvious text links and familiar browser affordances;
 - restrained colour use with strong link and state distinction;
-- low-chroma surface variation, including restrained tint and gradients, when it improves hierarchy or scanning;
+- flat low-chroma surface variation when it materially improves scanning between adjacent regions;
 - compact, readable information density;
 - simple borders and separators where structure needs reinforcement;
 - natural document flow and intrinsic layout;
-- generous but deliberate spacing that keeps content readable and hierarchy obvious;
+- small amounts of reusable spacing rather than large decorative whitespace;
 - controls whose purpose is visible without ornamental styling;
 - pages that remain understandable when CSS is reduced or partially unavailable.
 
 Avoid by default:
 
-- gradients, gloss, bevel, shadows, or large rounded surfaces applied indiscriminately;
-- blur/glass or glow that reduces clarity or competes with content;
-- repeated independent floating-card treatments where a document flow or shared grid works better;
+- decorative gradients;
+- glass, blur, glow, and elevation effects;
+- rounded-card layouts as a general page-composition pattern;
 - oversized hero sections;
 - ornamental animation or motion;
 - bespoke typography when system fonts are sufficient;
 - hidden navigation, icon-only controls, or styling that obscures native affordances;
 - visual complexity introduced only to make the interface appear contemporary.
 
-These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent treatments should first be assessed against the bounded Utility vocabulary. A distinct semantic profile requires a different content/task model, not merely a richer material treatment.
+These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent deviations should be considered for a named semantic profile rather than accumulated as local exceptions.
 
 ## Interaction motion
 
@@ -57,28 +57,7 @@ The bounded cross-profile rules are defined in [Interaction motion](interaction-
 - `prefers-reduced-motion: reduce` removes non-essential movement while preserving visible state/focus feedback;
 - no new generic Lamina Card/Pill/Badge/Tag API or stable Chroma v1 motion roles are implied.
 
-Utility may use restrained flat section rhythm by default. Selective dimensional treatments may also distinguish important interactive controls and bounded information regions, provided content hierarchy remains document-first and repeated card elevation does not replace shared structural grouping. Exact palettes remain consumer-owned unless separately promoted into Chroma.
-
-## Dimensional Utility surface vocabulary
-
-A restrained late-1990s software/web-inspired material language is permitted within Utility. The aesthetic is **1990s in character, not a literal reconstruction of historical CSS/browser capability**. Consumer evidence includes the Digitalis and Envuscator community-site presentations: tinted gradient panels, rounded pills, diffuse shadows, clearly bounded controls, occasional botanical forms, and left-accent information groups. Their CSS and branding are evidence, not public API.
-
-Candidate descriptive treatments for consumer evaluation (not stable token identifiers or implied Chroma exports):
-
-- **base**: plain document/paper surface with no elevation;
-- **raised**: bounded panel with a shallow shadow and clear edge;
-- **tinted**: subtle low-chroma gradient or tonal background, not exclusively solid color;
-- **gloss**: restrained directional highlight and bevel suitable for actionable controls or a featured surface;
-- **inset**: recessed well for code, data, or subordinate controls;
-- **accent edge**: semantic left-side border for headings, callouts, and status groups.
-
-Pills and radii describe control or status affordances, not a requirement to wrap every label. Use generous whitespace to reinforce legibility, while preserving direct links, navigation, and meaningful information density. The material vocabulary must not create nested effects, obscure hierarchy, or imply that static panels are interactive.
-
-Chroma owns values and light/dark resolution. Lamina consumes semantic roles only when repeated composition/accessibility evidence warrants a component. Venation remains profile-neutral. Exact sites and brand palettes remain consumer-owned. Motion follows the existing interaction-motion contract; static cards do not acquire hover translation merely because they are decorated.
-
-Accessibility requirements: legible text over every gradient, visible keyboard focus unaffected by shadows/highlights, distinct interaction and selected states without reliance on gloss, reduced-motion compliance, and forced-colors/high-contrast fallbacks with explicit boundaries. Test light and dark modes, 200% zoom, narrow viewports, and reduced-motion. Visual differences should be evaluated against equivalent flat Utility compositions before promotion.
-
-This vocabulary refines Utility rather than creating a third site-named profile or expanding Editorial to cover marketing decoration.
+Utility may use restrained flat section rhythm rather than monochrome presentation. Low-chroma adjacent surfaces can distinguish information regions while preserving square/simple borders, compact spacing, normal flow, and no elevation. Exact palettes remain consumer-owned unless separately promoted into Chroma.
 
 ## Visual profiles
 
@@ -105,7 +84,7 @@ Chroma should make the Utility default inexpensive to express:
 - restrained surface and text palettes;
 - explicit link, visited-link, focus, disabled, selected, warning, and error states;
 - system-font-first Utility typography;
-- bounded semantic border, radius, bevel, tint, and elevation roles, with visually neutral defaults.
+- minimal border/radius/elevation tokens, with visually neutral defaults.
 
 Chroma also owns profile-specific value resolution for Editorial where justified, including typography roles, reading rhythm, surfaces, imagery treatment, light/dark values, and related semantic presentation values.
 
@@ -140,9 +119,9 @@ Editorial may justify reusable article/media semantics and richer presentation, 
 
 Migration tooling should prefer removing accidental visual complexity over mechanically reproducing it. Existing decoration is not automatically part of the target design contract.
 
-Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API. Profile-aware advisory checks may flag external webfonts, indiscriminate decorative gradients, blur/glass that obscures content, broad elevation, repeated large-radius content containers, and ornamental reveal motion. Gradients and shadows alone are not conformance failures; heuristic findings must not rewrite code automatically.
+Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API. Profile-aware advisory checks may flag mechanically detectable Utility anti-patterns such as external webfonts, decorative gradients, blur/glass treatment, broad elevation, repeated large-radius content containers, and ornamental reveal motion; heuristic findings must not rewrite code automatically.
 
-See [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md), [proposed ADR-0004](../decisions/ADR-0004-dimensional-utility-materials.md), and [Utility consumer evidence](utility-evidence.md) for the accepted decision and its evidence.
+See [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md) and [Utility consumer evidence](utility-evidence.md) for the accepted decision and its evidence.
 
 ## Non-goals
 

@@ -1,4 +1,4 @@
-# ADR-0004 — Permit bounded dimensional material in Utility (proposal)
+# ADR-0008 — Permit bounded dimensional material in Utility (proposal)
 
 - **Status:** Proposed
 - **Date:** 2026-10-07
@@ -8,7 +8,7 @@
 
 ## Context
 
-This proposed decision follows [QART-0005](QART-0005-dimensional-utility-materials.md) and [RFC-0005](RFC-0005-dimensional-utility-materials.md). It remains non-normative until accepted.
+This proposed decision follows [QART-0008](QART-0008-dimensional-utility-materials.md) and [RFC-0008](RFC-0008-dimensional-utility-materials.md). It remains non-normative until accepted.
 
 
 ADR-0003 accepted flat low-chroma Utility composition guidance based on a first consumer. Subsequent Digitalis and Envuscator community site styles demonstrate another coherent visual pattern: selective gradient-backed panels, slight bevel/highlight, soft shadows, clear borders, rounded action/status pills, and occasional left-edge emphasis. These are evidence rather than automatic public contract requirements.
@@ -29,7 +29,7 @@ Candidate descriptive treatments for evidence gathering: base, raised, tinted, g
 
 ## ADR-0003 relationship
 
-ADR-0003's acceptance of flat low-chroma rhythm, shared separators, compact introductions and stable-API restraint remains valid. Its preference against floating card chrome is a **default**, not a prohibition. No existing public contracts or package exports change from this proposal. This ADR supersedes only interpretations of ADR-0003 that categorically prohibit bounded gradients, bevels, radius or elevation in Utility.
+ADR-0003's acceptance of flat low-chroma rhythm, shared separators, compact introductions and stable-API restraint remains valid. Its preference against floating card chrome is a **default**, not a prohibition. No existing public contracts or package exports change from this proposal. If accepted, this ADR would clarify interpretations of ADR-0003 that categorically prohibit bounded gradients, bevels, radius or elevation in Utility.
 
 ## Alternatives
 

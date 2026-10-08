@@ -1,9 +1,9 @@
-# RFC-0005 — Bounded dimensional material for Utility
+# RFC-0008 — Bounded dimensional material for Utility
 
 - **Status:** Proposed
 - **Date:** 2026-10-07
-- **Source:** [QART-0005](QART-0005-dimensional-utility-materials.md)
-- **Decision target:** [ADR-0004](ADR-0004-dimensional-utility-materials.md)
+- **Source:** [QART-0008](QART-0008-dimensional-utility-materials.md)
+- **Decision target:** [ADR-0008](ADR-0008-dimensional-utility-materials.md)
 
 ## Problem
 The Utility directive treats gradients and elevation as suspect by default, despite a repeatable restrained material language in two independent Micrantha consumer projects. We need explicit permission without new site-specific themes or forced generic components.

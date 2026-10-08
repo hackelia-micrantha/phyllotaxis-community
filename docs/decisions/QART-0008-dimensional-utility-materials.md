@@ -1,4 +1,4 @@
-# QART-0005 — Bounded dimensional Utility treatments
+# QART-0008 — Bounded dimensional Utility treatments
 
 - **Status:** Proposed
 - **Date:** 2026-10-07
@@ -25,4 +25,4 @@ Current public consumer styles include tinted gradient regions, softly shadowed 
 Test F0–F5 in [reference fixtures](../architecture/dimensional-utility-fixtures.md), record measured accessibility and rendering outcomes, and require independent consumer evidence before stable API promotion. No production consumer restyling implied.
 
 ## Recommendation
-Proceed to [RFC-0005](RFC-0005-dimensional-utility-materials.md) for a bounded permissive rule; keep [ADR-0003](ADR-0003-utility-composition-patterns.md) flat-first as the baseline.
+Proceed to [RFC-0008](RFC-0008-dimensional-utility-materials.md) for a bounded permissive rule; keep [ADR-0003](ADR-0003-utility-composition-patterns.md) flat-first as the baseline.

@@ -5,7 +5,7 @@
 - **Source:** `docs/examples/dimensional-utility-reference.html`, Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`
 - **Browser:** Chromium `144.0.7559.96`, Linux headless
 - **Run context:** Local isolated browser evaluation of the *exact Git blob*, not a live consumer deployment
-- **Decision reference:** [QART-0005](../decisions/QART-0005-dimensional-utility-materials.md) → [RFC-0005](../decisions/RFC-0005-dimensional-utility-materials.md) → [ADR-0004 (proposed)](../decisions/ADR-0004-dimensional-utility-materials.md)
+- **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md) → [ADR-0008 (proposed)](../decisions/ADR-0008-dimensional-utility-materials.md)
 - **Fixture plan:** [F0–F5](dimensional-utility-fixtures.md)
 
 ## Results
@@ -52,7 +52,7 @@ A more aggressive `320px` viewport with `2×` document zoom originally caused ho
 - Add disabled/pressed state, non-text contrast and gradient-overlay checks beyond this small standalone example.
 - Capture durable screenshots and browser details as artifacts in the private implementation validation flow when available; this report does not embed image artifacts.
 - Benchmark compiled CSS / style recalculation cost against the flat consumer implementation before promoting stable Chroma roles.
-- Receive public contract review of ADR-0004 and any conformance implications before treating dimensional roles as normative.
+- Receive public contract review of ADR-0008 and any conformance implications before treating dimensional roles as normative.
 
 ## Conclusion
 
