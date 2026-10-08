@@ -1,6 +1,6 @@
 # QART-0008 — Bounded dimensional Utility treatments
 
-- **Status:** Proposed
+- **Status:** Resolved into RFC-0008; RFC proposal remains under review
 - **Date:** 2026-10-07
 - **Authority:** Public design evidence; no stable API decision
 
@@ -24,5 +24,5 @@ Current public consumer styles include tinted gradient regions, softly shadowed 
 ## Evidence gap and decision gate
 Test F0–F5 in [reference fixtures](../architecture/dimensional-utility-fixtures.md), record measured accessibility and rendering outcomes, and require independent consumer evidence before stable API promotion. No production consumer restyling implied.
 
-## Recommendation
-Proceed to [RFC-0008](RFC-0008-dimensional-utility-materials.md) for a bounded permissive rule; keep [ADR-0003](ADR-0003-utility-composition-patterns.md) flat-first as the baseline.
+## Disposition
+The alternatives analysis is complete and advances to [RFC-0008](RFC-0008-dimensional-utility-materials.md) for review of a bounded permissive rule. The RFC is **proposed, not accepted**; [ADR-0003](ADR-0003-utility-composition-patterns.md) and the current Utility visual directive remain authoritative.
