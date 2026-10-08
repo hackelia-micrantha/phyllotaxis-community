@@ -6,7 +6,7 @@
 - **Decision status:** Pending. No ADR has been created or accepted for this proposal.
 
 ## Problem
-The Utility directive treats gradients and elevation as suspect by default, while consumer evidence now spans both richer dimensional treatments and a deliberately minimal white/flat composition. We need explicit permission for restrained consumer-owned material variation without making it a Utility default, creating site-specific themes, or forcing generic components.
+The Utility directive is flat-first and treats gradients/elevation as suspect by default, but it already permits justified product-owned deviations. Consumer evidence now spans both repeated richer dimensional treatments and a deliberately minimal white/flat composition. The open question is therefore not whether richer treatment is permitted at all, but whether a repeated cross-consumer class warrants explicit shared review bounds without becoming a Utility default, site-specific theme, or generic component API.
 
 ## Proposed contract
 1. Utility remains the default, primarily content-first, document-like and flat-first.
@@ -20,7 +20,7 @@ The Utility directive treats gradients and elevation as suspect by default, whil
 
 ## Relationship to accepted guidance
 
-[ADR-0003](ADR-0003-utility-composition-patterns.md) accepts flat low-chroma rhythm, shared borders and explicit status as the Utility default. Digitalis/Envuscator provide richer-treatment evidence, while the pinned Dubnium Community consumer provides a minimal white/flat control that intentionally removes persistent section color and dividers. This RFC **proposes** clarifying that selective, restrained gradients, bevels, radius and elevation may be appropriate in some consumer-owned designs without replacing that default or making dimensional treatment preferable. Until a subsequent ADR is accepted and the directive is updated through a reviewed change, this RFC and its fixtures are non-normative; consumers and conformance tooling must not treat the proposal as current public permission or a stable component/token contract.
+[ADR-0003](ADR-0003-utility-composition-patterns.md) accepts flat low-chroma rhythm, shared borders and explicit status as the Utility default, and the accepted visual directive already permits concrete product-owned deviations. Digitalis/Envuscator provide repeated richer-treatment evidence, while the pinned Dubnium Community consumer provides a minimal white/flat control that intentionally removes persistent section color and dividers. This RFC **proposes shared non-normative review bounds for that repeated deviation class**; it does not create permission that was previously absent, replace the flat-first default, or make dimensional treatment preferable. Until a subsequent ADR is accepted and the directive is updated through a reviewed change, this RFC and its fixtures are non-normative; consumers and conformance tooling must not treat the proposal as current public permission or a stable component/token contract.
 
 A separate ADR may be numbered and published **only when the decision has been accepted**. No ADR number is reserved by this RFC.
 
