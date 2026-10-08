@@ -2,7 +2,7 @@
 
 Status: **Proposed, non-normative**.
 
-Browser-openable prototype: [standalone reference fixture](../examples/dimensional-utility-reference.html). This prototype is not automated validation evidence; the review matrix below remains outstanding. Companion to [ADR-0004](../decisions/ADR-0004-dimensional-utility-materials.md). This is an evidence and acceptance plan, not a stable CSS/token/component contract.
+Browser-openable prototype: [standalone reference fixture](../examples/dimensional-utility-reference.html). An initial Chromium validation run is recorded in [browser evidence](dimensional-utility-browser-evidence.md); the full cross-browser and production review matrix below remains outstanding. Companion to [ADR-0004](../decisions/ADR-0004-dimensional-utility-materials.md). This is an evidence and acceptance plan, not a stable CSS/token/component contract.
 
 ## Baseline and variants
 
