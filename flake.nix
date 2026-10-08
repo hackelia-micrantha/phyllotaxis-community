@@ -3,7 +3,7 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-  outputs = { nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
       systems = [
         "x86_64-linux"
@@ -21,6 +21,20 @@
           python = pkgs.python3.withPackages (ps: [ ps.jsonschema ]);
         in
         {
+          independent-review-kit-archive = pkgs.runCommand "phyllotaxis-community-independent-review-kit-validation" {
+            nativeBuildInputs = [ pkgs.unzip ];
+          } ''
+            archive="${self.packages.${system}.independent-review-kit}/independent-review-kit.zip"
+            test -s "$archive"
+            unzip -t "$archive"
+            test "$(unzip -Z1 "$archive" | wc -l)" -eq 5
+            unzip -Z1 "$archive" | grep -Fxq "README.md"
+            unzip -Z1 "$archive" | grep -Fxq "docs/examples/dimensional-utility-review-session.html"
+            unzip -Z1 "$archive" | grep -Fxq "docs/examples/dimensional-utility-reference.html"
+            unzip -Z1 "$archive" | grep -Fxq "docs/examples/dimensional-utility-boundaries.html"
+            unzip -Z1 "$archive" | grep -Fxq "docs/architecture/dimensional-utility-human-review-worksheet.md"
+            touch "$out"
+          '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
             nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''
@@ -41,6 +55,32 @@
             PY
             python ${./tools/check-independent-review.py} ${./docs/examples/dimensional-utility-review-session.html}
             touch "$out"
+          '';
+        }
+      );
+
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          independent-review-kit = pkgs.runCommand "phyllotaxis-independent-review-kit" {
+            nativeBuildInputs = [ pkgs.zip ];
+          } ''
+            mkdir -p "$out" "staging/docs/examples" "staging/docs/architecture"
+            cp ${./docs/examples/independent-review-participant-README.md} staging/README.md
+            cp ${./docs/examples/dimensional-utility-review-session.html} staging/docs/examples/
+            cp ${./docs/examples/dimensional-utility-reference.html} staging/docs/examples/
+            cp ${./docs/examples/dimensional-utility-boundaries.html} staging/docs/examples/
+            cp ${./docs/architecture/dimensional-utility-human-review-worksheet.md} staging/docs/architecture/
+            cd staging
+            zip -q -X "$out/independent-review-kit.zip" \
+              README.md \
+              docs/examples/dimensional-utility-review-session.html \
+              docs/examples/dimensional-utility-reference.html \
+              docs/examples/dimensional-utility-boundaries.html \
+              docs/architecture/dimensional-utility-human-review-worksheet.md
           '';
         }
       );
