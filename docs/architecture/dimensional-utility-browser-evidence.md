@@ -2,7 +2,7 @@
 
 - **Evidence status:** A checked-in public harness now reproduces the portable current-fixture matrix in CI. Historical local 58/58 and 66/66 reports remain **unverified historical observations** and must not be promoted into current evidence.
 - **Historical report date:** 2026-10-07
-- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e2f8bf4a94d5d5b936bac7a91e1a84e143262146` (flat F0 baseline, corrected control contrast, and visibly distinct F3 pressed state).
+- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `93b99890c76efb06c43a5c1a7c75232ca8b6d6d5` (flat F0 baseline, corrected control contrast, and visibly distinct F3 pressed state).
 - **Historical input for the 58-check report:** Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`; the original report does not apply to the current HTML unchanged.
 - **Historical reported environment:** Chromium `144.0.7559.96`, Linux headless.
 - **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [RFC-0008, advisory-only acceptance](../decisions/RFC-0008-dimensional-utility-materials.md).
