@@ -827,8 +827,15 @@ async function inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDi
   await screenshot(config, sessionId, imagePath);
   const button = await findElement(config, sessionId, ".hierarchy-good button");
   await command(config, sessionId, "POST", "/element/" + button + "/click", {});
-  const actionUrl = await command(config, sessionId, "GET", "/url");
-  const actionWorks = String(actionUrl).endsWith("#decision");
+  let actionWorks = false;
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const actionUrl = await command(config, sessionId, "GET", "/url");
+    if (String(actionUrl).endsWith("#decision")) {
+      actionWorks = true;
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
 
   const checks = [
     result("B1 bounded tint and elevation",
