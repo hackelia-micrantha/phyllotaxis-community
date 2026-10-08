@@ -891,9 +891,10 @@ async function inspectTextResilience(config, sessionId, url, caseLabel, expected
           "const targets=[...document.querySelectorAll('a,button')];" +
           "const clipped=targets.filter(el=>{const r=el.getBoundingClientRect();return r.left < -1 || r.right > innerWidth+1}).map(el=>({tag:el.tagName,text:el.textContent.trim().slice(0,50)}));" +
           "const sections=document.querySelectorAll(arguments[1]).length;" +
+          "const offenders=[...document.querySelectorAll('main,section,p,h1,h2,h3,span,a,button,form,.grid,.well')].filter(el=>{const r=el.getBoundingClientRect();return r.right>innerWidth+1||r.left< -1}).slice(0,8).map(el=>({tag:el.tagName,css:el.className||'',text:el.textContent.trim().slice(0,36),right:Math.round(el.getBoundingClientRect().right)}));" +
           "const rootSize=parseFloat(getComputedStyle(document.documentElement).fontSize);" +
           "const bodySize=parseFloat(getComputedStyle(document.body).fontSize);" +
-          "return {width:innerWidth,rootSize,bodySize,overflow:document.documentElement.scrollWidth>innerWidth+1,clipped,sectionCount:sections,targets:targets.length,mode};" +
+          "return {width:innerWidth,rootSize,bodySize,overflow:document.documentElement.scrollWidth>innerWidth+1,clipped,offenders,sectionCount:sections,targets:targets.length,mode};" +
         "})()",
         [mode, caseLabel],
       );
