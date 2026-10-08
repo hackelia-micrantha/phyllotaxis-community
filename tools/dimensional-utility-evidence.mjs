@@ -72,9 +72,15 @@ function summarize(values) {
 
 function parseColor(value) {
   const trimmed = String(value || "").trim().toLowerCase();
-  const hex = /^#([0-9a-f]{6})$/i.exec(trimmed);
+  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(trimmed);
   if (hex) {
-    const raw = hex[1];
+    let raw = hex[1];
+    if (raw.length === 3) {
+      raw = raw
+        .split("")
+        .map((channel) => channel + channel)
+        .join("");
+    }
     return [
       Number.parseInt(raw.slice(0, 2), 16),
       Number.parseInt(raw.slice(2, 4), 16),
