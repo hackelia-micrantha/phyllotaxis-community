@@ -897,7 +897,8 @@ async function main() {
 
   const source = {
     path: path.relative(root, fixture),
-    commit: process.env.GITHUB_SHA || null,
+    commit: process.env.EVIDENCE_SOURCE_SHA || process.env.GITHUB_SHA || null,
+    workflowCommit: process.env.GITHUB_SHA || null,
     gitBlobSha: gitBlobSha(fixtureBytes),
     sha256: sha256(fixtureBytes),
   };
