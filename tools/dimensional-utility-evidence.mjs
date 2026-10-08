@@ -795,8 +795,7 @@ function evaluateRequiredChecks(page, noCss, focus, clicked, contrast) {
   return checks;
 }
 
-async function inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDir, scheme) {
-  const boundaryUrl = new URL("./dimensional-utility-boundaries.html", fixtureUrl).href;
+async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme) {
   const viewports = [];
   let styles = null;
   for (const width of [1280, 375, 320]) {
@@ -874,7 +873,7 @@ async function inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDi
   return {styles,viewports,checks,screenshot:path.basename(imagePath),caseScreenshots,humanReviewRequired:true};
 }
 
-async function runScheme(config, scheme, fixtureUrl, outputDir) {
+async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
   const session = await createSession(config, scheme);
   const sessionId = session.sessionId;
   try {
@@ -1005,7 +1004,7 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
     await navigate(config, sessionId, fixtureUrl);
     const imagePath = path.join(outputDir, config.browser + "-" + scheme + ".png");
     await screenshot(config, sessionId, imagePath);
-    const boundary = await inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDir, scheme);
+    const boundary = await inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme);
     checks.push(...boundary.checks);
 
     return {
@@ -1034,11 +1033,11 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
   }
 }
 
-async function runBrowser(browser, fixtureUrl, outputDir) {
+async function runBrowser(browser, fixtureUrl, boundaryUrl, outputDir) {
   return withDriver(browser, async (config) => {
     const schemes = [];
     for (const scheme of ["light", "dark"]) {
-      schemes.push(await runScheme(config, scheme, fixtureUrl, outputDir));
+      schemes.push(await runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir));
     }
     return { browser, schemes };
   });
@@ -1115,7 +1114,7 @@ async function main() {
   const styleMatch = fixtureText.match(/<style>([\s\S]*?)<\/style>/i);
   if (!styleMatch) throw new Error("Fixture does not contain an inline style block");
   const css = styleMatch[1];
-  const boundaryFile = path.join(path.dirname(fixture), "dimensional-utility-boundaries.html");
+  const boundaryFile = path.join(root, "docs/examples/dimensional-utility-boundaries.html");
   const boundaryBytes = await fs.readFile(boundaryFile);
 
   const source = {
@@ -1138,12 +1137,13 @@ async function main() {
     ...dimensionalRuleBytes(css),
   };
   const fixtureUrl = pathToFileURL(fixture).href;
+  const boundaryUrl = pathToFileURL(boundaryFile).href;
   const browsers = [];
   const harnessFailures = [];
 
   for (const browser of ["chromium", "firefox"]) {
     try {
-      browsers.push(await runBrowser(browser, fixtureUrl, outputDir));
+      browsers.push(await runBrowser(browser, fixtureUrl, boundaryUrl, outputDir));
     } catch (error) {
       harnessFailures.push({
         browser,
