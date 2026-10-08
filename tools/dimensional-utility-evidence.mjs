@@ -11,7 +11,7 @@ import zlib from "node:zlib";
 const ELEMENT_KEY = "element-6066-11e4-a52e-4f735466cecf";
 const CONTROL = "\uE009";
 const TAB = "\uE004";
-const HARNESS_VERSION = "0.2.0";
+const HARNESS_VERSION = "0.3.0";
 
 function parseArgs(argv) {
   const parsed = {
@@ -873,6 +873,51 @@ async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputD
   return {styles,viewports,checks,screenshot:path.basename(imagePath),caseScreenshots,humanReviewRequired:true};
 }
 
+async function inspectTextResilience(config, sessionId, url, caseLabel, expectedSections) {
+  const observations = [];
+  for (const mode of ["root-font-200", "text-spacing", "combined"]) {
+    for (const requestedWidth of [1280, 375, 320]) {
+      await setWindow(config, sessionId, requestedWidth, 900);
+      await navigate(config, sessionId, url);
+      const observed = await evaluate(
+        config, sessionId,
+        "return (()=>{" +
+          "const mode=arguments[0];" +
+          "const style=document.createElement('style');style.setAttribute('data-evidence-text-stress',mode);" +
+          "const root='html{font-size:200%!important}';" +
+          "const spacing='p,h1,h2,h3,a,button,span,li{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-block-end:2em!important}';" +
+          "style.textContent=mode==='root-font-200'?root:mode==='text-spacing'?spacing:root+spacing;" +
+          "document.head.appendChild(style);" +
+          "const targets=[...document.querySelectorAll('a,button')];" +
+          "const clipped=targets.filter(el=>{const r=el.getBoundingClientRect();return r.left < -1 || r.right > innerWidth+1}).map(el=>({tag:el.tagName,text:el.textContent.trim().slice(0,50)}));" +
+          "const sections=document.querySelectorAll(arguments[1]).length;" +
+          "const rootSize=parseFloat(getComputedStyle(document.documentElement).fontSize);" +
+          "const bodySize=parseFloat(getComputedStyle(document.body).fontSize);" +
+          "return {width:innerWidth,rootSize,bodySize,overflow:document.documentElement.scrollWidth>innerWidth+1,clipped,sectionCount:sections,targets:targets.length,mode};" +
+        "})()",
+        [mode, caseLabel],
+      );
+      const matched = Math.abs(observed.width - requestedWidth) <= 2;
+      const scaled = !mode.includes("root-font") && mode !== "combined" ||
+        observed.rootSize >= 30;
+      const status = !matched ? "unsupported" :
+        observed.overflow || observed.clipped.length || observed.sectionCount !== expectedSections ||
+        !observed.targets || !scaled ? "fail" : "pass";
+      observations.push({
+        mode, requestedWidth, status, ...observed,
+        limitation: "CSS override only; not native browser text-only resizing or browser zoom",
+      });
+    }
+  }
+  return {
+    observations,
+    checks: observations.map(item=>result(
+      "CSS-simulated " + item.mode + " " + caseLabel + " " + item.requestedWidth + "px",
+      item.status, item, "accepted-accessibility",
+    )),
+  };
+}
+
 async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
   const session = await createSession(config, scheme);
   const sessionId = session.sessionId;
@@ -1006,6 +1051,11 @@ async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
     await screenshot(config, sessionId, imagePath);
     const boundary = await inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme);
     checks.push(...boundary.checks);
+    const textStress = {
+      fixture: await inspectTextResilience(config, sessionId, fixtureUrl, ".fixture", 6),
+      boundary: await inspectTextResilience(config, sessionId, boundaryUrl, ".boundary", 3),
+    };
+    checks.push(...textStress.fixture.checks, ...textStress.boundary.checks);
 
     return {
       scheme,
@@ -1026,6 +1076,7 @@ async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
       performance: perf,
       screenshot: path.basename(imagePath),
       boundary,
+      textStress,
       checks,
     };
   } finally {
@@ -1080,7 +1131,8 @@ function markdown(report) {
       }
       lines.push("", "- Boundary screenshot: " + scheme.boundary.screenshot,
         "- Individual boundary screenshots: " + scheme.boundary.caseScreenshots.join(", "),
-        "- B1/B2/B3: automated fixture checks only; **human hierarchy judgement not complete**.", "");
+        "- B1/B2/B3: automated fixture checks only; **human hierarchy judgement not complete**.",
+        "- CSS-simulated root font and text spacing stress is **not** native browser 200% text-only resize.", "");
     }
   }
   lines.push(
