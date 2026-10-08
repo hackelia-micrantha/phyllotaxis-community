@@ -75,12 +75,7 @@
             cp ${./docs/examples/dimensional-utility-boundaries.html} staging/docs/examples/
             cp ${./docs/architecture/dimensional-utility-human-review-worksheet.md} staging/docs/architecture/
             cd staging
-            zip -q -X "$out/independent-review-kit.zip" \
-              README.md \
-              docs/examples/dimensional-utility-review-session.html \
-              docs/examples/dimensional-utility-reference.html \
-              docs/examples/dimensional-utility-boundaries.html \
-              docs/architecture/dimensional-utility-human-review-worksheet.md
+            zip -q -X "$out/independent-review-kit.zip" README.md docs/examples/dimensional-utility-review-session.html docs/examples/dimensional-utility-reference.html docs/examples/dimensional-utility-boundaries.html docs/architecture/dimensional-utility-human-review-worksheet.md
           '';
         }
       );
