@@ -11,9 +11,12 @@ From this public repository:
 ```sh
 nix build .#demo-site
 nix flake check
+
+# Chromium smoke on the exact built site
+nix develop .#browser-evidence --command node tools/gallery-browser-smoke.mjs --site ./result
 ```
 
-The flake constructs an allowlisted static directory with `index.html`, `site.css` and `examples/`. Links and included assets are checked in the flake check. No packages, frameworks, external resources or private-repository credentials are needed.
+The flake constructs an allowlisted static directory with `index.html`, `site.css` and `examples/`. Links and included assets are checked in the flake check. The gallery browser smoke verifies core navigation, light/dark contrast, visible keyboard focus, reduced motion, forced colors, and responsive reflow, including a narrow CSS viewport stress. It is **not** a browser-zoom or assistive-technology certification. No third-party front-end packages, external resources, or private-repository credentials are needed.
 
 ## Deployment
 

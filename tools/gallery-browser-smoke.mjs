@@ -206,7 +206,7 @@ try {
   record("160px effective viewport reflow stress (not native browser zoom; " + JSON.stringify(narrowStress) + ")",
     narrowStress.inner === 160 && narrowStress.scroll <= narrowStress.inner + 1);
 
-  process.stdout.write("gallery browser smoke: " + checks + " assertions passed (Chromium; CSS zoom is not browser zoom)\n");
+  process.stdout.write("gallery browser smoke: " + checks + " assertions passed (Chromium; narrow viewport is not native browser zoom)\n");
 } catch (error) {
   process.stderr.write((error.stack || error.message) + "\nchromedriver log:\n" + log + "\n");
   process.exitCode = 1;
