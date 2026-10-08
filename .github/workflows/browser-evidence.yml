@@ -52,6 +52,19 @@ jobs:
           node tools/dimensional-utility-evidence.mjs
           --output artifacts/dimensional-utility
 
+      - name: Verify external --fixture compatibility
+        run: |
+          set -euo pipefail
+          fixture_dir="$(mktemp -d)"
+          trap 'rm -rf "$fixture_dir"' EXIT
+          cp docs/examples/dimensional-utility-reference.html "$fixture_dir/custom-fixture.html"
+          nix develop .#browser-evidence --command \
+            node tools/dimensional-utility-evidence.mjs \
+            --fixture "$fixture_dir/custom-fixture.html" \
+            --output "$fixture_dir/evidence" \
+            --format json
+          test -s "$fixture_dir/evidence/evidence.json"
+
       - name: Upload bounded evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
