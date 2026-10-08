@@ -54,4 +54,5 @@ Consumers can develop a consistent period-inspired Micrantha material language w
 - [ADR-0003](ADR-0003-utility-composition-patterns.md)
 - [Visual directive](../architecture/visual-directive.md)
 - [Visual profiles](../architecture/visual-profiles.md)
+- [Dimensional Utility reference fixtures](../architecture/dimensional-utility-fixtures.md)
 - Public issue #55 and private implementation issue `hackelia-micrantha/phyllotaxis#100`.
