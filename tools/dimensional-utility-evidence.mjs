@@ -314,7 +314,8 @@ async function screenshot(config, sessionId, filename, expectedUrl, captureEvent
     const encoded = await captureWithVerifiedRetry({
       expectedUrl,
       getPageState: () => evaluate(config, sessionId,
-        "return {href: location.href, readyState: document.readyState};"),
+        "return {href: location.href, readyState: document.readyState, timeOrigin: performance.timeOrigin};"),
+      allowDetachRetry: config.browser === "chromium",
       capture: () => command(config, sessionId, "GET", "/screenshot"),
       onAttempt: record => evidence.attempts.push(record),
       pause: () => new Promise(resolve => setTimeout(resolve, 150)),
