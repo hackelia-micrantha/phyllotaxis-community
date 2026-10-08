@@ -5,7 +5,7 @@
 - **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e2f8bf4a94d5d5b936bac7a91e1a84e143262146` (flat F0 baseline, corrected control contrast, and visibly distinct F3 pressed state).
 - **Historical input for the 58-check report:** Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`; the original report does not apply to the current HTML unchanged.
 - **Historical reported environment:** Chromium `144.0.7559.96`, Linux headless.
-- **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [proposed RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md).
+- **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [RFC-0008, advisory-only acceptance](../decisions/RFC-0008-dimensional-utility-materials.md).
 - **Validation plan:** [F0–F5](dimensional-utility-fixtures.md).
 
 ## What was reported
@@ -63,7 +63,7 @@ The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, rec
 
 The existing `--fixture PATH` option changes only the F0–F5 reference input. B1–B3 is loaded independently from the repository-owned `docs/examples/dimensional-utility-boundaries.html` and is recorded with its own blob/SHA-256 identity. A CI regression check copies the F0–F5 HTML to a temporary directory with no boundary companion file and runs the full two-engine harness against that external path. This keeps the public CLI compatible without silently changing which boundary fixture supplies evidence. It emits:
 
-The CLI supports `--help`, `--version` (currently `0.2.0`), and `--format text|json`. To inspect version without launching browsers, run `node tools/dimensional-utility-evidence.mjs --version`; `--format json --version` emits a JSON object with `harnessVersion`. The harness records its own version alongside the evidence schema version.  Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
+The CLI supports `--help`, `--version` (currently `0.3.0`), and `--format text|json`. To inspect version without launching browsers, run `node tools/dimensional-utility-evidence.mjs --version`; `--format json --version` emits a JSON object with `harnessVersion`. The harness records its own version alongside the evidence schema version.  Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
 
 - `evidence.json` — versioned machine-readable evidence;
 - `summary.md` — concise reviewer-oriented status;
@@ -71,7 +71,9 @@ The CLI supports `--help`, `--version` (currently `0.2.0`), and `--format text|j
 
 Unsupported browser/environment capabilities are emitted as `unsupported`; they are **not** converted into passes. Accessibility and interaction observations exercise the already-accepted accessibility and interaction-motion authorities. RFC-0008-specific interpretation is limited to dimensional composition, stacking/elevation hierarchy, restrained gloss/bevel/inset use, and rendering cost.
 
-Actual browser-level 200% zoom is attempted through browser keyboard shortcuts and verified by observable scale/viewport change. If headless WebDriver does not expose that change, the result remains an explicit evidence gap rather than substituting CSS `zoom` or device-scale emulation.
+Actual browser-level 200% zoom is attempted through browser keyboard shortcuts and verified by observable scale/viewport change. If headless WebDriver does not expose that change, the result remains an explicit evidence gap.
+
+Starting at harness `0.3.0`, two additional **CSS-injected, reproducible stress modes** inspect the F0–F5 and B1–B3 documents: (1) `html { font-size: 200% !important }` for root-font scaling, and (2) a WCAG 1.4.12-style text-spacing override of 1.5× line-height, 2× paragraph spacing, `0.12em` letter spacing and `0.16em` word spacing; a combined mode applies both. The WebDriver harness checks expected viewport, no horizontal overflow, visible links/buttons and preserved sections at 1280, 375 and 320 CSS pixels. Firefox clamping narrow windows remains **unsupported** rather than passed. These injections are **not native browser text-only resize or browser zoom**. They do not establish target-size compliance, font availability, OS settings, real assistive-technology behavior or full WCAG conformance. Exact input, requested/observed viewport and mode results are recorded per scheme/browser in `evidence.json`.
 
 ## Reproduction plan — public harness plus remaining environment gaps
 
@@ -85,4 +87,4 @@ Actual browser-level 200% zoom is attempted through browser keyboard shortcuts a
 
 ## Conclusion
 
-This document records **preliminary observations and open verification work**. The public fixture is inspectable and the consumer style sources are pinned in the [QART](../decisions/QART-0008-dimensional-utility-materials.md), but current evidence alone does not establish browser conformance, a production performance win or acceptance of RFC-0008. The accepted ADR-0003 flat Utility guidance remains authoritative.
+This document records **reproducible fixture observations alongside unresolved accessibility and consumer-evidence gaps**. The consumer sources are pinned in [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md). [ADR-0008](../decisions/ADR-0008-dimensional-utility-advisory-guidance.md) already accepts **advisory-only** dimensional composition review, but neither that decision nor these browser checks demonstrate application-wide accessibility, production performance, or fitness for every consumer. ADR-0003's flat-first Utility baseline remains authoritative.
