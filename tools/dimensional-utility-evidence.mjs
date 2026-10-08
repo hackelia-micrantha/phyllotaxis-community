@@ -825,6 +825,17 @@ async function inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDi
   await navigate(config, sessionId, boundaryUrl);
   const imagePath = path.join(outputDir, config.browser + "-" + scheme + "-boundaries.png");
   await screenshot(config, sessionId, imagePath);
+  const caseScreenshots = [];
+  for (const boundaryId of ["b1", "b2", "b3"]) {
+    await evaluate(
+      config, sessionId,
+      "document.getElementById(arguments[0]).scrollIntoView({block:'start'});",
+      [boundaryId],
+    );
+    const casePath = path.join(outputDir, config.browser + "-" + scheme + "-" + boundaryId + ".png");
+    await screenshot(config, sessionId, casePath);
+    caseScreenshots.push(path.basename(casePath));
+  }
   const button = await findElement(config, sessionId, ".hierarchy-good button");
   await command(config, sessionId, "POST", "/element/" + button + "/click", {});
   let actionWorks = false;
@@ -860,7 +871,7 @@ async function inspectMaterialBoundaries(config, sessionId, fixtureUrl, outputDi
   for (const viewport of viewports) {
     checks.push(result("B1-B3 reflow " + viewport.requested + "px",viewport.status,viewport,"accepted-accessibility"));
   }
-  return {styles,viewports,checks,screenshot:path.basename(imagePath),humanReviewRequired:true};
+  return {styles,viewports,checks,screenshot:path.basename(imagePath),caseScreenshots,humanReviewRequired:true};
 }
 
 async function runScheme(config, scheme, fixtureUrl, outputDir) {
@@ -1069,6 +1080,7 @@ function markdown(report) {
         lines.push("| " + check.name + " | " + check.status + " | " + check.authority + " |");
       }
       lines.push("", "- Boundary screenshot: " + scheme.boundary.screenshot,
+        "- Individual boundary screenshots: " + scheme.boundary.caseScreenshots.join(", "),
         "- B1/B2/B3: automated fixture checks only; **human hierarchy judgement not complete**.", "");
     }
   }
