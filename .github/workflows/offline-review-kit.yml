@@ -1,0 +1,72 @@
+name: Offline Review Kit
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/offline-review-kit.yml"
+      - "flake.nix"
+      - "flake.lock"
+      - "docs/examples/independent-review-participant-README.md"
+      - "docs/examples/dimensional-utility-review-session.html"
+      - "docs/examples/dimensional-utility-reference.html"
+      - "docs/examples/dimensional-utility-boundaries.html"
+      - "docs/architecture/dimensional-utility-human-review-worksheet.md"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/offline-review-kit.yml"
+      - "flake.nix"
+      - "flake.lock"
+      - "docs/examples/independent-review-participant-README.md"
+      - "docs/examples/dimensional-utility-review-session.html"
+      - "docs/examples/dimensional-utility-reference.html"
+      - "docs/examples/dimensional-utility-boundaries.html"
+      - "docs/architecture/dimensional-utility-human-review-worksheet.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phyllotaxis-independent-review-kit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact reviewed revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install Nix bootstrap
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+
+      - name: Build and verify public review kit
+        run: |
+          set -euo pipefail
+          nix build .#independent-review-kit --out-link ./review-kit-build
+          nix build .#checks.x86_64-linux.independent-review-kit-archive --no-link
+          mkdir -p ./review-kit-artifact
+          cp -L ./review-kit-build/independent-review-kit.zip ./review-kit-artifact/
+          {
+            printf 'repository=%s\n' "$GITHUB_REPOSITORY"
+            printf 'source_commit=%s\n' "$(git rev-parse HEAD)"
+            printf 'archive_sha256='
+            sha256sum ./review-kit-artifact/independent-review-kit.zip | cut -d ' ' -f 1
+            printf 'status=unexecuted_independent_review_packet\n'
+            printf 'note=Do not represent this artifact as participant consent or human approval.\n'
+          } > ./review-kit-artifact/SOURCE.txt
+          test -s ./review-kit-artifact/independent-review-kit.zip
+          test -s ./review-kit-artifact/SOURCE.txt
+
+      - name: Upload bounded participant kit
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: independent-review-kit-${{ github.event.pull_request.head.sha || github.sha }}
+          path: review-kit-artifact/
+          if-no-files-found: error
+          retention-days: 14
