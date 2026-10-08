@@ -6,11 +6,11 @@ Browser-openable prototype: [standalone reference fixture](../examples/dimension
 
 ## Baseline and variants
 
-All variants use the **same semantic HTML content and layout**. Preserve working links, one button with an accessible name, a status label with readable text, a heading, a callout, and a content region. Use the accepted Utility/Cambium baseline as control. A static information card must not gain pointer cursor or motion in any variant.
+All variants use the **same semantic content, controls, reading order, and grid tracks**. F0 deliberately preserves the accepted flat composition with a contiguous zero-gap shared-border grid, square section corners, and square native-style button/status boundaries; only proposed variants may introduce additional radius, gloss, elevation, or inset treatment. This prevents the control from inheriting experimental card chrome. Preserve working links, one button with an accessible name, a status label with readable text, a heading, a callout, and a content region. Use the accepted Utility/Cambium baseline as control. A static information card must not gain pointer cursor or motion in any variant.
 
 | Fixture | Visual intent | Differentiation to exercise |
 | --- | --- | --- |
-| F0 flat | ADR-0003 document-like baseline | shared borders, flat low-chroma grouping |
+| F0 flat | ADR-0003 document-like baseline | contiguous borders without gaps, no rounding/elevation, explicit status and conventional controls |
 | F1 tinted | subtle tonal/gradient section | text/focus contrast across the gradient |
 | F2 raised | softly bounded panel | hierarchy without competing floating cards |
 | F3 gloss | short bevel and highlight on a real button | pressed/focus/disabled distinguishable independently of shine |
