@@ -5,14 +5,14 @@
 - **Authority:** Public design evidence; no stable API decision
 
 ## Question
-Does the flat-first Utility guidance in ADR-0003 unnecessarily exclude a coherent restrained 1990s software-inspired material treatment observed in Digitalis and Envuscator consumers?
+Does the flat-first Utility guidance in ADR-0003 unnecessarily exclude coherent restrained 1990s software-inspired material treatments observed in some Utility consumers, while preserving flat/minimal Utility as an equally valid consumer choice?
 
 ## Evidence
-Current public consumer styles include tinted gradient regions, softly shadowed panels, bounded rounded controls, pills and left-edge emphasis. See pinned, publicly inspectable source files: [Digitalis CSS](https://github.com/hackelia-micrantha/digitalis-community/blob/c03570962a89f5d77e37ff5e0a7b37a514f59a27/web/styles.css), [Envuscator CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/styles.css), and [Envuscator Micrantha CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/micrantha.css). Source revisions and content were verified at the linked commits. These are examples rather than invariant visual tokens or proof that every effect is needed.
+Public consumer evidence now shows both ends of the permitted Utility range. Digitalis and Envuscator use tinted gradient regions, softly shadowed panels, bounded rounded controls, pills and left-edge emphasis: [Digitalis CSS](https://github.com/hackelia-micrantha/digitalis-community/blob/c03570962a89f5d77e37ff5e0a7b37a514f59a27/web/styles.css), [Envuscator CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/styles.css), and [Envuscator Micrantha CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/micrantha.css). By contrast, [Dubnium Community](https://github.com/hackelia-micrantha/dubnium-community/blob/ddff22e61351469b2b512b1002f3bc839e4579a2/site/index.html) deliberately converged on a white, divider-light flat presentation after preview iteration, retaining consumer-owned low-chroma color only as local hover feedback. Source revisions are immutable and publicly inspectable. Together these examples support permission for bounded variation, not a new dimensional default or invariant visual token set.
 
 ## Alternatives and trade-offs
 1. **Preserve strict flat-first guidance only.** Lowest API/design risk, but rejects legitimate consumer variation.
-2. **Permit bounded treatments as non-normative Utility guidance.** Maintains semantic boundaries and backwards compatibility; qualitative restraint needs fixture evidence. **Recommended.**
+2. **Permit bounded treatments as non-normative Utility guidance.** Maintains semantic boundaries and backwards compatibility while explicitly preserving minimal/flat consumers as first-class conforming outcomes; qualitative restraint needs fixture evidence. **Recommended.**
 3. **Create a third material visual profile.** Conflates content/task model and cosmetic appearance.
 4. **Immediately add Chroma roles and Lamina wrappers.** Premature API commitment; duplicated or incompatible semantics likely.
 
