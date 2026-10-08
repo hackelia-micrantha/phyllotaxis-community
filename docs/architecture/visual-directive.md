@@ -44,6 +44,8 @@ Avoid by default:
 
 These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent deviations should be considered for a named semantic profile rather than accumulated as local exceptions.
 
+[ADR-0008 — Advisory dimensional Utility composition](../decisions/ADR-0008-dimensional-utility-advisory-guidance.md) documents **non-binding review questions** for rare, product-owned tint, shallow elevation and similar treatments. It does not change this flat-first default, create a third visual profile, require decoration, introduce stable Chroma/Lamina APIs, or authorize automatic migration. The accepted accessibility and interaction-motion contracts remain governing.
+
 ## Interaction motion
 
 The prohibition on ornamental animation does not prohibit restrained interaction feedback. Motion may reinforce an interaction or state that already exists semantically; it must not create the appearance of interactivity on static content.

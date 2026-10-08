@@ -11,7 +11,7 @@ import zlib from "node:zlib";
 const ELEMENT_KEY = "element-6066-11e4-a52e-4f735466cecf";
 const CONTROL = "\uE009";
 const TAB = "\uE004";
-const HARNESS_VERSION = "0.1.0";
+const HARNESS_VERSION = "0.2.0";
 
 function parseArgs(argv) {
   const parsed = {
@@ -795,7 +795,85 @@ function evaluateRequiredChecks(page, noCss, focus, clicked, contrast) {
   return checks;
 }
 
-async function runScheme(config, scheme, fixtureUrl, outputDir) {
+async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme) {
+  const viewports = [];
+  let styles = null;
+  for (const width of [1280, 375, 320]) {
+    await setWindow(config, sessionId, width, 900);
+    await navigate(config, sessionId, boundaryUrl);
+    const observation = await evaluate(
+      config,
+      sessionId,
+      "return (()=>{" +
+      "const style=(q)=>{const e=document.querySelector(q);if(!e)return null;const s=getComputedStyle(e);return {gradient:s.backgroundImage,shadow:s.boxShadow,radius:s.borderRadius,cursor:s.cursor};};" +
+      "return {width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,caseCount:document.querySelectorAll('section.boundary').length,buttonCount:document.querySelectorAll('.boundary button').length," +
+      "b1:style('[data-boundary=b1]'),b2:style('[data-boundary=b2]'),b2inner:style('[data-boundary=b2] .nested .nested')," +
+      "goodPrimary:style('.hierarchy-good .primary'),goodSubordinate:style('.hierarchy-good .subordinate'),badPeers:[...document.querySelectorAll('.hierarchy-bad .peer')].map(e=>{const s=getComputedStyle(e);return {shadow:s.boxShadow,cursor:s.cursor}})," +
+      "negativeExplicit:document.querySelector('#b2').textContent.includes('Deliberately rejected treatment')};" +
+      "})()",
+    );
+    viewports.push({
+      requested: width,
+      observed: observation.width,
+      overflow: observation.overflow,
+      status: Math.abs(width - observation.width) > 2 ? "unsupported" : observation.overflow ? "fail" : "pass",
+    });
+    if (width === 1280) styles = observation;
+  }
+  await setWindow(config, sessionId, 1280, 900);
+  await navigate(config, sessionId, boundaryUrl);
+  const imagePath = path.join(outputDir, config.browser + "-" + scheme + "-boundaries.png");
+  await screenshot(config, sessionId, imagePath);
+  const caseScreenshots = [];
+  for (const boundaryId of ["b1", "b2", "b3"]) {
+    await evaluate(
+      config, sessionId,
+      "document.getElementById(arguments[0]).scrollIntoView({block:'start'});",
+      [boundaryId],
+    );
+    const casePath = path.join(outputDir, config.browser + "-" + scheme + "-" + boundaryId + ".png");
+    await screenshot(config, sessionId, casePath);
+    caseScreenshots.push(path.basename(casePath));
+  }
+  const button = await findElement(config, sessionId, ".hierarchy-good button");
+  await command(config, sessionId, "POST", "/element/" + button + "/click", {});
+  let actionWorks = false;
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const actionUrl = await command(config, sessionId, "GET", "/url");
+    if (String(actionUrl).endsWith("#decision")) {
+      actionWorks = true;
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+
+  const checks = [
+    result("B1 bounded tint and elevation",
+      Boolean(styles?.b1?.gradient && styles.b1.gradient !== "none" && styles.b1.shadow !== "none") ? "pass" : "fail",
+      styles?.b1,"proposal-composition"),
+    result("B2 explicitly rejected nested stack",
+      styles?.negativeExplicit && styles.caseCount === 3 &&
+      styles.b2.shadow !== "none" && styles.b2inner.shadow !== "none" &&
+      styles.b2inner.radius !== "0px" ? "pass" : "fail",
+      {outside:styles?.b2,inside:styles?.b2inner,negativeLabel:styles?.negativeExplicit},"proposal-composition"),
+    result("B3 relative elevation and static affordance",
+      styles?.goodPrimary?.shadow !== "none" &&
+      styles.goodSubordinate.shadow.includes("inset") &&
+      styles.goodSubordinate.cursor !== "pointer" &&
+      styles.badPeers?.length === 2 &&
+      styles.badPeers[0].shadow !== "none" &&
+      styles.badPeers[0].shadow === styles.badPeers[1].shadow &&
+      styles.badPeers.every(x=>x.cursor !== "pointer") ? "pass" : "fail",
+      {primary:styles?.goodPrimary,subordinate:styles?.goodSubordinate,ambiguousPeers:styles?.badPeers},"proposal-composition"),
+    result("B3 native button navigation",actionWorks ? "pass" : "fail",actionWorks,"accepted-accessibility"),
+  ];
+  for (const viewport of viewports) {
+    checks.push(result("B1-B3 reflow " + viewport.requested + "px",viewport.status,viewport,"accepted-accessibility"));
+  }
+  return {styles,viewports,checks,screenshot:path.basename(imagePath),caseScreenshots,humanReviewRequired:true};
+}
+
+async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
   const session = await createSession(config, scheme);
   const sessionId = session.sessionId;
   try {
@@ -926,6 +1004,8 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
     await navigate(config, sessionId, fixtureUrl);
     const imagePath = path.join(outputDir, config.browser + "-" + scheme + ".png");
     await screenshot(config, sessionId, imagePath);
+    const boundary = await inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme);
+    checks.push(...boundary.checks);
 
     return {
       scheme,
@@ -945,6 +1025,7 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
       contrast,
       performance: perf,
       screenshot: path.basename(imagePath),
+      boundary,
       checks,
     };
   } finally {
@@ -952,11 +1033,11 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
   }
 }
 
-async function runBrowser(browser, fixtureUrl, outputDir) {
+async function runBrowser(browser, fixtureUrl, boundaryUrl, outputDir) {
   return withDriver(browser, async (config) => {
     const schemes = [];
     for (const scheme of ["light", "dark"]) {
-      schemes.push(await runScheme(config, scheme, fixtureUrl, outputDir));
+      schemes.push(await runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir));
     }
     return { browser, schemes };
   });
@@ -969,6 +1050,8 @@ function markdown(report) {
     "- Fixture commit candidate: " + (report.source.commit || "unknown"),
     "- Fixture Git blob: " + report.source.gitBlobSha,
     "- Fixture SHA-256: " + report.source.sha256,
+    "- Boundary fixture Git blob: " + (report.source.boundary?.gitBlobSha || "missing"),
+    "- Boundary fixture SHA-256: " + (report.source.boundary?.sha256 || "missing"),
     "- Generated: " + report.generatedAt,
     "- Harness version: " + report.harnessVersion,
     "- Browsers completed: " + report.summary.browserCount,
@@ -995,7 +1078,9 @@ function markdown(report) {
       for (const check of scheme.checks) {
         lines.push("| " + check.name + " | " + check.status + " | " + check.authority + " |");
       }
-      lines.push("");
+      lines.push("", "- Boundary screenshot: " + scheme.boundary.screenshot,
+        "- Individual boundary screenshots: " + scheme.boundary.caseScreenshots.join(", "),
+        "- B1/B2/B3: automated fixture checks only; **human hierarchy judgement not complete**.", "");
     }
   }
   lines.push(
@@ -1029,6 +1114,8 @@ async function main() {
   const styleMatch = fixtureText.match(/<style>([\s\S]*?)<\/style>/i);
   if (!styleMatch) throw new Error("Fixture does not contain an inline style block");
   const css = styleMatch[1];
+  const boundaryFile = path.join(root, "docs/examples/dimensional-utility-boundaries.html");
+  const boundaryBytes = await fs.readFile(boundaryFile);
 
   const source = {
     path: path.relative(root, fixture),
@@ -1036,19 +1123,27 @@ async function main() {
     workflowCommit: process.env.GITHUB_SHA || null,
     gitBlobSha: gitBlobSha(fixtureBytes),
     sha256: sha256(fixtureBytes),
+    boundary: {
+      path: path.relative(root, boundaryFile),
+      gitBlobSha: gitBlobSha(boundaryBytes),
+      sha256: sha256(boundaryBytes),
+    },
   };
   const size = {
     htmlBytes: fixtureBytes.length,
     htmlGzipBytes: zlib.gzipSync(fixtureBytes).length,
+    boundaryHtmlBytes: boundaryBytes.length,
+    boundaryHtmlGzipBytes: zlib.gzipSync(boundaryBytes).length,
     ...dimensionalRuleBytes(css),
   };
   const fixtureUrl = pathToFileURL(fixture).href;
+  const boundaryUrl = pathToFileURL(boundaryFile).href;
   const browsers = [];
   const harnessFailures = [];
 
   for (const browser of ["chromium", "firefox"]) {
     try {
-      browsers.push(await runBrowser(browser, fixtureUrl, outputDir));
+      browsers.push(await runBrowser(browser, fixtureUrl, boundaryUrl, outputDir));
     } catch (error) {
       harnessFailures.push({
         browser,

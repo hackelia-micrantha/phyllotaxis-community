@@ -17,7 +17,7 @@ All variants use the **same semantic content, controls, reading order, and grid 
 | F4 inset | data/code well within ordinary document flow | correct contrast and visible boundaries |
 | F5 accent-edge | left-edge mark on heading/callout | semantics and hierarchy still clear without color or CSS |
 
-The initial F0–F5 reference isolates individual treatments so each variant can be compared against the flat composition. **Isolation does not validate stacking or relative elevation.** The following additional boundary cases must be tested before an RFC-0008 decision treats dimensional restraint as validated:
+The F0–F5 reference isolates individual treatments so each variant can be compared against the flat composition. **Isolation does not validate stacking or relative elevation.** A [separate B1–B3 browser fixture](../examples/dimensional-utility-boundaries.html) now illustrates the combined, negative, and relative-elevation cases below. Automated structure and presentation checks are evidence of a reproducible comparison only, **not proof of a good qualitative hierarchy**; a human review remains mandatory before RFC acceptance:
 
 | Boundary case | Comparison | Required conclusion |
 | --- | --- | --- |
@@ -25,7 +25,7 @@ The initial F0–F5 reference isolates individual treatments so each variant can
 | B2 negative over-stacking | Multiple nested raised panels with strong gloss, oversized radius, and overlapping shadows | Record a rejected example and why hierarchy/readability deteriorates; this is a negative fixture, **not** recommended styling |
 | B3 relative elevation | Raised actionable region adjacent to inset/static region, then two equally raised siblings | Verify which surface appears actionable/primary; avoid misleading elevation hierarchy |
 
-B1–B3 are **specified but not implemented or passed** by the present F0–F5 browser harness. Do not close that evidence gap by extrapolating single-treatment results. Exact hue, decorative botanical forms, and brand glyphs remain product-owned.
+B1–B3 are separate, non-normative candidate/negative fixtures tested by the public browser harness. Passing structural/style/reflow checks does **not** constitute a human hierarchy judgement or endorsement of B2/B3's ambiguous comparison. Unsupported browser conditions and judgement gaps remain open. Exact hue, decorative botanical forms, and brand glyphs remain product-owned.
 
 ## Consumer evidence mapping
 
