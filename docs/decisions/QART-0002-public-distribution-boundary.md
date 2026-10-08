@@ -39,7 +39,7 @@ Trade-offs:
 
 ### B — Publish the JavaScript UI/runtime package
 
-Publish an npm-compatible `@hackelia-micrantha/phyllotaxis` package containing the runtime/library surface.
+Publish an npm-compatible `@micrantha/phyllotaxis` package containing the runtime/library surface.
 
 Advantages:
 
