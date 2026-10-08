@@ -1,6 +1,6 @@
 # Phyllotaxis visual directive
 
-Status: **Accepted**
+Status: **Accepted baseline; dimensional extension proposed in ADR-0004**
 
 ## Goal
 
@@ -42,7 +42,7 @@ Avoid by default:
 - hidden navigation, icon-only controls, or styling that obscures native affordances;
 - visual complexity introduced only to make the interface appear contemporary.
 
-These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent deviations should be considered for a named semantic profile rather than accumulated as local exceptions.
+These are defaults, not absolute prohibitions. A deviation should correspond to a concrete semantic, usability, accessibility, editorial, or product requirement. Repeated coherent treatments should first be assessed against the bounded Utility vocabulary. A distinct semantic profile requires a different content/task model, not merely a richer material treatment.
 
 ## Interaction motion
 
@@ -57,13 +57,13 @@ The bounded cross-profile rules are defined in [Interaction motion](interaction-
 - `prefers-reduced-motion: reduce` removes non-essential movement while preserving visible state/focus feedback;
 - no new generic Lamina Card/Pill/Badge/Tag API or stable Chroma v1 motion roles are implied.
 
-Utility may use restrained flat section rhythm rather than monochrome presentation. Low-chroma adjacent surfaces can distinguish information regions while preserving square/simple borders, compact spacing, normal flow, and no elevation. Exact palettes remain consumer-owned unless separately promoted into Chroma.
+Utility may use restrained flat section rhythm by default. Selective dimensional treatments may also distinguish important interactive controls and bounded information regions, provided content hierarchy remains document-first and repeated card elevation does not replace shared structural grouping. Exact palettes remain consumer-owned unless separately promoted into Chroma.
 
 ## Dimensional Utility surface vocabulary
 
 A restrained late-1990s software/web-inspired material language is permitted within Utility. The aesthetic is **1990s in character, not a literal reconstruction of historical CSS/browser capability**. Consumer evidence includes the Digitalis and Envuscator community-site presentations: tinted gradient panels, rounded pills, diffuse shadows, clearly bounded controls, occasional botanical forms, and left-accent information groups. Their CSS and branding are evidence, not public API.
 
-Proposed semantic surface roles for Chroma evaluation (not stable token identifiers until contracted and versioned):
+Candidate descriptive treatments for consumer evaluation (not stable token identifiers or implied Chroma exports):
 
 - **base**: plain document/paper surface with no elevation;
 - **raised**: bounded panel with a shallow shadow and clear edge;
@@ -140,9 +140,9 @@ Editorial may justify reusable article/media semantics and richer presentation, 
 
 Migration tooling should prefer removing accidental visual complexity over mechanically reproducing it. Existing decoration is not automatically part of the target design contract.
 
-Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API. Profile-aware advisory checks may flag mechanically detectable Utility anti-patterns such as external webfonts, decorative gradients, blur/glass treatment, broad elevation, repeated large-radius content containers, and ornamental reveal motion; heuristic findings must not rewrite code automatically.
+Cambium may classify an existing pattern as Utility, Editorial, or product-owned styling, but migration must not silently convert site-specific CSS into stable Phyllotaxis API. Profile-aware advisory checks may flag external webfonts, indiscriminate decorative gradients, blur/glass that obscures content, broad elevation, repeated large-radius content containers, and ornamental reveal motion. Gradients and shadows alone are not conformance failures; heuristic findings must not rewrite code automatically.
 
-See [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md) and [Utility consumer evidence](utility-evidence.md) for the accepted decision and its evidence.
+See [ADR-0003](../decisions/ADR-0003-utility-composition-patterns.md), [proposed ADR-0004](../decisions/ADR-0004-dimensional-utility-materials.md), and [Utility consumer evidence](utility-evidence.md) for the accepted decision and its evidence.
 
 ## Non-goals
 
