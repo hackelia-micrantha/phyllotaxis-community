@@ -8,6 +8,7 @@ on:
       - "flake.lock"
       - "tools/dimensional-utility-evidence.mjs"
       - "docs/examples/dimensional-utility-reference.html"
+      - "docs/examples/dimensional-utility-boundaries.html"
       - "docs/architecture/dimensional-utility-*.md"
   push:
     branches:
@@ -18,6 +19,7 @@ on:
       - "flake.lock"
       - "tools/dimensional-utility-evidence.mjs"
       - "docs/examples/dimensional-utility-reference.html"
+      - "docs/examples/dimensional-utility-boundaries.html"
       - "docs/architecture/dimensional-utility-*.md"
 
 permissions:
