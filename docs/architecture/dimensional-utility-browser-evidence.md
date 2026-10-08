@@ -1,33 +1,32 @@
-# Dimensional Utility — browser evidence (Chromium)
+# Dimensional Utility — preliminary local browser observations
 
-- **Evidence status:** Observed for the standalone reference fixture; not comprehensive cross-browser or production conformance.
-- **Test date:** 2026-10-07
-- **Source:** `docs/examples/dimensional-utility-reference.html`, Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`
-- **Browser:** Chromium `144.0.7559.96`, Linux headless
-- **Run context:** Local isolated browser evaluation of the *exact Git blob*, not a live consumer deployment
-- **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md)
-- **Fixture plan:** [F0–F5](dimensional-utility-fixtures.md)
+- **Evidence status:** Unverified local report; **not reproducible/auditable from this repository** because no test harness, command transcript or captured browser artifacts were committed.
+- **Report date:** 2026-10-07
+- **Input:** [standalone HTML reference fixture](../examples/dimensional-utility-reference.html), Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`.
+- **Reported environment:** Chromium `144.0.7559.96`, Linux headless.
+- **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [proposed RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md).
+- **Validation plan:** [F0–F5](dimensional-utility-fixtures.md).
 
-## Results
+## What was reported
 
-The final fixture passed **58/58 executable browser checks** (52 main checks plus 6 extended checks).
+A previous local session **reported 58/58 passing checks** (52 primary and 6 extended) against the specified HTML blob. **This count is an unverified account of local work, not independently reproducible test evidence.** No executable browser test files, captured assertions or step-by-step logs are included in the public repository. It must **not** be used to claim that the acceptance matrix has passed, that an accessibility certification exists or that the proposed RFC is accepted.
 
-| Gate | Observed result | Scope and caveats |
+| Area | Reported local observation | Verification still required |
 | --- | --- | --- |
-| Layout | Pass | 1280px desktop, 375px narrow, light and dark; simulated 200% CSS zoom at 375px and 320px; no horizontal overflow after responsive patch |
-| Accessible controls | Pass | Six named links and six named buttons exposed in Chromium accessibility tree in light/dark |
-| Keyboard focus | Pass | `:focus-visible` outline was present for representative link and button in all tested viewport/scheme conditions |
-| Forced-colors | Pass | Chromium emulation preserved visible boundaries and button focus outline; not independently verified on Windows High Contrast |
-| Reduced-motion | Pass | Browser media emulation active; no static card interactions/motion |
-| No JavaScript | Pass | Sections and controls present; link and form-button navigation to reference anchor both activated |
-| CSS disabled | Pass | All six headings, controls and textual status labels remained in native document order |
-| Contrast | Pass on sampled role combinations | Foreground versus flat/gradient endpoint colors, rather than screenshot-wide pixel/AA analysis |
-| Reference CSS footprint | 2,585 B plain / 1,113 B gzip | Standalone inline fixture styles only; not a product CSS delta or production render benchmark |
-| HTML fixture footprint | 5,042 B plain / 1,775 B gzip | Entire standalone source, not deployed transfer size |
+| Layout/reflow | Desktop 1280px and narrow 375px; simulated 2× CSS zoom at 320px after reflow correction | Reproduce with browser zoom, assistive magnification and alternative font metrics |
+| Link/button semantics and focus | Named links/buttons and focus outline appeared | Publicly runnable keyboard and accessibility-tree assertions |
+| Forced-colors | Chromium emulation showed bounded controls and focus | Real Windows High Contrast and other browser implementations |
+| Reduced motion | No movement on static panels | Reproducible media-emulation test |
+| Without JavaScript/CSS | Content order and anchor navigation appeared intact | Reproducible navigation and progressive-enhancement checks |
+| Contrast | Sampled foreground/background pairs reportedly exceeded 4.5:1 | Recompute exact gradient extrema and non-text/focus states |
+| Source CSS size | Reported 2,585 B plain and 1,113 B gzip | Recompute against exact blob and measure production CSS separately |
+| HTML size | Reported 5,042 B plain and 1,775 B gzip | Recompute against exact blob |
 
-### Sampled text contrast ratios (WCAG formula)
+## Reported contrast samples — unverified
 
-| Combination | Light | Dark |
+These numbers were reported from a local WCAG-formula calculation, not captured in a committed automated test. They are useful as targets to independently recompute, not as proven conformance.
+
+| Pair | Light | Dark |
 | --- | ---: | ---: |
 | Main ink / paper | 13.193 | 14.803 |
 | Link / paper | 6.447 | 9.306 |
@@ -38,22 +37,20 @@ The final fixture passed **58/58 executable browser checks** (52 main checks plu
 | Main ink / inset | 11.934 | 15.606 |
 | Muted / paper | 6.846 | 11.741 |
 
-All recorded comparisons exceed 4.5:1, but this is not a full automated WCAG audit. Gradient extrema were evaluated using candidate endpoint colors, not every antialiased rendered pixel.
+## Previously reported correction
 
-## Finding and correction
+The local session reportedly found horizontal overflow at a 320px viewport with `zoom:2` and subsequently changed fixture padding and `overflow-wrap:anywhere` for headings and links. That **source change exists in the committed HTML** and can be independently inspected. Its behavior still needs a reproducible check. CSS `zoom` is only a stress-test approximation, not native browser zoom.
 
-A more aggressive `320px` viewport with `2×` document zoom originally caused horizontal overflow and a cramped inset chip. The reference fixture was updated with tighter narrow-screen spacing plus `overflow-wrap:anywhere` for headings and links. The final exact Git blob was independently matched by Git's blob hash before rerunning; the 320px/2× scenario then passed.
+## Reproduction plan — not yet executed in public CI
 
-**Important distinction:** CSS `zoom:2` is a layout stress test and only approximates browser zoom. Actual browser zoom, mobile text enlargement, alternative font metrics, and assistive technologies still require follow-up.
-
-## Remaining gates
-
-- Evaluate the same representative composition in at least one other browser engine and on a real mobile/desktop accessibility environment.
-- Add disabled/pressed state, non-text contrast and gradient-overlay checks beyond this small standalone example.
-- Capture durable screenshots and browser details as artifacts in the private implementation validation flow when available; this report does not embed image artifacts.
-- Benchmark compiled CSS / style recalculation cost against the flat consumer implementation before promoting stable Chroma roles.
-- Receive review and acceptance of RFC-0008 through a future numbered ADR, followed by any necessary visual-directive update, before treating dimensional roles as normative.
+1. Obtain the HTML fixture from the reviewed commit and verify the source blob with `git hash-object`.
+2. Record browser binary/build, OS, test harness version, viewport, zoom method, color scheme, reduced-motion and forced-colors configuration.
+3. Inspect each F0–F5 variant at desktop, 375px and 320px; test actual browser zoom at 100% and 200%, keyboard focus, no-JS/no-CSS reading order, anchor/button navigation, and hover/pressed/disabled semantics as applicable.
+4. Capture machine-readable assertions, console output and screenshot references for all tested states, including failures and rerun details.
+5. Calculate contrast for text, links, focus indicators and interactive boundaries at gradient extrema; record relevant CSS/HTML byte counts.
+6. Re-run in at least one additional browser engine and real assistive-technology environment where available. Measure compiled consumer CSS and rendering performance against the accepted flat Utility baseline before any token or component promotion.
+7. Publish the runnable harness and durable results through an appropriate public evidence surface or link immutable, reviewable artifacts; only then change the evidence status to validated.
 
 ## Conclusion
 
-The browser evidence **supports considering** carefully bounded dimensional material as **consumer-owned, non-normative Utility presentation** while keeping ADR-0003's flat-first baseline. It does **not yet support mandatory tokens, new generic components, unreviewed production migrations or claims of cross-browser conformance**.
+This document records **preliminary observations and open verification work**. The public fixture is inspectable and the consumer style sources are pinned in the [QART](../decisions/QART-0008-dimensional-utility-materials.md), but current evidence alone does not establish browser conformance, a production performance win or acceptance of RFC-0008. The accepted ADR-0003 flat Utility guidance remains authoritative.
