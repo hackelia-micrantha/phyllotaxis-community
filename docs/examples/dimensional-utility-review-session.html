@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phyllotaxis — independent material review session</title>
+<style>
+:root{color-scheme:light dark;--paper:#f6f5f0;--ink:#1c2d2a;--raised:#fff;--tint:#e4f0e9;--well:#e6ebe7;--line:#738a7e;--accent:#27634f;--focus:#195cb5;--shadow:rgb(22 49 37 / .13)}
+@media(prefers-color-scheme:dark){:root{--paper:#182420;--ink:#f3f7f4;--raised:#263b32;--tint:#30463b;--well:#112019;--line:#87a897;--accent:#8ed4b2;--focus:#a9c9ff;--shadow:rgb(0 0 0 / .32)}}
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,sans-serif}
+main{width:min(65rem,calc(100% - 2rem));margin:2rem auto 4rem}h1,h2,h3,p,label{overflow-wrap:anywhere}h1{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.2}
+h2{font-size:1.45rem}h3{font-size:1.05rem}p{margin:.6rem 0 1rem}small,.subtle{font-size:.9rem}
+a{color:var(--accent)}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+fieldset{border:1px solid var(--line);padding:1rem;margin:1rem 0}legend{font-weight:700;padding:0 .25rem}
+label{display:block;margin:.7rem 0 .3rem}input,textarea,button{font:inherit}input[type=text],textarea,select{width:100%;max-width:100%;border:1px solid var(--line);background:var(--raised);color:var(--ink);padding:.5rem}textarea{min-height:5rem;resize:vertical}
+button,.action{color:var(--ink);background:var(--raised);border:1px solid var(--line);padding:.4rem .8rem;display:inline-block;text-decoration:none;cursor:pointer}
+button:hover,.action:hover{border-color:var(--accent);text-decoration:underline}
+button:active,.action:active{box-shadow:inset 0 2px 5px var(--shadow)}
+.variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem;align-items:stretch;margin:1rem 0}
+.variant{padding:1rem;min-width:0;border:1px solid var(--line);background:var(--paper)}
+.variant h3{margin:0 0 .65rem}.variant .description{min-height:4rem}.status{font-weight:700;display:inline-block;padding:.15rem .5rem;border:1px solid var(--line)}
+.variant[data-condition=bounded]{background:linear-gradient(130deg,var(--raised),var(--tint));border-radius:.55rem;box-shadow:0 5px 12px var(--shadow)}
+.variant[data-condition=stacked]{border:3px double var(--line);border-radius:1.4rem;background:linear-gradient(130deg,var(--raised),var(--tint));box-shadow:0 13px 24px var(--shadow),inset 0 3px 0 var(--raised),inset 0 0 0 8px var(--tint);outline:2px solid var(--line);outline-offset:3px}
+.variant[data-condition=stacked] .status{border-radius:999px;box-shadow:0 4px 8px var(--shadow);background:linear-gradient(180deg,var(--raised),var(--tint))}
+.hierarchy .variant{display:flex;flex-direction:column}.hierarchy .region{border:1px solid var(--line);padding:.65rem;margin:.35rem 0;min-width:0}
+.hierarchy [data-condition=differentiated] .region[data-role=action]{background:var(--raised);box-shadow:0 5px 12px var(--shadow);border-radius:.4rem}
+.hierarchy [data-condition=differentiated] .region[data-role=read-only]{background:var(--well);box-shadow:inset 0 3px 6px var(--shadow)}
+.hierarchy [data-condition=equal] .region{background:var(--raised);border-radius:.7rem;box-shadow:0 8px 16px var(--shadow)}
+.hierarchy .action{margin-top:.3rem}.code{font-family:ui-monospace,monospace}.muted{opacity:.86}
+.instructions{border-inline-start:3px solid var(--line);padding-inline-start:.85rem}
+.questions{margin-top:1.4rem} .inline-choice{display:flex;gap:1rem;flex-wrap:wrap}
+.inline-choice label{display:inline-flex;align-items:center;gap:.4rem}
+#result{white-space:pre-wrap;overflow-wrap:anywhere;max-height:14rem;overflow:auto}
+@media(forced-colors:active){.variant,.region,.status,button,.action,textarea,input{border-color:CanvasText!important;box-shadow:none!important;outline-color:CanvasText!important;background:Canvas!important;color:CanvasText!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>Utility material review session</h1>
+<p class="subtle">Independent reviewer packet · non-normative research · no account, telemetry, network upload, or saved browser state.</p>
+<p class="instructions">Review the examples <strong>before</strong> reading the design rationale. The options use matched text and interactive semantics. Record which information stands out, which regions seem actionable, and whether styling helps or distracts. There are no preferred answers. This page runs locally; you decide whether to share the exported response.</p>
+<p>The examples below are <strong>controlled re-presentations</strong> with matched content and semantics, not pixel-for-pixel copies of the project's original reference fixtures. Source details and the intended comparison rationale are available to the study owner <strong>after</strong> the exercises.</p>
+<form id="review">
+<fieldset><legend>Environment and context</legend>
+<label for="environment">Browser/version, device and viewport (no personal identifiers)</label><input id="environment" name="environment" type="text" placeholder="e.g., Firefox, desktop, 375 CSS px">
+<label for="settings">Theme, zoom, text size, keyboard or assistive settings actually tested</label><input id="settings" name="settings" type="text" placeholder="List what you used; mark untested conditions as untested">
+<label for="reviewed-commit">Pinned public repository commit of this review packet (provided by study owner)</label><input id="reviewed-commit" name="reviewedCommit" type="text" placeholder="Full commit SHA; leave blank if not known">
+</fieldset>
+<section aria-labelledby="scan-title">
+<h2 id="scan-title">Exercise 1 — find deployment status</h2>
+<p>Inspect each option without clicking. Which one helps you find the status fastest? What competes with the information?</p>
+<div id="scanning" class="variants">
+<section class="variant" data-condition="flat"><h3>Option 1</h3><p class="description">Deployment readiness: review the published contract before changing a consumer.</p><p><span class="status">Awaiting review</span></p><a href="#end">Read decision requirements</a></section>
+<section class="variant" data-condition="bounded"><h3>Option 2</h3><p class="description">Deployment readiness: review the published contract before changing a consumer.</p><p><span class="status">Awaiting review</span></p><a href="#end">Read decision requirements</a></section>
+<section class="variant" data-condition="stacked"><h3>Option 3</h3><p class="description">Deployment readiness: review the published contract before changing a consumer.</p><p><span class="status">Awaiting review</span></p><a href="#end">Read decision requirements</a></section>
+</div>
+<label for="scan-choice">Which option communicates the status most clearly, or is there no difference?</label>
+<select id="scan-choice" name="scanChoice"><option value="">Not selected</option><option value="1">Option 1</option><option value="2">Option 2</option><option value="3">Option 3</option><option value="equal">No meaningful difference</option></select>
+<label for="scan-notes">What helped or distracted you? Which elements appeared interactive?</label><textarea id="scan-notes" name="scanNotes"></textarea>
+</section>
+<section aria-labelledby="aff-title">
+<h2 id="aff-title">Exercise 2 — decide what is clickable</h2>
+<p>Compare both options. Before trying them, point out what you expect to click to inspect the contract. Is the read-only status area clearly non-interactive?</p>
+<div id="hierarchy" class="variants hierarchy">
+<section class="variant" data-condition="differentiated"><h3>Option 1</h3><div class="region" data-role="action"><strong>Contract action</strong><p>Inspect the published terms.</p><a href="#end" class="action">Inspect</a></div><div class="region" data-role="read-only"><strong>Read-only status</strong><p class="code">Status: pending</p></div></section>
+<section class="variant" data-condition="equal"><h3>Option 2</h3><div class="region" data-role="action"><strong>Contract action</strong><p>Inspect the published terms.</p><a href="#end" class="action">Inspect</a></div><div class="region" data-role="read-only"><strong>Read-only status</strong><p class="code">Status: pending</p></div></section>
+</div>
+<label for="aff-choice">Which option makes actionable versus read-only regions clearer?</label>
+<select id="aff-choice" name="affChoice"><option value="">Not selected</option><option value="1">Option 1</option><option value="2">Option 2</option><option value="equal">No meaningful difference</option></select>
+<label for="aff-notes">Record expected clickable areas, confusion, and any differences after keyboard navigation.</label><textarea id="aff-notes" name="affNotes"></textarea>
+</section>
+<fieldset class="questions"><legend>Review completeness</legend>
+<p>Only tick conditions you actually exercised.</p>
+<div class="inline-choice"><label><input name="light" type="checkbox">Light scheme</label><label><input name="dark" type="checkbox">Dark scheme</label><label><input name="narrow" type="checkbox">Narrow viewport</label><label><input name="keyboard" type="checkbox">Keyboard</label><label><input name="zoom" type="checkbox">Real browser zoom</label><label><input name="textresize" type="checkbox">Text-only resize</label><label><input name="contrast" type="checkbox">High contrast</label><label><input name="assistive" type="checkbox">Assistive technology</label></div>
+<label for="limits">Untested conditions, limitations, or accessibility concerns</label><textarea id="limits" name="limitations"></textarea>
+<label for="recommendation">Overall findings and proposed follow-up (optional)</label><textarea id="recommendation" name="recommendation"></textarea>
+</fieldset>
+<p id="end"><strong>Complete the review locally.</strong> Export the results and send them to the study owner for verification before any GitHub issue is updated. The export never posts to a server. For a no-JavaScript session, manually copy responses from the form to the <a href="../architecture/dimensional-utility-human-review-worksheet.md">worksheet</a>.</p>
+<button id="export" type="button">Download local JSON review</button>
+<p id="notice" aria-live="polite" role="status"></p>
+</form>
+<details><summary>For study owners only: interpretation and ethics</summary><p>Source context: <a href="./dimensional-utility-reference.html">canonical F0–F5 reference</a> and <a href="./dimensional-utility-boundaries.html">canonical B1–B3 boundary examples</a>.</p><p>The scanning cases correspond to flat (F0-like), bounded (B1-like) and intentionally stacked (B2-like) presentations. The affordance cases compare differentiated and equal-elevation B3-like patterns. Options are shuffled locally when JavaScript runs, and exported response data records the displayed order. The materials are not canonical fixture re-renders, not a representative usability study, and not an accessibility conformance audit. Do not count an assistant-generated response as independent human evidence. Keep reviewer identities out of public GitHub issues.</p></details>
+</main>
+<script>
+(() => {
+"use strict";
+const orders = {};
+for (const [key,id] of [["scan","scanning"],["affordance","hierarchy"]]) {
+  const parent = document.getElementById(id);
+  const children = [...parent.querySelectorAll(":scope > .variant")];
+  for (let i=children.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [children[i],children[j]]=[children[j],children[i]];
+  }
+  children.forEach((child,i)=>{child.querySelector("h3").textContent="Option "+(i+1);parent.appendChild(child);});
+  orders[key]=children.map(el=>el.dataset.condition);
+}
+document.getElementById("export").addEventListener("click", () => {
+  const form=document.getElementById("review");
+  const data=new FormData(form);
+  const result={
+    schemaVersion:1,
+    recordType:"independent-review-observation",
+    source:"phyllotaxis-community/docs/examples/dimensional-utility-review-session.html",
+    protocolVersion:"1.0.0",
+    reviewedCommit:String(data.get("reviewedCommit")||"").trim()||null,
+    completedAt:new Date().toISOString(),
+    presentationOrder:orders,
+    environment:String(data.get("environment")||"").trim(),
+    settings:String(data.get("settings")||"").trim(),
+    scan:{choice:data.get("scanChoice")||null,notes:String(data.get("scanNotes")||"").trim()},
+    affordance:{choice:data.get("affChoice")||null,notes:String(data.get("affNotes")||"").trim()},
+    exercised:["light","dark","narrow","keyboard","zoom","textresize","contrast","assistive"].filter(k=>data.get(k)!=null),
+    limitations:String(data.get("limitations")||"").trim(),
+    recommendation:String(data.get("recommendation")||"").trim(),
+    approvalStatus:"unverified-human-response"
+  };
+  const json=JSON.stringify(result,null,2)+"\n";
+  const url=URL.createObjectURL(new Blob([json],{type:"application/json"}));
+  const a=document.createElement("a");
+  a.href=url;a.download="phyllotaxis-utility-review.json";document.body.appendChild(a);a.click();a.remove();
+  window.setTimeout(()=>URL.revokeObjectURL(url),10000);
+  document.getElementById("notice").textContent="Review JSON created locally. No response was sent or approved.";
+});
+})();
+</script>
+</body>
+</html>
