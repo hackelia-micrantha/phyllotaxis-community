@@ -2,7 +2,7 @@
 
 Status: **pre-release public reference gallery**. The site is not the canonical design authority and is not a substitute for a published Phyllotaxis package.
 
-The site includes **only** the reviewed landing page and the two existing synthetic reference fixtures. The first is a Utility contract illustration. The second is an RFC-0008 comparison, **not** an accepted visual profile or implementation guarantee. None of the styling here is a Chroma token contract or a private implementation copy.
+The site includes **only** the reviewed landing page and the two existing synthetic reference fixtures. The first is a Utility contract illustration. The second is an RFC-0008 comparison under [ADR-0008's accepted, non-binding advisory review guidance](https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/docs/decisions/ADR-0008-dimensional-utility-advisory-guidance.md), **not** an accepted visual profile, a validated example, or an implementation guarantee. None of the styling here is a Chroma token contract or a private implementation copy.
 
 ## Build and verify
 
@@ -20,7 +20,7 @@ The flake constructs an allowlisted static directory with `index.html`, `site.cs
 
 ## Deployment
 
-After review and an authorized merge, an isolated GitHub Actions workflow publishes only the flake-built output from `main`. A repo administrator must set **Settings → Pages → Build and deployment → Source: GitHub Actions** if not already configured. The workflow cannot enable Pages or change repository settings.
+After the required merge-gate disposition and an explicitly authorized merge, an isolated GitHub Actions workflow publishes only the flake-built output from `main`. A repo administrator must set **Settings → Pages → Build and deployment → Source: GitHub Actions** if not already configured. The workflow cannot enable Pages or change repository settings.
 
 Expected project URL, **not confirmed live until successfully deployed and checked**:
 
