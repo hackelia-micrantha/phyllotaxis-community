@@ -8,7 +8,7 @@
 Does the flat-first Utility guidance in ADR-0003 unnecessarily exclude a coherent restrained 1990s software-inspired material treatment observed in Digitalis and Envuscator consumers?
 
 ## Evidence
-Current public consumer styles include tinted gradient regions, softly shadowed panels, bounded rounded controls, pills and left-edge emphasis. See `digitalis-community/web/styles.css`, `envuscator-community/web/styles.css` and `envuscator-community/web/micrantha.css`. These are examples rather than invariant visual tokens or proof that every effect is needed.
+Current public consumer styles include tinted gradient regions, softly shadowed panels, bounded rounded controls, pills and left-edge emphasis. See pinned, publicly inspectable source files: [Digitalis CSS](https://github.com/hackelia-micrantha/digitalis-community/blob/c03570962a89f5d77e37ff5e0a7b37a514f59a27/web/styles.css), [Envuscator CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/styles.css), and [Envuscator Micrantha CSS](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/micrantha.css). Source revisions and content were verified at the linked commits. These are examples rather than invariant visual tokens or proof that every effect is needed.
 
 ## Alternatives and trade-offs
 1. **Preserve strict flat-first guidance only.** Lowest API/design risk, but rejects legitimate consumer variation.
