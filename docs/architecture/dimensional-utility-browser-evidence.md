@@ -46,12 +46,34 @@ The local session reportedly found horizontal overflow at a 320px viewport with 
 
 The reference fixture now uses a zero-gap, contiguous border-sharing grid, square F0 control and square status/button boundaries, reserving rounded and elevated treatments for variants. A subsequent local Chromium exercise reported 66/66 checks against the exact updated Git blob, including computed-style differentiation, light/dark, narrow layout, CSS zoom stress, focus and forced-colors emulation. **Those checks and screenshots remain local-only and are not a public reproducible test outcome**; the reproduction gates below remain open.
 
-## Reproduction plan — not yet executed in public CI
+## Reproducible public harness
 
-1. Obtain the HTML fixture from the reviewed commit and verify the source blob with `git hash-object`.
+Issue #57 adds a checked-in, dependency-free Node/WebDriver harness at `tools/dimensional-utility-evidence.mjs` plus a GitHub-hosted browser-evidence workflow.
+
+Reproduce the portable matrix on Linux with the pinned repository flake:
+
+```sh
+nix develop .#browser-evidence --command \
+  node tools/dimensional-utility-evidence.mjs \
+  --output artifacts/dimensional-utility
+```
+
+The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, records the exact fixture Git-blob/SHA-256 identity, browser versions, viewport/reflow checks, semantic/keyboard evidence, light/dark observations, bounded performance samples, source-size deltas, and screenshots. It emits:
+
+- `evidence.json` — versioned machine-readable evidence;
+- `summary.md` — concise reviewer-oriented status;
+- bounded screenshots for each browser/scheme.
+
+Unsupported browser/environment capabilities are emitted as `unsupported`; they are **not** converted into passes. Accessibility and interaction observations exercise the already-accepted accessibility and interaction-motion authorities. RFC-0008-specific interpretation is limited to dimensional composition, stacking/elevation hierarchy, restrained gloss/bevel/inset use, and rendering cost.
+
+Actual browser-level 200% zoom is attempted through browser keyboard shortcuts and verified by observable scale/viewport change. If headless WebDriver does not expose that change, the result remains an explicit evidence gap rather than substituting CSS `zoom` or device-scale emulation.
+
+## Reproduction plan — public harness plus remaining environment gaps
+
+1. Obtain the HTML fixture from the reviewed commit; the harness records both Git-blob identity and SHA-256 before executing checks.
 2. Record browser binary/build, OS, test harness version, viewport, zoom method, color scheme, reduced-motion and forced-colors configuration.
 3. Inspect each F0–F5 variant at desktop, 375px and 320px; test actual browser zoom at 100% and 200%, keyboard focus, no-JS/no-CSS reading order, anchor/button navigation, and hover/pressed/disabled semantics as applicable.
-4. Capture machine-readable assertions, console output and screenshot references for all tested states, including failures and rerun details.
+4. Preserve the generated `evidence.json`, `summary.md`, and bounded screenshots from the exact CI head, including failures and unsupported checks.
 5. Calculate contrast for text, links, focus indicators and interactive boundaries at gradient extrema; record relevant CSS/HTML byte counts.
 6. Re-run in at least one additional browser engine and real assistive-technology environment where available. Measure compiled consumer CSS and rendering performance against the accepted flat Utility baseline before any token or component promotion.
 7. Publish the runnable harness and durable results through an appropriate public evidence surface or link immutable, reviewable artifacts; only then change the evidence status to validated.
