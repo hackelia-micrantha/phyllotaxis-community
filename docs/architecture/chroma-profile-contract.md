@@ -214,7 +214,7 @@ Profile changes semantic visual character; scheme changes light/dark values. Nei
 Implementation exposes:
 
 ```text
-@hackelia-micrantha/phyllotaxis/chroma.css
+@micrantha/phyllotaxis/chroma.css
 ```
 
 No `ThemeProvider`, `ProfileProvider`, hook, context, runtime registry, or JS token object is added. `chroma.css` is a declared side effect and copied by the existing build.
