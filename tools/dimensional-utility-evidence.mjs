@@ -16,6 +16,7 @@ function parseArgs(argv) {
   const parsed = {
     fixture: null,
     output: null,
+    format: "text",
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -23,9 +24,14 @@ function parseArgs(argv) {
       parsed.fixture = argv[++index];
     } else if (arg === "--output") {
       parsed.output = argv[++index];
+    } else if (arg === "--format") {
+      parsed.format = argv[++index];
+      if (!["text", "json"].includes(parsed.format)) {
+        throw new Error("--format must be text or json");
+      }
     } else if (arg === "--help" || arg === "-h") {
       process.stdout.write(
-        "Usage: node tools/dimensional-utility-evidence.mjs [--fixture PATH] [--output DIR]\n",
+        "Usage: node tools/dimensional-utility-evidence.mjs [--fixture PATH] [--output DIR] [--format text|json]\n",
       );
       process.exit(0);
     } else {
@@ -317,71 +323,102 @@ async function attemptBrowserZoom(config, sessionId) {
     sessionId,
     "return {dpr: window.devicePixelRatio, width: window.innerWidth, scale: window.visualViewport ? window.visualViewport.scale : null};",
   );
-  const actions = [];
-  for (let step = 0; step < 5; step += 1) {
-    actions.push(
-      { type: "keyDown", value: CONTROL },
-      { type: "keyDown", value: "+" },
-      { type: "keyUp", value: "+" },
-      { type: "keyUp", value: CONTROL },
-    );
-  }
+  let after = { ...before, overflow: false };
+  let observedFactor = 1;
+  let changed = false;
+
   try {
-    await command(config, sessionId, "POST", "/actions", {
-      actions: [{ type: "key", id: "zoom-keyboard", actions }],
-    });
-    await command(config, sessionId, "DELETE", "/actions");
+    for (let step = 0; step < 8; step += 1) {
+      await command(config, sessionId, "POST", "/actions", {
+        actions: [
+          {
+            type: "key",
+            id: "zoom-keyboard",
+            actions: [
+              { type: "keyDown", value: CONTROL },
+              { type: "keyDown", value: "+" },
+              { type: "keyUp", value: "+" },
+              { type: "keyUp", value: CONTROL },
+            ],
+          },
+        ],
+      });
+      await command(config, sessionId, "DELETE", "/actions");
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      after = await evaluate(
+        config,
+        sessionId,
+        "return {dpr: window.devicePixelRatio, width: window.innerWidth, scale: window.visualViewport ? window.visualViewport.scale : null, overflow: document.documentElement.scrollWidth > window.innerWidth + 1};",
+      );
+
+      const factors = [];
+      if (before.width && after.width) factors.push(before.width / after.width);
+      if (before.dpr && after.dpr) factors.push(after.dpr / before.dpr);
+      if (before.scale && after.scale) factors.push(after.scale / before.scale);
+      observedFactor = Math.max(...factors.filter(Number.isFinite), 1);
+      if (Math.abs(observedFactor - 1) >= 0.05) changed = true;
+      if (observedFactor >= 1.9) break;
+    }
   } catch (error) {
     return {
       status: "unsupported",
       detail: "WebDriver keyboard zoom action failed: " + error.message.split("\n")[0],
       before,
       after: null,
+      observedFactor: null,
     };
-  }
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  const after = await evaluate(
-    config,
-    sessionId,
-    "return {dpr: window.devicePixelRatio, width: window.innerWidth, scale: window.visualViewport ? window.visualViewport.scale : null, overflow: document.documentElement.scrollWidth > window.innerWidth + 1};",
-  );
-  try {
-    await command(config, sessionId, "POST", "/actions", {
-      actions: [
-        {
-          type: "key",
-          id: "zoom-reset",
-          actions: [
-            { type: "keyDown", value: CONTROL },
-            { type: "keyDown", value: "0" },
-            { type: "keyUp", value: "0" },
-            { type: "keyUp", value: CONTROL },
-          ],
-        },
-      ],
-    });
-    await command(config, sessionId, "DELETE", "/actions");
-  } catch {
-    // Session will be discarded after this evidence pass.
+  } finally {
+    try {
+      await command(config, sessionId, "POST", "/actions", {
+        actions: [
+          {
+            type: "key",
+            id: "zoom-reset",
+            actions: [
+              { type: "keyDown", value: CONTROL },
+              { type: "keyDown", value: "0" },
+              { type: "keyUp", value: "0" },
+              { type: "keyUp", value: CONTROL },
+            ],
+          },
+        ],
+      });
+      await command(config, sessionId, "DELETE", "/actions");
+    } catch {
+      // Session will be discarded after this evidence pass.
+    }
   }
 
-  const widthRatio = before.width && after.width ? after.width / before.width : 1;
-  const dprRatio = before.dpr && after.dpr ? after.dpr / before.dpr : 1;
-  const detected = widthRatio <= 0.75 || dprRatio >= 1.5;
-  return detected
-    ? {
-        status: after.overflow ? "fail" : "pass",
-        detail: "Browser zoom shortcut changed page scale; overflow=" + after.overflow,
-        before,
-        after,
-      }
-    : {
-        status: "unsupported",
-        detail:
-          "Headless WebDriver did not expose a browser-level zoom change; this remains an explicit evidence gap.",
-        before,
-        after,
-      };
+  if (!changed) {
+    return {
+      status: "unsupported",
+      detail:
+        "Headless WebDriver did not expose a browser-level zoom change; this remains an explicit evidence gap.",
+      before,
+      after,
+      observedFactor,
+    };
+  }
+
+  const targetReached = observedFactor >= 1.9 && observedFactor <= 2.1;
+  if (!targetReached) {
+    return {
+      status: "fail",
+      detail: "Browser zoom changed but did not reach approximately 200%.",
+      before,
+      after,
+      observedFactor,
+    };
+  }
+
+  return {
+    status: after.overflow ? "fail" : "pass",
+    detail:
+      "Observed browser zoom factor is approximately 200%; overflow=" + after.overflow,
+    before,
+    after,
+    observedFactor,
+  };
 }
 
 async function findElement(config, sessionId, selector) {
@@ -567,8 +604,8 @@ function contrastEvidence(vars) {
     ["focus/raised", vars.focus, vars.raised, 3.0, true],
     ["ink/tint", vars.ink, vars.tint, 4.5, true],
     ["accent/tint", vars.accent, vars.tint, 4.5, true],
-    ["line/paper", vars.line, vars.paper, 3.0, false],
-    ["line/raised", vars.line, vars.raised, 3.0, false],
+    ["line/paper", vars.line, vars.paper, 3.0, true],
+    ["line/raised", vars.line, vars.raised, 3.0, true],
   ];
   return pairs.map(([name, foreground, background, threshold, required]) => {
     const ratio = contrastRatio(foreground, background);
@@ -960,7 +997,27 @@ async function main() {
     JSON.stringify(report, null, 2) + "\n",
   );
   await fs.writeFile(path.join(outputDir, "summary.md"), markdown(report) + "\n");
-  process.stdout.write(JSON.stringify(report.summary) + "\n");
+  const stdoutPayload = {
+    schemaVersion: 1,
+    source: report.source,
+    summary: report.summary,
+    artifacts: ["evidence.json", "summary.md"],
+  };
+  if (args.format === "json") {
+    process.stdout.write(JSON.stringify(stdoutPayload) + "\n");
+  } else {
+    process.stdout.write(
+      "browser evidence: browsers=" +
+        report.summary.browserCount +
+        " harness_failures=" +
+        report.summary.harnessFailures +
+        " required_failures=" +
+        report.summary.requiredFailures +
+        " unsupported=" +
+        report.summary.unsupported +
+        "\n",
+    );
+  }
 
   if (browsers.length < 2 || harnessFailures.length > 0 || requiredFailures > 0) {
     process.exitCode = 1;
