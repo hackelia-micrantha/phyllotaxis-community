@@ -52,9 +52,13 @@ jobs:
           node tools/dimensional-utility-evidence.mjs
           --output artifacts/dimensional-utility
 
-      - name: Verify external --fixture compatibility
+      - name: Verify CLI version and external --fixture compatibility
         run: |
           set -euo pipefail
+          nix develop .#browser-evidence --command \
+            node tools/dimensional-utility-evidence.mjs --version | grep -Fxq '0.2.0'
+          nix develop .#browser-evidence --command \
+            node tools/dimensional-utility-evidence.mjs --format json --version | grep -Fq '"harnessVersion":"0.2.0"'
           fixture_dir="$(mktemp -d)"
           trap 'rm -rf "$fixture_dir"' EXIT
           cp docs/examples/dimensional-utility-reference.html "$fixture_dir/custom-fixture.html"
