@@ -21,12 +21,23 @@ EXPECTED = {
     "examples/utility-reference.css",
     "examples/dimensional-utility-reference.html",
 }
-REFERENCES = ("href", "src", "action", "formaction", "poster")
+# The published build is exactly five reviewed text files. Do not accept
+# attributes with implicit requests, executable behavior or extensions to the
+# fixture vocabulary without a new contract review.
+REFERENCES = ("href", "action")
+ALLOWED_ATTRIBUTES = {
+    "lang", "charset", "name", "content", "class", "id",
+    "aria-label", "aria-labelledby", "aria-hidden",
+    "href", "rel", "action", "type", "data-phyllotaxis-profile",
+}
 FORBIDDEN_ELEMENTS = {"base", "embed", "iframe", "object", "script"}
-FORBIDDEN_ATTRIBUTES = {"srcset", "imagesrcset"}
-# The current gallery has no CSS asset URLs or imports. Reject all rather than
-# approximating a CSS parser's URL and escaping semantics.
-CSS_RESOURCE = re.compile(r"@import\b|url\s*\(", re.IGNORECASE)
+# Deliberately restrictive: no CSS-embedded assets are published today.
+# Fail closed on escaped function spellings as well as direct resource syntax.
+CSS_RESOURCE = re.compile(
+    r"@import\b|@font-face\b|url\s*\(|image-set\s*\(|cross-fade\s*\(|"
+    r"image\s*\(|https?://|//|data:|blob:",
+    re.IGNORECASE,
+)
 
 
 def require(condition: bool, message: str) -> None:
@@ -35,7 +46,11 @@ def require(condition: bool, message: str) -> None:
 
 
 def check_css(text: str, context: str) -> None:
-    require(not CSS_RESOURCE.search(text), f"{context}: CSS imports and url() resources are not allowlisted")
+    require("\\" not in text, f"{context}: CSS escapes are not allowlisted")
+    require(
+        not CSS_RESOURCE.search(text),
+        f"{context}: CSS resource-capable constructs are not allowlisted",
+    )
 
 
 def classify_reference(tag: str, attribute: str, value: str) -> str:
@@ -64,11 +79,10 @@ class ReferenceParser(HTMLParser):
         require(tag not in FORBIDDEN_ELEMENTS, f"{self.page}: prohibited active element <{tag}>")
         props = dict(attrs)
         require(len(props) == len(attrs), f"{self.page}: duplicate HTML attributes")
-        require(not (FORBIDDEN_ATTRIBUTES & props.keys()), f"{self.page}: srcset requires explicit asset validation")
-        require(
-            not (tag == "meta" and props.get("http-equiv", "").lower() == "refresh"),
-            f"{self.page}: meta refresh not allowed",
-        )
+        unknown = props.keys() - ALLOWED_ATTRIBUTES
+        require(not unknown, f"{self.page}: unsupported or request-capable attributes: {sorted(unknown)}")
+        require(tag in {"a", "link"} or "href" not in props, f"{self.page}: href on unsupported tag {tag}")
+        require(tag == "form" or "action" not in props, f"{self.page}: action on unsupported tag {tag}")
         if props.get("id"):
             require(props["id"] not in self.ids, f"{self.page}: duplicate id {props['id']}")
             self.ids.add(props["id"])
@@ -145,7 +159,13 @@ def self_test() -> None:
         "public documentation navigation must be allowed",
     )
     require(classify_reference("link", "href", "./site.css") == "local", "local stylesheets allowed")
-    for css in ["@import 'https://example.invalid/a.css';", "background:url(https://example.invalid/a.png)"]:
+    for css in [
+        "@import 'https://example.invalid/a.css';",
+        "background:url(https://example.invalid/a.png)",
+        'background-image: image-set("https://example.invalid/x.png" 1x)',
+        r"background: u\72l(https://example.invalid/x.png)",
+        'background: cross-fade("https://example.invalid/a.png", red, 50%)',
+    ]:
         try:
             check_css(css, "negative fixture")
         except ValueError:
@@ -157,6 +177,12 @@ def self_test() -> None:
         "<img srcset='https://example.invalid/img.png 2x'>",
         "<script src='./app.js'></script>",
         "<base href='https://example.invalid/'>",
+        "<svg><image xlink:href='https://example.invalid/x.png'></image></svg>",
+        "<svg><image href='https://example.invalid/x.png'></image></svg>",
+        "<body onload=\"fetch('https://example.invalid/x')\">",
+        "<a ping='https://example.invalid/track' href='https://github.com/'>Link</a>",
+        "<img src='./not-allowlisted.png'>",
+        "<meta http-equiv='refresh' content='0;url=https://example.invalid/'>",
     ]:
         try:
             parser = ReferenceParser(Path("fixture.html"))
