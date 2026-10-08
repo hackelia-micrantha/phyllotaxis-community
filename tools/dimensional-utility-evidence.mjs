@@ -435,8 +435,12 @@ async function clickButton(config, sessionId, fixtureUrl) {
   await navigate(config, sessionId, fixtureUrl);
   const element = await findElement(config, sessionId, ".flat button");
   await command(config, sessionId, "POST", "/element/" + element + "/click", {});
-  const current = await command(config, sessionId, "GET", "/url");
-  return String(current).endsWith("#reference");
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const current = await command(config, sessionId, "GET", "/url");
+    if (String(current).endsWith("#reference")) return true;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  return false;
 }
 
 async function focusSequence(config, sessionId, fixtureUrl) {
