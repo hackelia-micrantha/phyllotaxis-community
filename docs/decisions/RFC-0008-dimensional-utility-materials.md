@@ -27,6 +27,12 @@ A separate ADR may be numbered and published **only when the decision has been a
 ## Verification
 Use [F0–F5 fixture matrix](../architecture/dimensional-utility-fixtures.md). Accessibility and interaction checks exercise the already-accepted cross-cutting contracts; RFC-0008-specific evidence compares dimensional composition, relative hierarchy, stacking restraint, CSS size and rendering cost against F0. Failing evidence blocks promotion of specific treatments or stable APIs, not retention of valid flat Utility.
 
+## Preliminary composition review (not acceptance)
+
+The [B1–B3 visual assessment](../architecture/dimensional-utility-composition-assessment.md) records assistant-assisted observations of the reproducible Chromium/Firefox fixture captures: one restrained differentiated region is a reasonable opt-in candidate; nested gloss/elevation stacking is a negative example; differentiated action-vs-read-only hierarchy is preferable to equal elevation. This remains qualitative review, **not independent human approval**, not accessibility conformance, and not a decision to change accepted guidance.
+
+Suggested next disposition: **revise toward advisory composition-review bounds**, then obtain explicit human review and a separately accepted decision if warranted. Evidence does not yet justify any stable Chroma/Lamina role or automatic migration. Missing browser zoom/text resize and assistive-technology conditions remain open rather than passed.
+
 ## Compatibility
 Documentation-only and permissive. No versioned machine contract, CLI, compiled CSS, public package API or migration behavior changes in this RFC.
 
