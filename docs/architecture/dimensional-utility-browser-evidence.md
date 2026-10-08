@@ -59,9 +59,11 @@ nix develop .#browser-evidence --command \
   --format text
 ```
 
-The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, records the exact fixture Git-blob/SHA-256 identity, browser versions, viewport/reflow checks, semantic/keyboard evidence, light/dark observations, bounded performance samples, source-size deltas, and screenshots. It emits:
+The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, records the exact fixture Git-blob/SHA-256 identity, browser versions, viewport/reflow checks, semantic/keyboard evidence, light/dark observations, bounded performance samples, source-size deltas, and screenshots.
 
-The CLI supports `--help`, `--version` (currently `0.1.0`), and `--format text|json`. To inspect version without launching browsers, run `node tools/dimensional-utility-evidence.mjs --version`; `--format json --version` emits a JSON object with `harnessVersion`. The harness records its own version alongside the evidence schema version.  Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
+The existing `--fixture PATH` option changes only the F0–F5 reference input. B1–B3 is loaded independently from the repository-owned `docs/examples/dimensional-utility-boundaries.html` and is recorded with its own blob/SHA-256 identity. A CI regression check copies the F0–F5 HTML to a temporary directory with no boundary companion file and runs the full two-engine harness against that external path. This keeps the public CLI compatible without silently changing which boundary fixture supplies evidence. It emits:
+
+The CLI supports `--help`, `--version` (currently `0.2.0`), and `--format text|json`. To inspect version without launching browsers, run `node tools/dimensional-utility-evidence.mjs --version`; `--format json --version` emits a JSON object with `harnessVersion`. The harness records its own version alongside the evidence schema version.  Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
 
 - `evidence.json` — versioned machine-readable evidence;
 - `summary.md` — concise reviewer-oriented status;

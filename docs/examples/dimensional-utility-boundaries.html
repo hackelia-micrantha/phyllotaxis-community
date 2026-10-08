@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dimensional Utility — material boundary cases (proposal)</title>
+<style>
+:root{color-scheme:light dark;--paper:#f6f5f0;--ink:#1c2d2a;--raised:#fff;--tint:#e4f0e9;--well:#e6ebe7;--line:#738a7e;--accent:#27634f;--focus:#195cb5;--shadow:rgb(22 49 37 / .13)}
+@media(prefers-color-scheme:dark){:root{--paper:#182420;--ink:#f3f7f4;--raised:#263b32;--tint:#30463b;--well:#112019;--line:#87a897;--accent:#8ed4b2;--focus:#a9c9ff;--shadow:rgb(0 0 0 / .32)}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}
+main{width:min(66rem,calc(100% - 2rem));margin:2rem auto 4rem}
+h1{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.2}h1,h2,h3,p,a{overflow-wrap:anywhere}h2{font-size:1.35rem}h3{font-size:1.05rem}
+a{color:var(--accent);text-decoration:underline;text-underline-offset:.15em}
+a:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+button{font:inherit;background:var(--raised);color:var(--ink);border:1px solid var(--line);padding:.4rem .8rem;cursor:pointer}
+button:active{box-shadow:inset 0 3px 6px var(--shadow)}form{display:inline-block}
+.boundary{border-block-start:1px solid var(--line);padding:1.2rem 0 1.8rem}
+.example{border:1px solid var(--line);padding:1rem;margin:1rem 0;max-width:100%}
+.status{font-weight:700;border:1px solid var(--line);display:inline-block;padding:.1rem .5rem}
+.bounded{background:linear-gradient(130deg,var(--raised),var(--tint));box-shadow:0 5px 12px var(--shadow);border-radius:.55rem}
+.negative{border:3px solid var(--line);border-radius:1.6rem;background:linear-gradient(130deg,var(--raised),var(--tint));box-shadow:0 15px 28px var(--shadow)}
+.negative .nested{border:3px double var(--line);border-radius:1.5rem;margin:.7rem;padding:1rem;background:linear-gradient(180deg,var(--raised),var(--tint));box-shadow:0 12px 24px var(--shadow),inset 0 3px 0 rgb(255 255 255 / .25)}
+.negative .nested .nested{border-radius:1.2rem;box-shadow:0 9px 18px var(--shadow),inset 0 3px 0 rgb(255 255 255 / .25)}
+.negative .status{border-radius:999px;background:linear-gradient(180deg,var(--raised),var(--tint));box-shadow:0 5px 10px var(--shadow)}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem}
+.pair{min-width:0;border:1px solid var(--line);padding:.75rem}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));gap:.75rem}
+.primary{background:var(--raised);border:1px solid var(--line);border-radius:.5rem;box-shadow:0 7px 15px var(--shadow);padding:1rem}
+.subordinate{background:var(--well);border:1px solid var(--line);box-shadow:inset 0 3px 7px var(--shadow);padding:1rem}
+.peer{background:var(--raised);border:1px solid var(--line);border-radius:1rem;box-shadow:0 11px 20px var(--shadow);padding:1rem}
+.note{font-size:.95rem}code{font-family:ui-monospace,monospace}
+@media(forced-colors:active){.boundary,.example,.nested,.pair,.two>*,button,.status{border-color:CanvasText!important;background:Canvas!important;color:CanvasText!important;box-shadow:none!important}.nested{border-style:double}.subordinate{border-style:inset}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:480px){.boundary{padding-block:1rem}.example{padding:.65rem}.negative .nested{margin:.4rem;padding:.5rem}}
+</style>
+</head>
+<body>
+<main>
+<h1>Material boundary comparisons</h1>
+<p>Non-normative RFC-0008 fixtures. Compare with the <a href="./dimensional-utility-reference.html">flat F0 reference</a>. These cases demonstrate composition boundaries, not recommended production components.</p>
+<section class="boundary" id="b1" aria-labelledby="b1-title">
+<h2 id="b1-title">B1 — bounded combination</h2>
+<p>Candidate: one low-chroma tinted and shallow raised region. Compare F0, F1, and F2 before accepting this combination.</p>
+<div class="example bounded" data-boundary="b1" aria-label="Bounded tint and elevation example">
+<h3>Deployment readiness</h3><p>Review the published contract before changing any consumer.</p><p><span class="status">Awaiting review</span></p>
+<a href="#decision">Read decision requirements</a>
+</div>
+</section>
+<section class="boundary" id="b2" aria-labelledby="b2-title">
+<h2 id="b2-title">B2 — negative over-stacking example</h2>
+<p class="note"><strong>Deliberately rejected treatment.</strong> Nested borders, strong shadows, competing roundness, and gloss obscure the hierarchy. This is never a design-system default.</p>
+<div class="example negative" data-boundary="b2">
+<div class="nested"><div class="nested"><h3>Deployment readiness</h3><p>Review the published contract before changing any consumer.</p><p><span class="status">Awaiting review</span></p><a href="#decision">Read decision requirements</a></div></div>
+</div>
+</section>
+<section class="boundary" id="b3" aria-labelledby="b3-title">
+<h2 id="b3-title">B3 — relative elevation and affordance</h2>
+<p>Compare purposeful elevation (left) against ambiguous equally raised peers (right). Only the native button has an action.</p>
+<div class="pairs">
+<div class="pair hierarchy-good" data-boundary="b3-good" aria-label="Purposeful hierarchy">
+<h3>Preferred contrast</h3><div class="two">
+<div class="primary"><strong>Action</strong><p>Inspect the contract.</p><form action="#decision"><button type="submit">Inspect</button></form></div>
+<div class="subordinate"><strong>Read-only data</strong><p><code>Status: pending</code></p></div>
+</div>
+</div>
+<div class="pair hierarchy-bad" data-boundary="b3-bad" aria-label="Ambiguous equal elevation">
+<h3>Negative contrast</h3><div class="two">
+<div class="peer"><strong>Action</strong><p>Inspect the contract.</p><form action="#decision"><button type="submit">Inspect</button></form></div>
+<div class="peer"><strong>Read-only data</strong><p><code>Status: pending</code></p></div>
+</div>
+</div>
+</div>
+</section>
+<section id="decision"><h2>Interpretation and decision gate</h2>
+<p>B1 is a candidate. B2 and the equally raised pair in B3 are intentional negative examples. Automated checks can verify their structure, presentation difference and reflow, but a human must decide whether the visual hierarchy is genuinely clearer. Accessibility remains governed by the accepted accessibility and interaction-motion contracts.</p>
+</section>
+</main>
+</body></html>
