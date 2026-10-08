@@ -17,7 +17,7 @@ QART-0007 compared interactive exact-artifact staging, a throwaway staged bootst
 
 Accept RFC-0007.
 
-For creation of `@hackelia-micrantha/phyllotaxis` only, the release owner may interactively stage the exact `0.1.0-alpha.1` tarball produced by the canonical private release pipeline after independently verifying its recorded digest.
+For creation of `@micrantha/phyllotaxis` only, the release owner may interactively stage the exact `0.1.0-alpha.2` tarball produced by the canonical private release pipeline after independently verifying its recorded digest.
 
 The staged alpha must not be approved until:
 
@@ -27,6 +27,12 @@ The staged alpha must not be approved until:
 - the normal human 2FA approval gate is satisfied.
 
 After bootstrap, all subsequent staged versions originate from the accepted OIDC workflow.
+
+## Bootstrap correction — 2026-10-08
+
+The `v0.1.0-alpha.1` candidate is abandoned and unpublished because it used the incorrect npm scope. npm rejected the bootstrap before package creation, so this one-time bootstrap exception remains unused.
+
+Bootstrap therefore applies to the exact reviewed `@micrantha/phyllotaxis@0.1.0-alpha.2` tarball. The existing `v0.1.0-alpha.1` tag must not be moved or reused.
 
 ## Consequences
 

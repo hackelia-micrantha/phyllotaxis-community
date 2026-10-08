@@ -36,11 +36,11 @@ For browser/library use, consumers should pin an exact package version in their 
 
 After RFC-0002 is accepted and a public package release exists, Phyllotaxis is consumed by the application's existing framework and build pipeline. Until then, this section describes the intended post-release integration boundary rather than an available installation path. Phyllotaxis does not replace the consumer's package manager, bundler, dev server, framework configuration, or deployment system.
 
-Consumers import the compiled runtime from `@hackelia-micrantha/phyllotaxis` and import the exported stylesheets they need through their normal build tooling:
+Consumers import the compiled runtime from `@micrantha/phyllotaxis` and import the exported stylesheets they need through their normal build tooling:
 
-- `@hackelia-micrantha/phyllotaxis/chroma.css`
-- `@hackelia-micrantha/phyllotaxis/venation.css`
-- `@hackelia-micrantha/phyllotaxis/lamina.css`
+- `@micrantha/phyllotaxis/chroma.css`
+- `@micrantha/phyllotaxis/venation.css`
+- `@micrantha/phyllotaxis/lamina.css`
 
 Consumers must not copy or vendor those stylesheets as a competing implementation. `phyllo` may inspect, validate, diagnose, and initialize bounded configuration; it is not a site builder or deployment tool. Migration orchestration is not part of the currently implemented command surface.
 

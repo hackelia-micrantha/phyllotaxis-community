@@ -1,7 +1,7 @@
 {
   "$schema": "./public-interface.schema.json",
   "schemaVersion": 1,
-  "package": "@hackelia-micrantha/phyllotaxis",
+  "package": "@micrantha/phyllotaxis",
   "maturity": "experimental",
   "contracts": {
     "venation": 1,

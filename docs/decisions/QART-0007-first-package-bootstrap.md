@@ -4,7 +4,7 @@ Status: **Resolved into RFC-0007**
 
 ## Question
 
-How should the first-ever `@hackelia-micrantha/phyllotaxis` npm package be created when ADR-0006 requires trusted publishing, but npm trusted-publisher configuration requires the package to already exist?
+How should the first-ever `@micrantha/phyllotaxis` npm package be created when ADR-0006 requires trusted publishing, but npm trusted-publisher configuration requires the package to already exist?
 
 ## Current platform constraint
 
@@ -35,7 +35,7 @@ The release owner downloads the canonical producer tarball, verifies its recorde
 
 ### B — Stage and reject a throwaway bootstrap version, then use OIDC for alpha
 
-Create the package with a disposable staged version, configure OIDC, reject the bootstrap stage, then have CI stage `0.1.0-alpha.1`.
+Create the package with a disposable staged version, configure OIDC, reject the bootstrap stage, then have CI stage `0.1.0-alpha.2`.
 
 **Pros:** actual alpha staging uses OIDC.
 
@@ -59,7 +59,7 @@ Proceed with **A**.
 
 The bootstrap action is a one-time package-creation exception, not an alternative ongoing release path. It stages only the exact reviewed canonical tarball after digest verification. It does not rebuild the package and does not approve it.
 
-Before approving `0.1.0-alpha.1`:
+Before approving `0.1.0-alpha.2`:
 
 1. configure the stage-only trusted publisher for the accepted GitHub workflow/environment;
 2. restrict traditional token publishing at the package level;

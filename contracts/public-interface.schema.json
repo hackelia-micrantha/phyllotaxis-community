@@ -24,7 +24,7 @@
       "const": 1
     },
     "package": {
-      "const": "@hackelia-micrantha/phyllotaxis"
+      "const": "@micrantha/phyllotaxis"
     },
     "maturity": {
       "enum": [

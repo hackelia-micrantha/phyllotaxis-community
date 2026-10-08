@@ -17,7 +17,15 @@ All variants use the **same semantic content, controls, reading order, and grid 
 | F4 inset | data/code well within ordinary document flow | correct contrast and visible boundaries |
 | F5 accent-edge | left-edge mark on heading/callout | semantics and hierarchy still clear without color or CSS |
 
-A candidate may combine F1/F2 once the isolated variants pass; the initial reference comparison should avoid stacking shadows, gloss and large radii. Exact hue, decorative botanical forms and brand glyphs remain product-owned.
+The initial F0–F5 reference isolates individual treatments so each variant can be compared against the flat composition. **Isolation does not validate stacking or relative elevation.** The following additional boundary cases must be tested before an RFC-0008 decision treats dimensional restraint as validated:
+
+| Boundary case | Comparison | Required conclusion |
+| --- | --- | --- |
+| B1 bounded combination | F1 tint + shallow F2 elevation on one semantically justified region | Test whether a single combined treatment improves scanning without competing hierarchy |
+| B2 negative over-stacking | Multiple nested raised panels with strong gloss, oversized radius, and overlapping shadows | Record a rejected example and why hierarchy/readability deteriorates; this is a negative fixture, **not** recommended styling |
+| B3 relative elevation | Raised actionable region adjacent to inset/static region, then two equally raised siblings | Verify which surface appears actionable/primary; avoid misleading elevation hierarchy |
+
+B1–B3 are **specified but not implemented or passed** by the present F0–F5 browser harness. Do not close that evidence gap by extrapolating single-treatment results. Exact hue, decorative botanical forms, and brand glyphs remain product-owned.
 
 ## Consumer evidence mapping
 
@@ -30,16 +38,19 @@ These files are **input evidence**, not normative tokens, framework requirements
 
 ## Required review matrix
 
-Each fixture, both light and dark color schemes:
+The **accepted [accessibility capability floor](../requirements/accessibility.md)** and [interaction-motion contract](interaction-motion.md) are the authoritative gates. This matrix must not substitute a narrower checklist for them. In addition to the dimensional-specific F0–F5 and B1–B3 checks below, validation must explicitly cover **200% text resize** (separate from browser zoom), **320 CSS px reflow**, **text-spacing resilience**, **target-size or valid target-spacing exceptions**, and the rest of the accepted floor's component, browser, and human-review evidence layers. A partial browser harness is not proof of full conformance.
 
-1. Desktop and narrow viewport, browser zoom at 100% and 200%; content and focus must not clip, overlap or become inaccessible.
+Each fixture, in light and dark schemes and where applicable:
+
+1. Desktop and narrow viewport, real browser zoom at 100% and 200%, **200% text-only resize**, and 320 CSS px reflow; content and focus must not clip, overlap or become inaccessible.
 2. Keyboard-only traversal, `:focus-visible`, hover, pressed and disabled states where applicable; decoration must not substitute for interaction semantics.
 3. Reduced-motion: no unnecessary translation/reveal; no animation on a static panel.
 4. `forced-colors: active`: explicit readable boundary and keyboard focus; status remains textual.
 5. No CSS and no JS: same semantic content, meaningful reading order, actionable links/buttons remain understandable.
 6. Contrast: check all text/foreground combinations at weakest points of gradient, not only the average/background center; assess non-text component boundaries and focus indicators.
 7. CSS bundle delta (compressed and uncompressed), stylesheet request count and render regressions; record test environment and baseline. Avoid `backdrop-filter` absent demonstrated need.
-8. Compare F0 against each variant for task completion, clarity and false affordance. Document rejection as carefully as acceptance.
+8. Compare F0 against each variant for task completion, clarity and false affordance; run the B1–B3 stacking/relative-elevation boundary tests as separate evidence. Document rejection as carefully as acceptance.
+9. Run the accepted floor's text-spacing and target-size/spacing checks, along with any remaining conformance layers it defines; record unsupported engine/environment checks as gaps, not passes.
 
 ## Gate for shared API promotion
 

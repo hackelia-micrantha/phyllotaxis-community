@@ -50,12 +50,12 @@ Ambiguous inference must fail rather than silently selecting a framework/profile
 
 ## Package discovery
 
-If the discovered project is itself `@hackelia-micrantha/phyllotaxis`, its root is the package root.
+If the discovered project is itself `@micrantha/phyllotaxis`, its root is the package root.
 
 Otherwise `phyllo` searches the discovered project and each ancestor for:
 
 ```text
-node_modules/@hackelia-micrantha/phyllotaxis
+node_modules/@micrantha/phyllotaxis
 ```
 
 This supports ordinary npm workspace hoisting without executing project/module-loader hooks or package-manager commands.

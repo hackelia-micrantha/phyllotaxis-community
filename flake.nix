@@ -1,5 +1,5 @@
 {
-  description = "Phyllotaxis public contract validation and demo gallery";
+  description = "Phyllotaxis public contract validation";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
@@ -114,4 +114,30 @@
           '';
         }
       );
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          browserPackages = pkgs.lib.optionals pkgs.stdenv.isLinux [
+            pkgs.chromium
+            pkgs.chromedriver
+            pkgs.firefox
+            pkgs.geckodriver
+          ];
+        in
+        {
+          browser-evidence = pkgs.mkShell {
+            packages = [
+              pkgs.nodejs_22
+            ] ++ browserPackages;
+
+            CHROMIUM_BIN = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.chromium}/bin/chromium";
+            CHROMEDRIVER_BIN = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.chromedriver}/bin/chromedriver";
+            FIREFOX_BIN = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.firefox}/bin/firefox";
+            GECKODRIVER_BIN = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.geckodriver}/bin/geckodriver";
+          };
+        }
+      );
     };
+}

@@ -216,7 +216,7 @@ Validate the installed Phyllotaxis package's machine-readable Chroma contract us
 
 Required flow:
 
-1. resolve the project and installed `@hackelia-micrantha/phyllotaxis` package using the same inert project discovery as `check` and `status`;
+1. resolve the project and installed `@micrantha/phyllotaxis` package using the same inert project discovery as `check` and `status`;
 2. read package metadata and the static exported `chroma-contract.json` artifact without importing/executing package or consumer code;
 3. verify the package `phyllotaxis.contracts.chroma` version matches the artifact `contractVersion`;
 4. validate the artifact against the accepted Chroma v1 shape and semantic completeness/profile/scheme invariants;

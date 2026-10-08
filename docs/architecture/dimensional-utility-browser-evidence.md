@@ -1,10 +1,10 @@
-# Dimensional Utility — preliminary local browser observations
+# Dimensional Utility — browser evidence and historical observations
 
-- **Evidence status:** Unverified local report; **not reproducible/auditable from this repository** because no test harness, command transcript or captured browser artifacts were committed.
-- **Report date:** 2026-10-07
-- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e48bab0365c3a4088e41152aa73eb65b5a4f4c2e` (F0 shared-border correction).
+- **Evidence status:** A checked-in public harness now reproduces the portable current-fixture matrix in CI. Historical local 58/58 and 66/66 reports remain **unverified historical observations** and must not be promoted into current evidence.
+- **Historical report date:** 2026-10-07
+- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e2f8bf4a94d5d5b936bac7a91e1a84e143262146` (flat F0 baseline, corrected control contrast, and visibly distinct F3 pressed state).
 - **Historical input for the 58-check report:** Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`; the original report does not apply to the current HTML unchanged.
-- **Reported environment:** Chromium `144.0.7559.96`, Linux headless.
+- **Historical reported environment:** Chromium `144.0.7559.96`, Linux headless.
 - **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [proposed RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md).
 - **Validation plan:** [F0–F5](dimensional-utility-fixtures.md).
 
@@ -46,12 +46,37 @@ The local session reportedly found horizontal overflow at a 320px viewport with 
 
 The reference fixture now uses a zero-gap, contiguous border-sharing grid, square F0 control and square status/button boundaries, reserving rounded and elevated treatments for variants. A subsequent local Chromium exercise reported 66/66 checks against the exact updated Git blob, including computed-style differentiation, light/dark, narrow layout, CSS zoom stress, focus and forced-colors emulation. **Those checks and screenshots remain local-only and are not a public reproducible test outcome**; the reproduction gates below remain open.
 
-## Reproduction plan — not yet executed in public CI
+## Reproducible public harness
 
-1. Obtain the HTML fixture from the reviewed commit and verify the source blob with `git hash-object`.
+Issue #57 adds a checked-in, dependency-free Node/WebDriver harness at `tools/dimensional-utility-evidence.mjs` plus a GitHub-hosted browser-evidence workflow.
+
+Reproduce the portable matrix on Linux with the pinned repository flake:
+
+```sh
+nix develop .#browser-evidence --command \
+  node tools/dimensional-utility-evidence.mjs \
+  --output artifacts/dimensional-utility \
+  --format text
+```
+
+The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, records the exact fixture Git-blob/SHA-256 identity, browser versions, viewport/reflow checks, semantic/keyboard evidence, light/dark observations, bounded performance samples, source-size deltas, and screenshots. It emits:
+
+The CLI supports `--help`, `--version` (currently `0.1.0`), and `--format text|json`. To inspect version without launching browsers, run `node tools/dimensional-utility-evidence.mjs --version`; `--format json --version` emits a JSON object with `harnessVersion`. The harness records its own version alongside the evidence schema version.  Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
+
+- `evidence.json` — versioned machine-readable evidence;
+- `summary.md` — concise reviewer-oriented status;
+- bounded screenshots for each browser/scheme.
+
+Unsupported browser/environment capabilities are emitted as `unsupported`; they are **not** converted into passes. Accessibility and interaction observations exercise the already-accepted accessibility and interaction-motion authorities. RFC-0008-specific interpretation is limited to dimensional composition, stacking/elevation hierarchy, restrained gloss/bevel/inset use, and rendering cost.
+
+Actual browser-level 200% zoom is attempted through browser keyboard shortcuts and verified by observable scale/viewport change. If headless WebDriver does not expose that change, the result remains an explicit evidence gap rather than substituting CSS `zoom` or device-scale emulation.
+
+## Reproduction plan — public harness plus remaining environment gaps
+
+1. Obtain the HTML fixture from the reviewed commit; the harness records both Git-blob identity and SHA-256 before executing checks.
 2. Record browser binary/build, OS, test harness version, viewport, zoom method, color scheme, reduced-motion and forced-colors configuration.
-3. Inspect each F0–F5 variant at desktop, 375px and 320px; test actual browser zoom at 100% and 200%, keyboard focus, no-JS/no-CSS reading order, anchor/button navigation, and hover/pressed/disabled semantics as applicable.
-4. Capture machine-readable assertions, console output and screenshot references for all tested states, including failures and rerun details.
+3. Inspect each F0–F5 variant at desktop, 375px and 320px; test actual browser zoom at 100% and 200%, keyboard focus with computed visible outline contrast, no-JS/no-CSS reading order, anchor/button navigation, and hover/pressed/disabled semantics as applicable. Chromium forced-colors emulation must check computed control boundaries and focused outlines, not just media-query activation. Separately exercise the B1–B3 combined/negative/relative-elevation cases identified in the fixture plan.
+4. Preserve the generated `evidence.json`, `summary.md`, and bounded screenshots from the exact CI head, including failures and unsupported checks.
 5. Calculate contrast for text, links, focus indicators and interactive boundaries at gradient extrema; record relevant CSS/HTML byte counts.
 6. Re-run in at least one additional browser engine and real assistive-technology environment where available. Measure compiled consumer CSS and rendering performance against the accepted flat Utility baseline before any token or component promotion.
 7. Publish the runnable harness and durable results through an appropriate public evidence surface or link immutable, reviewable artifacts; only then change the evidence status to validated.
