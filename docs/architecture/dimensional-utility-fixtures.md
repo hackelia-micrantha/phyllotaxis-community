@@ -24,8 +24,9 @@ A candidate may combine F1/F2 once the isolated variants pass; the initial refer
 - [Digitalis community styles](https://github.com/hackelia-micrantha/digitalis-community/blob/c03570962a89f5d77e37ff5e0a7b37a514f59a27/web/styles.css): paper/tinted surfaces, gradient hero, pill/status, shadowed panels, left-edge status metadata.
 - [Envuscator community styles](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/styles.css): bounded tinted card treatments, gradient action buttons, rounded panels, diffuse shadow.
 - [Envuscator Micrantha styles](https://github.com/hackelia-micrantha/envuscator-community/blob/54119ac6873bce47a47b12a1622c5c213934309b/web/micrantha.css): highlight gradient and bounded mark.
+- [Dubnium Community site](https://github.com/hackelia-micrantha/dubnium-community/blob/ddff22e61351469b2b512b1002f3bc839e4579a2/site/index.html): minimal white/flat Utility control after preview refinement; persistent page/section color bands and dividers removed, with consumer-owned low-chroma color retained only for local hover feedback.
 
-These files are **input evidence**, not normative tokens, framework requirements, or mandatory restyling instructions for those consumers. Compare against current source/commit when capturing screenshots; production deployment state may differ.
+These files are **input evidence**, not normative tokens, framework requirements, or mandatory restyling instructions for those consumers. The Dubnium example is specifically useful as a minimal control: dimensional/tinted treatments must remain optional rather than profile defaults. Compare against current source/commit when capturing screenshots; production deployment state may differ.
 
 ## Required review matrix
 
@@ -45,7 +46,7 @@ Each fixture, both light and dark color schemes:
 - A documented need from at least two independent consumers, or a repeated accessibility-significant semantic requirement.
 - Values and state mapping defined across schemes without consumer branding.
 - Stable public contract and migration/versioning design approved before any private implementation export.
-- Existing Utility remains default and conforming; deployment opt-in per consumer.
+- Existing Utility remains default and conforming; a minimal white/flat consumer must continue to pass unchanged, and dimensional deployment remains opt-in per consumer.
 - No generic Lamina Card/Pill/Badge additions solely because the visual fixture exists.
 - No automatic Cambium rewrite based on heuristic surface detection.
 
