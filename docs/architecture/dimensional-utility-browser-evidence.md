@@ -1,10 +1,10 @@
-# Dimensional Utility — preliminary local browser observations
+# Dimensional Utility — browser evidence and historical observations
 
-- **Evidence status:** Unverified local report; **not reproducible/auditable from this repository** because no test harness, command transcript or captured browser artifacts were committed.
-- **Report date:** 2026-10-07
-- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e48bab0365c3a4088e41152aa73eb65b5a4f4c2e` (F0 shared-border correction).
+- **Evidence status:** A checked-in public harness now reproduces the portable current-fixture matrix in CI. Historical local 58/58 and 66/66 reports remain **unverified historical observations** and must not be promoted into current evidence.
+- **Historical report date:** 2026-10-07
+- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `80b065e7da7a2e58a09876bc2677849fb3361f04` (F0 shared-border baseline plus light control-boundary contrast correction).
 - **Historical input for the 58-check report:** Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`; the original report does not apply to the current HTML unchanged.
-- **Reported environment:** Chromium `144.0.7559.96`, Linux headless.
+- **Historical reported environment:** Chromium `144.0.7559.96`, Linux headless.
 - **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [proposed RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md).
 - **Validation plan:** [F0–F5](dimensional-utility-fixtures.md).
 
@@ -55,10 +55,13 @@ Reproduce the portable matrix on Linux with the pinned repository flake:
 ```sh
 nix develop .#browser-evidence --command \
   node tools/dimensional-utility-evidence.mjs \
-  --output artifacts/dimensional-utility
+  --output artifacts/dimensional-utility \
+  --format text
 ```
 
 The harness uses Nix-provided Chromium/ChromeDriver and Firefox/geckodriver, records the exact fixture Git-blob/SHA-256 identity, browser versions, viewport/reflow checks, semantic/keyboard evidence, light/dark observations, bounded performance samples, source-size deltas, and screenshots. It emits:
+
+The CLI supports `--format text|json`. Text mode emits a compact human status line. JSON mode emits a versioned single-object stdout contract containing source identity, summary counts, and artifact names; diagnostics/errors remain on stderr and required evidence or harness failures return non-zero.
 
 - `evidence.json` — versioned machine-readable evidence;
 - `summary.md` — concise reviewer-oriented status;
