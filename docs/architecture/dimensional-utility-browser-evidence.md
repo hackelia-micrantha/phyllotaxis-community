@@ -2,14 +2,15 @@
 
 - **Evidence status:** Unverified local report; **not reproducible/auditable from this repository** because no test harness, command transcript or captured browser artifacts were committed.
 - **Report date:** 2026-10-07
-- **Input:** [standalone HTML reference fixture](../examples/dimensional-utility-reference.html), Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`.
+- **Current reference:** [standalone HTML fixture](../examples/dimensional-utility-reference.html), Git blob `e48bab0365c3a4088e41152aa73eb65b5a4f4c2e` (F0 shared-border correction).
+- **Historical input for the 58-check report:** Git blob `a32ffc0f49716ea30a8bffb31e668e69386a6b51`; the original report does not apply to the current HTML unchanged.
 - **Reported environment:** Chromium `144.0.7559.96`, Linux headless.
 - **Decision reference:** [QART-0008](../decisions/QART-0008-dimensional-utility-materials.md) → [proposed RFC-0008](../decisions/RFC-0008-dimensional-utility-materials.md).
 - **Validation plan:** [F0–F5](dimensional-utility-fixtures.md).
 
 ## What was reported
 
-A previous local session **reported 58/58 passing checks** (52 primary and 6 extended) against the specified HTML blob. **This count is an unverified account of local work, not independently reproducible test evidence.** No executable browser test files, captured assertions or step-by-step logs are included in the public repository. It must **not** be used to claim that the acceptance matrix has passed, that an accessibility certification exists or that the proposed RFC is accepted.
+A previous local session **reported 58/58 passing checks** (52 primary and 6 extended) against the **historical** HTML blob, before F0's shared-border correction. **This count is an unverified account of local work, not independently reproducible test evidence.** No executable browser test files, captured assertions or step-by-step logs are included in the public repository. It must **not** be used to claim that the acceptance matrix has passed, that an accessibility certification exists or that the proposed RFC is accepted.
 
 | Area | Reported local observation | Verification still required |
 | --- | --- | --- |
@@ -40,6 +41,10 @@ These numbers were reported from a local WCAG-formula calculation, not captured 
 ## Previously reported correction
 
 The local session reportedly found horizontal overflow at a 320px viewport with `zoom:2` and subsequently changed fixture padding and `overflow-wrap:anywhere` for headings and links. That **source change exists in the committed HTML** and can be independently inspected. Its behavior still needs a reproducible check. CSS `zoom` is only a stress-test approximation, not native browser zoom.
+
+## F0 baseline correction — subsequent local observation
+
+The reference fixture now uses a zero-gap, contiguous border-sharing grid, square F0 control and square status/button boundaries, reserving rounded and elevated treatments for variants. A subsequent local Chromium exercise reported 66/66 checks against the exact updated Git blob, including computed-style differentiation, light/dark, narrow layout, CSS zoom stress, focus and forced-colors emulation. **Those checks and screenshots remain local-only and are not a public reproducible test outcome**; the reproduction gates below remain open.
 
 ## Reproduction plan — not yet executed in public CI
 
