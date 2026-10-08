@@ -10,10 +10,10 @@ The Utility directive is flat-first and treats gradients/elevation as suspect by
 
 ## Proposed contract
 1. Utility remains the default, primarily content-first, document-like and flat-first.
-2. Subtle tint, bevel, shadow, radius and gradient may be applied selectively when they reinforce hierarchy, state, affordance or deliberate period-inspired visual identity.
-3. A material effect must not introduce false interactivity, mask semantic state or eliminate obvious native links.
-4. Repeated floating cards and stacked effects are discouraged when shared borders and ordinary layout are clearer.
-5. The same semantic composition must remain functional without CSS/JS and accessible in light/dark, reduced motion and forced colors.
+2. Subtle tint, bevel, shadow, radius and gradient may be applied selectively when they reinforce hierarchy or deliberate period-inspired visual identity.
+3. The accepted [accessibility capability floor](../requirements/accessibility.md) and [interaction-motion contract](../architecture/interaction-motion.md) remain the sole cross-cutting authorities for contrast, focus, forced-colors, zoom/reflow, reduced motion, false affordance and movement. This RFC adds no competing rules for those concerns.
+4. Dimensional composition should remain sparse: avoid stacking gloss, large radius, broad shadow and raised treatment on the same ordinary content region; prefer ordinary document flow when elevation does not communicate a distinct hierarchy.
+5. Inset or bevel treatment should remain subordinate to the surrounding reading flow and must not become a generic wrapper for static content.
 6. Chroma owns future shared values; Venation remains profile-neutral; Lamina API additions require separate evidence and review.
 7. Descriptive candidate treatments (base, raised, tinted, gloss, inset, accent-edge) are **not** stable exports or mandatory tokens.
 8. Existing flat Utility consumers remain first-class conforming outcomes; persistent dimensional treatment is never required and production migration is opt-in.
@@ -25,7 +25,7 @@ The Utility directive is flat-first and treats gradients/elevation as suspect by
 A separate ADR may be numbered and published **only when the decision has been accepted**. No ADR number is reserved by this RFC.
 
 ## Verification
-Use [F0–F5 fixture matrix](../architecture/dimensional-utility-fixtures.md). Document weakest-point contrast, focus/disabled/pressed visibility, narrow/200% zoom, forced-colors, no-CSS/JS, CSS size and rendering cost. Failing evidence blocks promotion of specific treatments or stable APIs, not retention of valid flat Utility.
+Use [F0–F5 fixture matrix](../architecture/dimensional-utility-fixtures.md). Accessibility and interaction checks exercise the already-accepted cross-cutting contracts; RFC-0008-specific evidence compares dimensional composition, relative hierarchy, stacking restraint, CSS size and rendering cost against F0. Failing evidence blocks promotion of specific treatments or stable APIs, not retention of valid flat Utility.
 
 ## Compatibility
 Documentation-only and permissive. No versioned machine contract, CLI, compiled CSS, public package API or migration behavior changes in this RFC.
