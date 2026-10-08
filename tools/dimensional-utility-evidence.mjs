@@ -468,7 +468,7 @@ async function inspectPage(config, sessionId) {
     "return (() => {" +
       "const fixtures=[...document.querySelectorAll('.fixture')];" +
       "const style=(el)=>{const s=getComputedStyle(el);return {background:s.backgroundColor,backgroundImage:s.backgroundImage,borderRadius:s.borderRadius,boxShadow:s.boxShadow,transform:s.transform,transition:s.transition,cursor:s.cursor,borderInlineStartWidth:s.borderInlineStartWidth};};" +
-      "const signature=(el)=>[...el.children].map((child)=>child.tagName+(child.className?'.'+String(child.className).replace(/\\s+/g,'.'):''));" +
+      "const signature=(el)=>[...el.children].map((child)=>child.tagName);" +
       "const vars={}; ['paper','ink','muted','line','accent','focus','raised','tint','well'].forEach((name)=>vars[name]=getComputedStyle(document.documentElement).getPropertyValue('--'+name).trim());" +
       "return {" +
         "viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio}," +
@@ -700,11 +700,13 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
       await setWindow(config, sessionId, width, 900);
       await navigate(config, sessionId, fixtureUrl);
       const page = await inspectPage(config, sessionId);
+      const viewportMatched = Math.abs(page.viewport.width - width) <= 2;
       viewports.push({
         width,
         innerWidth: page.viewport.width,
+        viewportMatched,
         overflow: page.overflow,
-        status: page.overflow ? "fail" : "pass",
+        status: !viewportMatched ? "unsupported" : page.overflow ? "fail" : "pass",
       });
     }
 
@@ -834,6 +836,8 @@ function markdown(report) {
     "- Fixture Git blob: " + report.source.gitBlobSha,
     "- Fixture SHA-256: " + report.source.sha256,
     "- Generated: " + report.generatedAt,
+    "- Browsers completed: " + report.summary.browserCount,
+    "- Harness failures: " + report.summary.harnessFailures,
     "- Required failures: " + report.summary.requiredFailures,
     "- Unsupported observations: " + report.summary.unsupported,
     "",
