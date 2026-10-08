@@ -487,19 +487,40 @@ async function focusSequence(config, sessionId, fixtureUrl) {
     sessionId,
     "if (document.activeElement && document.activeElement.blur) document.activeElement.blur();",
   );
+
+  const expected = [];
+  for (let fixture = 0; fixture < 6; fixture += 1) {
+    expected.push(
+      { fixture: "f" + fixture, tag: "A", text: "Documentation" },
+      { fixture: "f" + fixture, tag: "BUTTON", text: "Inspect" },
+    );
+  }
+
   const sequence = [];
-  for (let index = 0; index < 4; index += 1) {
+  for (let index = 0; index < expected.length; index += 1) {
     await pressTab(config, sessionId);
     sequence.push(
       await evaluate(
         config,
         sessionId,
-        "var e=document.activeElement; return {tag:e?e.tagName:null,id:e?e.id:null,text:e?e.textContent.trim():null};",
+        "var e=document.activeElement;var f=e?e.closest('.fixture'):null;return {tag:e?e.tagName:null,id:e?e.id:null,text:e?e.textContent.trim():null,fixture:f?f.getAttribute('aria-labelledby'):null};",
       ),
     );
   }
-  const valid = sequence.every((entry) => entry && ["A", "BUTTON"].includes(entry.tag));
-  return { valid, sequence };
+
+  const valid =
+    sequence.length === expected.length &&
+    sequence.every((entry, index) => {
+      const wanted = expected[index];
+      return (
+        entry &&
+        entry.fixture === wanted.fixture &&
+        entry.tag === wanted.tag &&
+        entry.text === wanted.text
+      );
+    });
+
+  return { valid, expected, sequence };
 }
 
 async function inspectPage(config, sessionId) {
