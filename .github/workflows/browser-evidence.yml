@@ -65,9 +65,9 @@ jobs:
         run: |
           set -euo pipefail
           nix develop .#browser-evidence --command \
-            node tools/dimensional-utility-evidence.mjs --version | grep -Fxq '0.3.0'
+            node tools/dimensional-utility-evidence.mjs --version | grep -Fxq '0.4.0'
           nix develop .#browser-evidence --command \
-            node tools/dimensional-utility-evidence.mjs --format json --version | grep -Fq '"harnessVersion":"0.3.0"'
+            node tools/dimensional-utility-evidence.mjs --format json --version | grep -Fq '"harnessVersion":"0.4.0"'
           fixture_dir="$(mktemp -d)"
           trap 'rm -rf "$fixture_dir"' EXIT
           cp docs/examples/dimensional-utility-reference.html "$fixture_dir/custom-fixture.html"

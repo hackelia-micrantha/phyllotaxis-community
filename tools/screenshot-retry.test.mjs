@@ -1,9 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { captureWithVerifiedRetry, isTransientScreenshotDetach } from "./screenshot-retry.mjs";
+import { captureWithVerifiedRetry, isTransientScreenshotDetach, verifyPngScreenshot } from "./screenshot-retry.mjs";
 
 const URL = "file:///tmp/phyllotaxis-reference.html";
-const IMG = "iVBORw0KGgoAAAANSUhEUg==";
+// A complete 1x1 RGB PNG with valid IHDR/IDAT/IEND and chunk CRCs.
+const IMG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC";
 const detached = () => new Error(
   "GET /session/a-123/screenshot failed: 500 " +
   '{"value":{"error":"timeout","message":"timeout: aborted by navigation: Not attached to an active page"}}',
@@ -103,7 +104,7 @@ test("empty screenshot data does not become passing evidence", async () => {
   await assert.rejects(captureWithVerifiedRetry({
     expectedUrl: URL, getPageState: async () => state(), allowDetachRetry: true,
     capture: async () => "", onAttempt: () => {},
-  }), /missing encoded image/);
+  }), /Base64 PNG/);
 });
 
 test("a same-URL new document must not be silently retried", async () => {
@@ -158,4 +159,48 @@ test("missing document time origin cannot produce passing evidence", async () =>
     onAttempt: () => {},
   }), /document identity/);
   assert.equal(captures, 0);
+});
+
+test("valid complete PNG is accepted by the integrity verifier", () => {
+  assert.doesNotThrow(() => verifyPngScreenshot(IMG));
+});
+
+test("length-only or unrelated Base64 payloads are rejected", async () => {
+  const bad = ["aaaaaaaa", "aGVsbG8=", "not base64!", "", "iVBORw0KGgoAAAANSUhEUg=="];
+  for (const payload of bad) {
+    const entries = [];
+    await assert.rejects(captureWithVerifiedRetry({
+      expectedUrl: URL, getPageState: async () => state(),
+      capture: async () => payload, onAttempt: e => entries.push(e),
+    }), /PNG/);
+    assert.deepEqual(entries.map(x => x.status), ["fail"]);
+  }
+});
+
+test("truncated PNG and CRC-corrupt screenshot evidence fail closed", async () => {
+  const trunc = Buffer.from(IMG, "base64").subarray(0, -12).toString("base64");
+  const corrupt = Buffer.from(IMG, "base64");
+  corrupt[42] ^= 1; // IDAT payload / check must detect CRC mismatch.
+  for (const payload of [trunc, corrupt.toString("base64")]) {
+    const attempts = [];
+    await assert.rejects(captureWithVerifiedRetry({
+      expectedUrl: URL, getPageState: async () => state(),
+      capture: async () => payload, onAttempt: e => attempts.push(e),
+    }), /PNG/);
+    assert.equal(attempts.length, 1);
+    assert.equal(attempts[0].reason, "post-capture-identity-or-image");
+  }
+});
+
+test("malformed screenshot after a valid detach does not become a pass", async () => {
+  let captures = 0;
+  const entries = [];
+  await assert.rejects(captureWithVerifiedRetry({
+    expectedUrl: URL, allowDetachRetry: true,
+    getPageState: async () => state(),
+    capture: async () => ++captures === 1 ? Promise.reject(detached()) : "aaaaaaaa",
+    onAttempt: e => entries.push(e),
+  }), /PNG/);
+  assert.equal(captures, 2);
+  assert.deepEqual(entries.map(x => x.status), ["retry", "fail"]);
 });

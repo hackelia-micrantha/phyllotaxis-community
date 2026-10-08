@@ -12,7 +12,7 @@ import zlib from "node:zlib";
 const ELEMENT_KEY = "element-6066-11e4-a52e-4f735466cecf";
 const CONTROL = "\uE009";
 const TAB = "\uE004";
-const HARNESS_VERSION = "0.3.0";
+const HARNESS_VERSION = "0.4.0";
 
 function parseArgs(argv) {
   const parsed = {
