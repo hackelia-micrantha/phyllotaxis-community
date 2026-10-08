@@ -21,14 +21,15 @@ This public requirement specifies observable evidence, methodology, and eventual
 ## Fixture contract
 
 - Maintain two variants with identical semantic DOM, assets, content, states, viewport and input sequence: a minimal functional baseline and a Phyllotaxis version.
+- Verify and report fixture comparability before interpreting paired deltas: inspect representative element rectangles, typography and computed layout styles across both variants, identify mismatches, and keep measurement diagnostics separate from any claim of complete paint or interaction equivalence.
 - Representative fixtures: marketing/community, editorial/article, dense Venation primitives, card/pill interactions, light/dark/System and reduced-motion.
-- Record browser and OS versions, CPU throttling, viewport, warm-up, asset/cache state, source revision, public contract pin, artifact identity, repetitions, median and dispersion.
-- Keep baseline and Phyllotaxis results paired in the same controlled environment. Measure absolute cost as well as delta, and investigate flaky/outlier traces.
+- Record browser and OS versions, CPU throttling, viewport, warm-up, asset/cache state, source revision, public contract pin, artifact identity, repetitions, median and dispersion. Distinguish the reviewed PR head from an Actions synthetic-merge checkout SHA when both exist; identify the actual measured commit and digests of each CSS/JS variant.
+- Keep baseline and Phyllotaxis results paired in the same controlled environment. Measure absolute cost as well as delta; record the pairing/order, per-pair deltas and outlier observations without silently discarding samples. Repeat across independent sessions before recommending numerical budgets.
 - Provide machine-readable summary plus human-readable report and trace links; do not include secrets, private topology or unredacted end-user interaction data in public artifacts.
 
 ## Gates and interpretation
 
-- **PR checks:** deterministic emitted-size and growth checks; baseline fixture syntax/build and smoke checks. Avoid environment-sensitive browser timing as an unconditional merge gate.
+- **PR checks:** deterministic emitted-size and growth evidence, plus baseline fixture syntax/build and comparability smoke checks. Without reviewed numerical budgets, report rather than fail on size or timing growth; avoid environment-sensitive browser timing as an unconditional merge gate. A deterministic fixture-parity failure can block acceptance of the measurement itself.
 - **Release qualification:** repeatable browser traces and a documented assessment of regressions with conservative thresholds informed by baseline evidence.
 - **Consumer qualification:** assess performance in the real consumer against its pre-adoption build; each A/B variant independently satisfies applicable performance and accessibility requirements.
 - Numeric payload limits, timing deltas and regression tolerances are **TBD** pending initial measurements and design review; no invented budgets.
