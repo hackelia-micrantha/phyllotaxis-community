@@ -6,6 +6,7 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { captureWithVerifiedRetry } from "./screenshot-retry.mjs";
 import zlib from "node:zlib";
 
 const ELEMENT_KEY = "element-6066-11e4-a52e-4f735466cecf";
@@ -304,9 +305,26 @@ async function setWindow(config, sessionId, width, height) {
   });
 }
 
-async function screenshot(config, sessionId, filename) {
-  const encoded = await command(config, sessionId, "GET", "/screenshot");
-  await fs.writeFile(filename, Buffer.from(encoded, "base64"));
+async function screenshot(config, sessionId, filename, expectedUrl, captureEvents) {
+  const evidence = {
+    browser: config.browser, image: path.basename(filename), attempts: [], status: "pending",
+  };
+  captureEvents.push(evidence);
+  try {
+    const encoded = await captureWithVerifiedRetry({
+      expectedUrl,
+      getPageState: () => evaluate(config, sessionId,
+        "return {href: location.href, readyState: document.readyState};"),
+      capture: () => command(config, sessionId, "GET", "/screenshot"),
+      onAttempt: record => evidence.attempts.push(record),
+      pause: () => new Promise(resolve => setTimeout(resolve, 150)),
+    });
+    await fs.writeFile(filename, Buffer.from(encoded, "base64"));
+    evidence.status = "pass";
+  } catch (error) {
+    evidence.status = "fail";
+    throw error;
+  }
 }
 
 async function pressTab(config, sessionId) {
@@ -795,7 +813,7 @@ function evaluateRequiredChecks(page, noCss, focus, clicked, contrast) {
   return checks;
 }
 
-async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme) {
+async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme, captureEvents) {
   const viewports = [];
   let styles = null;
   for (const width of [1280, 375, 320]) {
@@ -823,7 +841,7 @@ async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputD
   await setWindow(config, sessionId, 1280, 900);
   await navigate(config, sessionId, boundaryUrl);
   const imagePath = path.join(outputDir, config.browser + "-" + scheme + "-boundaries.png");
-  await screenshot(config, sessionId, imagePath);
+  await screenshot(config, sessionId, imagePath, boundaryUrl, captureEvents);
   const caseScreenshots = [];
   for (const boundaryId of ["b1", "b2", "b3"]) {
     await evaluate(
@@ -832,7 +850,7 @@ async function inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputD
       [boundaryId],
     );
     const casePath = path.join(outputDir, config.browser + "-" + scheme + "-" + boundaryId + ".png");
-    await screenshot(config, sessionId, casePath);
+    await screenshot(config, sessionId, casePath, boundaryUrl, captureEvents);
     caseScreenshots.push(path.basename(casePath));
   }
   const button = await findElement(config, sessionId, ".hierarchy-good button");
@@ -919,7 +937,7 @@ async function inspectTextResilience(config, sessionId, url, caseLabel, expected
   };
 }
 
-async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
+async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir, captureEvents) {
   const session = await createSession(config, scheme);
   const sessionId = session.sessionId;
   try {
@@ -1049,8 +1067,8 @@ async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
 
     await navigate(config, sessionId, fixtureUrl);
     const imagePath = path.join(outputDir, config.browser + "-" + scheme + ".png");
-    await screenshot(config, sessionId, imagePath);
-    const boundary = await inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme);
+    await screenshot(config, sessionId, imagePath, fixtureUrl, captureEvents);
+    const boundary = await inspectMaterialBoundaries(config, sessionId, boundaryUrl, outputDir, scheme, captureEvents);
     checks.push(...boundary.checks);
     const textStress = {
       fixture: await inspectTextResilience(config, sessionId, fixtureUrl, ".fixture", 6),
@@ -1085,11 +1103,11 @@ async function runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir) {
   }
 }
 
-async function runBrowser(browser, fixtureUrl, boundaryUrl, outputDir) {
+async function runBrowser(browser, fixtureUrl, boundaryUrl, outputDir, captureEvents) {
   return withDriver(browser, async (config) => {
     const schemes = [];
     for (const scheme of ["light", "dark"]) {
-      schemes.push(await runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir));
+      schemes.push(await runScheme(config, scheme, fixtureUrl, boundaryUrl, outputDir, captureEvents));
     }
     return { browser, schemes };
   });
@@ -1193,10 +1211,11 @@ async function main() {
   const boundaryUrl = pathToFileURL(boundaryFile).href;
   const browsers = [];
   const harnessFailures = [];
+  const captureEvents = [];
 
   for (const browser of ["chromium", "firefox"]) {
     try {
-      browsers.push(await runBrowser(browser, fixtureUrl, boundaryUrl, outputDir));
+      browsers.push(await runBrowser(browser, fixtureUrl, boundaryUrl, outputDir, captureEvents));
     } catch (error) {
       harnessFailures.push({
         browser,
@@ -1225,6 +1244,7 @@ async function main() {
     size,
     browsers,
     harnessFailures,
+    screenshotCaptures: captureEvents,
     summary: {
       browserCount: browsers.length,
       requiredFailures,
