@@ -6,7 +6,7 @@
 - **Decision status:** Pending. No ADR has been created or accepted for this proposal.
 
 ## Problem
-The Utility directive treats gradients and elevation as suspect by default, despite a repeatable restrained material language in two independent Micrantha consumer projects. We need explicit permission without new site-specific themes or forced generic components.
+The Utility directive treats gradients and elevation as suspect by default, while consumer evidence now spans both richer dimensional treatments and a deliberately minimal white/flat composition. We need explicit permission for restrained consumer-owned material variation without making it a Utility default, creating site-specific themes, or forcing generic components.
 
 ## Proposed contract
 1. Utility remains the default, primarily content-first, document-like and flat-first.
@@ -16,11 +16,11 @@ The Utility directive treats gradients and elevation as suspect by default, desp
 5. The same semantic composition must remain functional without CSS/JS and accessible in light/dark, reduced motion and forced colors.
 6. Chroma owns future shared values; Venation remains profile-neutral; Lamina API additions require separate evidence and review.
 7. Descriptive candidate treatments (base, raised, tinted, gloss, inset, accent-edge) are **not** stable exports or mandatory tokens.
-8. Existing flat Utility consumers remain conforming and production migration is opt-in.
+8. Existing flat Utility consumers remain first-class conforming outcomes; persistent dimensional treatment is never required and production migration is opt-in.
 
 ## Relationship to accepted guidance
 
-[ADR-0003](ADR-0003-utility-composition-patterns.md) accepts flat low-chroma rhythm, shared borders and explicit status as the Utility default. This RFC **proposes** clarifying that selective, restrained gradients, bevels, radius and elevation may be appropriate in some consumer-owned designs without replacing that default. Until a subsequent ADR is accepted and the directive is updated through a reviewed change, this RFC and its fixtures are non-normative; consumers and conformance tooling must not treat the proposal as current public permission or a stable component/token contract.
+[ADR-0003](ADR-0003-utility-composition-patterns.md) accepts flat low-chroma rhythm, shared borders and explicit status as the Utility default. Digitalis/Envuscator provide richer-treatment evidence, while the pinned Dubnium Community consumer provides a minimal white/flat control that intentionally removes persistent section color and dividers. This RFC **proposes** clarifying that selective, restrained gradients, bevels, radius and elevation may be appropriate in some consumer-owned designs without replacing that default or making dimensional treatment preferable. Until a subsequent ADR is accepted and the directive is updated through a reviewed change, this RFC and its fixtures are non-normative; consumers and conformance tooling must not treat the proposal as current public permission or a stable component/token contract.
 
 A separate ADR may be numbered and published **only when the decision has been accepted**. No ADR number is reserved by this RFC.
 
