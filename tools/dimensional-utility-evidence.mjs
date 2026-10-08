@@ -531,6 +531,41 @@ async function focusSequence(config, sessionId, fixtureUrl) {
   return { valid, expected, sequence };
 }
 
+async function inspectGlossPressed(config, sessionId, fixtureUrl) {
+  await navigate(config, sessionId, fixtureUrl);
+  const selector = ".gloss button";
+  const style = "var e=document.querySelector(arguments[0]);var s=getComputedStyle(e);return {active:e.matches(':active'),background:s.backgroundImage,shadow:s.boxShadow,borderStyle:s.borderTopStyle};";
+  const resting = await evaluate(config, sessionId, style, [selector]);
+  try {
+    const element = await findElement(config, sessionId, selector);
+    await command(config, sessionId, "POST", "/actions", {
+      actions: [{
+        type: "pointer", id: "gloss-pointer", parameters: { pointerType: "mouse" },
+        actions: [
+          { type: "pointerMove", duration: 0, origin: { [ELEMENT_KEY]: element }, x: 0, y: 0 },
+          { type: "pointerDown", button: 0 },
+        ],
+      }],
+    });
+    const pressed = await evaluate(config, sessionId, style, [selector]);
+    return {
+      status: pressed.active &&
+        (pressed.background !== resting.background || pressed.shadow !== resting.shadow)
+        ? "pass" : "fail",
+      resting,
+      pressed,
+    };
+  } catch (error) {
+    return { status: "unsupported", detail: error.message.split("\n")[0], resting };
+  } finally {
+    try {
+      await command(config, sessionId, "DELETE", "/actions");
+    } catch {
+      // Driver is discarded after this scheme, and no input state is retained.
+    }
+  }
+}
+
 async function inspectPage(config, sessionId) {
   return evaluate(
     config,
@@ -793,6 +828,7 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
     const noCss = await noCssSemantics(config, sessionId, fixtureUrl);
     const focus = await focusSequence(config, sessionId, fixtureUrl);
     const clicked = await clickButton(config, sessionId, fixtureUrl);
+    const glossPressed = await inspectGlossPressed(config, sessionId, fixtureUrl);
     await navigate(config, sessionId, fixtureUrl);
     const hover = await hoverElement(config, sessionId, ".flat button");
     const zoom = await attemptBrowserZoom(config, sessionId);
@@ -801,6 +837,12 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
     const current = await inspectPage(config, sessionId);
     const contrast = contrastEvidence(current.vars);
     const checks = evaluateRequiredChecks(current, noCss, focus, clicked, contrast);
+    checks.push(result(
+      "gloss pressed state",
+      glossPressed.status,
+      glossPressed,
+      "accepted-interaction-motion",
+    ));
     checks.push(
       result(
         "requested color scheme",
@@ -896,6 +938,7 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
       viewports,
       noCss,
       focus,
+      glossPressed,
       hover,
       zoom,
       media,
