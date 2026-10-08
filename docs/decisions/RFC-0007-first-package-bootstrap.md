@@ -5,7 +5,7 @@ Origin: [QART-0007](QART-0007-first-package-bootstrap.md)
 
 ## Summary
 
-Specialize ADR-0006 for the first creation of `@hackelia-micrantha/phyllotaxis`.
+Specialize ADR-0006 for the first creation of `@micrantha/phyllotaxis`.
 
 Because npm trusted-publisher configuration is available only after the package exists, the first staging action may be performed interactively by the release owner from the **exact canonical tarball** already produced and reviewed by the private release pipeline.
 
@@ -13,10 +13,10 @@ This exception ends before the staged alpha is approved. It does not authorize a
 
 ## Bootstrap procedure
 
-1. The canonical private producer prepares `0.1.0-alpha.1`, generates the reviewed tarball and release evidence, and records its SHA-256 digest.
+1. The canonical private producer prepares `0.1.0-alpha.2`, generates the reviewed tarball and release evidence, and records its SHA-256 digest.
 2. The release owner downloads that exact tarball to a trusted workstation and independently verifies the digest against canonical evidence.
 3. From an authenticated npm session, stage that tarball as a public scoped package using the prerelease dist-tag `next`:
-   `npm stage publish <verified-tarball> --access public --tag next`.
+   `npm stage publish <verified-tarball> --access public --tag alpha`.
 4. Record the npm stage ID and the npm-created `0.0.0-stage` placeholder as bootstrap evidence. Do not approve the alpha yet.
 5. Configure the trusted publisher for `hackelia-micrantha/phyllotaxis`:
    - GitHub Actions;
