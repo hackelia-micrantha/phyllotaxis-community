@@ -22,7 +22,7 @@
         in
         {
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
-            nativeBuildInputs = [ python ];
+            nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''
             cp -R ${./contracts} contracts
             chmod -R u+w contracts
@@ -39,6 +39,7 @@
             public = json.loads(Path("contracts/public-interface-v1.json").read_text())
             assert "tokens" in public["cli"]["commands"]
             PY
+            python ${./tools/check-independent-review.py} ${./docs/examples/dimensional-utility-review-session.html}
             touch "$out"
           '';
         }
