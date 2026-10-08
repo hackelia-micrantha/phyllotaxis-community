@@ -70,7 +70,7 @@ Chroma owns profile-specific visual values and semantic roles, including as just
 - image presentation values;
 - focus, selection, warning, error, disabled, and visited-link states.
 
-Utility should make restraint inexpensive and natural.
+Utility should make restraint inexpensive and natural. Candidate dimensional treatments are consumer evidence, not stable tokens until independently reviewed and versioned.
 
 Editorial may introduce a more expressive hierarchy, but values should remain semantic and bounded rather than exposing arbitrary styling as a public token API.
 
@@ -112,7 +112,7 @@ Prefer:
 - compact readable information density;
 - restrained color, including bounded low-chroma section rhythm where it improves scanning;
 - simple borders and separators, including contiguous border-sharing information grids;
-- limited radii and elevation;
+- limited radii and elevation by default, with selectively bounded tinted, raised, inset, bevelled or glossy treatments where hierarchy or affordance benefits;
 - normal document flow;
 - intrinsic responsive layout;
 - little or no ornamental motion.
@@ -223,7 +223,7 @@ When reviewing a visual-profile proposal:
 5. keep host/brand-specific identity outside reusable APIs;
 6. treat existing site CSS/framework structure as evidence, not contract;
 7. prefer the smallest profile-specific surface that satisfies the editorial need;
-8. for Utility, prefer flat section rhythm and shared separators over independent card chrome when visual grouping is needed.
+8. for Utility, prefer flat section rhythm and shared separators as the baseline; permit deliberate dimensional treatments when they improve hierarchy or affordance without turning all content into independently floating cards.
 
 ## Current implementation status
 
