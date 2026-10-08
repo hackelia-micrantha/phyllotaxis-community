@@ -11,12 +11,14 @@ import zlib from "node:zlib";
 const ELEMENT_KEY = "element-6066-11e4-a52e-4f735466cecf";
 const CONTROL = "\uE009";
 const TAB = "\uE004";
+const HARNESS_VERSION = "0.1.0";
 
 function parseArgs(argv) {
   const parsed = {
     fixture: null,
     output: null,
     format: "text",
+    version: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -29,14 +31,20 @@ function parseArgs(argv) {
       if (!["text", "json"].includes(parsed.format)) {
         throw new Error("--format must be text or json");
       }
+    } else if (arg === "--version") {
+      parsed.version = true;
     } else if (arg === "--help" || arg === "-h") {
       process.stdout.write(
-        "Usage: node tools/dimensional-utility-evidence.mjs [--fixture PATH] [--output DIR] [--format text|json]\n",
+        "Usage: node tools/dimensional-utility-evidence.mjs [--fixture PATH] [--output DIR] [--format text|json] [--version]\n",
       );
       process.exit(0);
     } else {
       throw new Error("Unknown argument: " + arg);
     }
+  }
+  if (parsed.version) {
+    process.stdout.write(parsed.format === "json" ? JSON.stringify({ harnessVersion: HARNESS_VERSION }) + "\n" : HARNESS_VERSION + "\n");
+    process.exit(0);
   }
   return parsed;
 }
@@ -503,7 +511,7 @@ async function focusSequence(config, sessionId, fixtureUrl) {
       await evaluate(
         config,
         sessionId,
-        "var e=document.activeElement;var f=e?e.closest('.fixture'):null;return {tag:e?e.tagName:null,id:e?e.id:null,text:e?e.textContent.trim():null,fixture:f?f.getAttribute('aria-labelledby'):null};",
+        "var e=document.activeElement;var f=e?e.closest('.fixture'):null;var st=e?getComputedStyle(e):null;return {tag:e?e.tagName:null,id:e?e.id:null,text:e?e.textContent.trim():null,fixture:f?f.getAttribute('aria-labelledby'):null,focusIndicator:e?{visible:e.matches(':focus-visible'),style:st.outlineStyle,width:st.outlineWidth,color:st.outlineColor}:null};",
       ),
     );
   }
@@ -581,7 +589,7 @@ async function performanceSamples(config, sessionId, fixtureUrl) {
   return { navigationMs: summarize(nav), firstContentfulPaintMs: summarize(fcp) };
 }
 
-async function chromiumMediaEvidence(config, sessionId, scheme) {
+async function chromiumMediaEvidence(config, sessionId, scheme, fixtureUrl) {
   const base = [{ name: "prefers-color-scheme", value: scheme }];
   const output = {};
   if (
@@ -604,11 +612,13 @@ async function chromiumMediaEvidence(config, sessionId, scheme) {
       { name: "forced-colors", value: "active" },
     ])
   ) {
+    const focus = await focusSequence(config, sessionId, fixtureUrl);
     output.forcedColors = await evaluate(
       config,
       sessionId,
-      "var b=document.querySelector('.flat button');var s=getComputedStyle(b);return {matches:matchMedia('(forced-colors: active)').matches,borderColor:s.borderColor,outline:s.outlineStyle,color:s.color,background:s.backgroundColor};",
+      "var css=(sel)=>getComputedStyle(document.querySelector(sel));var b=css('.flat button');var st=css('.flat .status');var inset=css('.inset .well');return {matches:matchMedia('(forced-colors: active)').matches,background:getComputedStyle(document.body).backgroundColor,boundaries:[{name:'flat button',color:b.borderTopColor,width:b.borderTopWidth},{name:'flat status',color:st.borderTopColor,width:st.borderTopWidth},{name:'inset well',color:inset.borderTopColor,width:inset.borderTopWidth}]};",
     );
+    output.forcedColors.focus = focus;
   } else {
     output.forcedColors = { unsupported: true };
   }
@@ -713,8 +723,15 @@ function evaluateRequiredChecks(page, noCss, focus, clicked, contrast) {
       "accepted-accessibility",
     ),
     result(
-      "keyboard traversal",
-      focus.valid ? "pass" : "fail",
+      "keyboard traversal and visible focus",
+      focus.valid && focus.sequence.every((entry) => {
+        const indicator = entry?.focusIndicator;
+        if (!indicator?.visible || indicator.style === "none" || indicator.style === "hidden" || Number.parseFloat(indicator.width) < 2) return false;
+        try {
+          return contrastRatio(indicator.color, page.vars.paper) >= 3 &&
+            contrastRatio(indicator.color, page.vars.raised) >= 3;
+        } catch { return false; }
+      }) ? "pass" : "fail",
       focus.sequence,
       "accepted-accessibility",
     ),
@@ -816,7 +833,7 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
       forcedColors: { unsupported: true },
     };
     if (config.browser === "chromium") {
-      media = await chromiumMediaEvidence(config, sessionId, scheme);
+      media = await chromiumMediaEvidence(config, sessionId, scheme, fixtureUrl);
       checks.push(
         result(
           "reduced-motion media emulation",
@@ -828,7 +845,19 @@ async function runScheme(config, scheme, fixtureUrl, outputDir) {
       checks.push(
         result(
           "forced-colors media emulation",
-          media.forcedColors.matches ? "pass" : "unsupported",
+          !media.forcedColors.matches ? "unsupported" :
+          media.forcedColors.focus?.valid &&
+          media.forcedColors.focus.sequence.every((entry) => {
+            const indicator = entry?.focusIndicator;
+            if (!indicator?.visible || indicator.style === "none" || Number.parseFloat(indicator.width) < 2) return false;
+            try { return contrastRatio(indicator.color, media.forcedColors.background) >= 3; }
+            catch { return false; }
+          }) &&
+          media.forcedColors.boundaries?.every((border) => {
+            if (Number.parseFloat(border.width) < 1) return false;
+            try { return contrastRatio(border.color, media.forcedColors.background) >= 3; }
+            catch { return false; }
+          }) ? "pass" : "fail",
           media.forcedColors,
           "accepted-accessibility",
         ),
@@ -898,6 +927,7 @@ function markdown(report) {
     "- Fixture Git blob: " + report.source.gitBlobSha,
     "- Fixture SHA-256: " + report.source.sha256,
     "- Generated: " + report.generatedAt,
+    "- Harness version: " + report.harnessVersion,
     "- Browsers completed: " + report.summary.browserCount,
     "- Harness failures: " + report.summary.harnessFailures,
     "- Required failures: " + report.summary.requiredFailures,
@@ -992,6 +1022,7 @@ async function main() {
 
   const report = {
     schemaVersion: 1,
+    harnessVersion: HARNESS_VERSION,
     generatedAt: new Date().toISOString(),
     source,
     environment: {
@@ -1020,6 +1051,7 @@ async function main() {
   await fs.writeFile(path.join(outputDir, "summary.md"), markdown(report) + "\n");
   const stdoutPayload = {
     schemaVersion: 1,
+    harnessVersion: HARNESS_VERSION,
     source: report.source,
     summary: report.summary,
     artifacts: ["evidence.json", "summary.md"],
