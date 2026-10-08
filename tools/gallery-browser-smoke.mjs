@@ -199,9 +199,12 @@ try {
   // A narrow effective CSS viewport is a reflow stress, not a native browser-zoom assertion.
   await viewport(160);
   const narrowStress = await evalInPage(`
-    return innerWidth === 160 && document.documentElement.scrollWidth <= innerWidth + 1;
+    return { inner: innerWidth, scroll: document.documentElement.scrollWidth,
+      overflow: [...document.querySelectorAll("*")].filter(el => el.getBoundingClientRect().right > innerWidth + 1)
+        .slice(0, 6).map(el => el.tagName.toLowerCase() + "." + el.className) };
   `);
-  record("160px effective viewport reflow stress (not native browser zoom)", narrowStress);
+  record("160px effective viewport reflow stress (not native browser zoom; " + JSON.stringify(narrowStress) + ")",
+    narrowStress.inner === 160 && narrowStress.scroll <= narrowStress.inner + 1);
 
   process.stdout.write("gallery browser smoke: " + checks + " assertions passed (Chromium; CSS zoom is not browser zoom)\n");
 } catch (error) {
