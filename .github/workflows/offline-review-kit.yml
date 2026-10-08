@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/offline-review-kit.yml"
       - "flake.nix"
+      - "tools/package-independent-review.py"
       - "flake.lock"
       - "docs/examples/independent-review-participant-README.md"
       - "docs/examples/dimensional-utility-review-session.html"
@@ -17,6 +18,7 @@ on:
     paths:
       - ".github/workflows/offline-review-kit.yml"
       - "flake.nix"
+      - "tools/package-independent-review.py"
       - "flake.lock"
       - "docs/examples/independent-review-participant-README.md"
       - "docs/examples/dimensional-utility-review-session.html"
@@ -49,7 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           nix build .#independent-review-kit --out-link ./review-kit-build
-          printf 'Archive entries:\\n'
+          printf 'Archive entries:\n'
           unzip -Z1 ./review-kit-build/independent-review-kit.zip
           nix build .#checks.x86_64-linux.independent-review-kit-archive --no-link
           mkdir -p ./review-kit-artifact
