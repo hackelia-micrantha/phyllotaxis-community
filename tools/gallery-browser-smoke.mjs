@@ -196,12 +196,12 @@ try {
 
   await navigate(indexUrl);
   await media("light");
-  await viewport(320);
-  const zoomStress = await evalInPage(`
-    document.documentElement.style.zoom = "2";
-    return document.documentElement.scrollWidth <= innerWidth + 1;
+  // A narrow effective CSS viewport is a reflow stress, not a native browser-zoom assertion.
+  await viewport(160);
+  const narrowStress = await evalInPage(`
+    return innerWidth === 160 && document.documentElement.scrollWidth <= innerWidth + 1;
   `);
-  record("CSS zoom 2x stress does not overflow (not native browser zoom)", zoomStress);
+  record("160px effective viewport reflow stress (not native browser zoom)", narrowStress);
 
   process.stdout.write("gallery browser smoke: " + checks + " assertions passed (Chromium; CSS zoom is not browser zoom)\n");
 } catch (error) {
