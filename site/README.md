@@ -27,6 +27,6 @@ The workflow does not deploy from pull requests; `pages: write` and `id-token: w
 
 ## Release-backed next step
 
-Once a verified, public, immutable Phyllotaxis release exists, upgrade the gallery to a package-backed consumer demo using documented imports and exact lockfiles. Do not pull from the private canonical repository, vendor compiled CSS as a source-of-truth fork, or hardcode a package scope before issue #59 is resolved. The release-backed demo should show both semantic profiles, host-owned light/dark/system behavior, proper interaction motion, keyboard/accessibility cases and actual Chroma/Venation/Lamina output.
+Once a verified, public, immutable Phyllotaxis release exists, upgrade the gallery to a package-backed consumer demo using documented imports and exact lockfiles. The accepted public package identity is `@micrantha/phyllotaxis` (#59, resolved). Do not pull from the private canonical repository or vendor compiled CSS as a source-of-truth fork. Consume only a verified, immutable published package version; the earlier `0.1.0-alpha.1` candidate was abandoned and not published. The release-backed demo should show both semantic profiles, host-owned light/dark/system behavior, proper interaction motion, keyboard/accessibility cases and actual Chroma/Venation/Lamina output.
 
 Track this work in [issue #61](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/61).
