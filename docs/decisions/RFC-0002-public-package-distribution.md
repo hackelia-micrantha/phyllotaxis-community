@@ -8,7 +8,7 @@ Origin: [QART-0002](QART-0002-public-distribution-boundary.md)
 Publish the first supported consumer artifact as the npm-compatible package:
 
 ```text
-@hackelia-micrantha/phyllotaxis
+@micrantha/phyllotaxis
 ```
 
 The package is built and validated by the private canonical implementation repository, while this community repository remains authoritative for public requirements, contracts, interfaces, manuals, and release-policy decisions.
@@ -37,12 +37,12 @@ QART-0002's trigger for a public distribution RFC is therefore satisfied.
 Use the existing package identity:
 
 ```text
-@hackelia-micrantha/phyllotaxis
+@micrantha/phyllotaxis
 ```
 
 The first public release remains pre-1.0. Consumers must pin an exact released version rather than a mutable Git ref.
 
-The first public candidate is `0.1.0-alpha.1`, mapped to immutable source tag `v0.1.0-alpha.1`. `0.0.0` is not a publishable release identity. Stable `0.1.0` is reserved until the bounded first-consumer qualification succeeds and its post-publication evidence is recorded.
+The first public candidate is `0.1.0-alpha.2`, mapped to immutable source tag `v0.1.0-alpha.2`. `0.0.0` is not a publishable release identity. Stable `0.1.0` is reserved until the bounded first-consumer qualification succeeds and its post-publication evidence is recorded.
 
 ### Canonical producer
 
@@ -122,7 +122,7 @@ The registry change and RFC/ADR must land in dependency order so organization re
 The concrete candidate registry is the public npm registry (`https://registry.npmjs.org`) using the scoped public package identity:
 
 ```text
-@hackelia-micrantha/phyllotaxis
+@micrantha/phyllotaxis
 ```
 
 This remains a proposal until the RFC is accepted and the corresponding npm scope/package ownership is verified by the release owner. Scoped packages must be explicitly published as public; the release workflow must fail closed rather than rely on an ambient npm client default.
@@ -224,7 +224,7 @@ For the selected first consumer, `hackelia-micrantha/web`, the package manager a
 
 A forward pin and a rollback are both ordinary reviewed consumer changes:
 
-1. change `@hackelia-micrantha/phyllotaxis` only to the intended exact version (no range);
+1. change `@micrantha/phyllotaxis` only to the intended exact version (no range);
 2. regenerate `yarn.lock` from a clean/cache-miss install against the public registry, with private Phyllotaxis repository credentials unavailable;
 3. review the lockfile diff so the Phyllotaxis resolved artifact/integrity changes are attributable to that version change;
 4. run the consumer's repository-owned typecheck, build, unit/integration checks, and the bounded Phyllotaxis characterization/compatibility checks;
