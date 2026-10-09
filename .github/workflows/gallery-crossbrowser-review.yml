@@ -50,6 +50,17 @@ jobs:
           nix develop .#browser-evidence --command
           node tools/gallery-crossbrowser-review.mjs
           --site ./demo-output --out ./review-evidence
+          --source-sha ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Assert screenshot manifest matches exact checkout
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test "$(jq -r '.sourceCommit' review-evidence/manifest.json)" = "$EXPECTED_SHA"
+          jq -e '.counts.fail == 0 and .counts.harness_error == 0 and
+                 .counts.pass >= 15 and (.screenshots | length) >= 20' review-evidence/manifest.json
 
       - name: Upload screenshots, summary and limitation manifest
         if: always()
