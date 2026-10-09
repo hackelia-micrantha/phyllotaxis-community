@@ -3,7 +3,7 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-  outputs = { nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
       systems = [
         "x86_64-linux"
@@ -21,6 +21,13 @@
           python = pkgs.python3.withPackages (ps: [ ps.jsonschema ]);
         in
         {
+          independent-review-kit-archive = pkgs.runCommand "phyllotaxis-community-independent-review-kit-validation" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            archive="${self.packages.${system}.independent-review-kit}/independent-review-kit.zip"
+            python ${./tools/package-independent-review.py} --root ${./.} --archive "$archive" --verify-only
+            touch "$out"
+          '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
             nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''
@@ -41,6 +48,21 @@
             PY
             python ${./tools/check-independent-review.py} ${./docs/examples/dimensional-utility-review-session.html}
             touch "$out"
+          '';
+        }
+      );
+
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          independent-review-kit = pkgs.runCommand "phyllotaxis-independent-review-kit" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            mkdir -p "$out"
+            python ${./tools/package-independent-review.py} --root ${./.} --archive "$out/independent-review-kit.zip"
           '';
         }
       );
