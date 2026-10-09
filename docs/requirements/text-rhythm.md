@@ -1,6 +1,6 @@
 # TEXT-001 — Semantic text rhythm and conceptual breaks
 
-- **Status:** Proposed design requirement; not an accepted contract or shipped behavior
+- **Status:** Native authoring direction accepted as *non-binding guidance* by [ADR-0009](../decisions/ADR-0009-native-text-rhythm-guidance.md); any new component, token, AI integration or accessibility conformance remains unaccepted
 - **Date:** 2026-10-08
 - **Tracking:** [#81](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/81)
 - **Analysis:** [QART-0010](../decisions/QART-0010-semantic-text-rhythm.md)
@@ -98,6 +98,8 @@ A static demonstration may be published as an explicitly **non-normative** galle
 The [static text-rhythm comparison](../examples/text-rhythm-comparison.html), [illustrative suggestion candidates](../examples/text-rhythm-suggestions.json), and [review plan](../architecture/text-rhythm-review-plan.md) exercise manual semantic boundaries and *reviewed build-time* suggestion cases. Their structural checks do not prove semantics or browser accessibility. Runtime inference and adaptive reflow are out of scope for the current evaluation.
 
 ## Decision path
+
+The native authoring direction was accepted as **no-API guidance** by [RFC-0010](../decisions/RFC-0010-native-text-rhythm-guidance.md) and [ADR-0009](../decisions/ADR-0009-native-text-rhythm-guidance.md); the following paragraph describes the earlier proposed path for any **new stable interface**, not a prerequisite for authoring native HTML.
 
 [QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) compares the native baseline, bounded styling roles, new components, and AI modes. Only after evidence resolves open questions should a corresponding RFC specify proposed semantic content markers or an optional build-time suggestion schema, then an ADR decide adoption. Any spacing, typography or CSS-token proposal remains under SPACE-001 / QART-0009 / RFC-0009. Private implementation and AI integration follow an accepted, immutable pinned public contract, with exact-head testing and compatibility evidence.
 
