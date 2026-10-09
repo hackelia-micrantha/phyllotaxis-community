@@ -30,6 +30,17 @@ The synthetic suggestion JSON illustrates prepublication review: an author-appro
 
 These checks are structural only, not visual, accessibility, or model-accuracy conclusions. The HTML and JSON are not included in the published package, or the GitHub Pages allowlist, as part of this task.
 
+## Automated Chromium geometry evidence (experimental)
+
+The [TEXT-001 browser evidence harness](../../tools/text-rhythm-browser-evidence.mjs) and [read-only CI workflow](../../.github/workflows/text-rhythm-browser-evidence.yml) exercise this **static HTML fixture**, not the Phyllotaxis package or a live consumer:
+
+- eight CDP-emulated 320/375/768/1280 CSS-px viewport × light/dark measurements covering all sixteen authored specimens per case;
+- bounded checks for document/specimen overflow, native `hr` presence, optional `aria-hidden` ornaments, and explicit surface color-scheme behavior;
+- four screenshots, two explicitly **CSS-simulated** text stress checks, exact source/fixture identity and persisted failure evidence;
+- no inference, application JavaScript, runtime personalization, publication or deployment.
+
+**CI is evidence, not semantic approval.** Screenshots require human visual inspection. The automation does not establish correct authored break placement, actual browser zoom or operating-system text-only resizing, screen-reader announcement, CSS-off handling, Firefox/Safari/iOS parity, or real consumer accessibility. Record actual run SHA and conclusion before marking any measured scenario passed.
+
 ## Manual evidence matrix
 
 | Condition | Required observation | Status |
