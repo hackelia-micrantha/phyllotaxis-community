@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPACE-001 spatial rhythm specimens (non-normative)</title>
+  <style>
+
+  /* Experimental specimen only: these --sample-* values are NOT Phyllotaxis tokens. */
+  :root { color-scheme:light dark; font-family:system-ui,sans-serif; line-height:1.5; background:Canvas; color:CanvasText; }
+  *, *::before, *::after { box-sizing:border-box; }
+  body { margin:0; }
+  a { color:LinkText; }
+  :focus-visible { outline:3px solid Highlight; outline-offset:3px; }
+  .page { width:min(100%, 90rem); padding:clamp(1rem,3vw,2rem); margin-inline:auto; }
+  .intro { max-width:68ch; }
+  .intro h1 { font-size:clamp(1.5rem,3vw,2rem); line-height:1.2; }
+  .compare { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%, 22rem),1fr)); gap:1.5rem; align-items:start; margin-block:2rem; }
+  .sample { min-width:0; padding:var(--sample-gutter); border:1px solid ButtonBorder; border-radius:.4rem; }
+  .sample h2 { margin:0; font-size:1.35rem; }
+  .sample .annotation { font-size:.875rem; }
+  .sample .spatial { margin-block-start:var(--sample-section); }
+  .sample .spatial > h3 { margin:0 0 var(--sample-group); font-size:1.05rem; }
+  .sample .items { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%, 9rem),1fr)); gap:var(--sample-group); }
+  .sample .tile { min-width:0; padding:var(--sample-inset); border:1px solid ButtonBorder; border-radius:.2rem; }
+  .sample .tile p { margin:.25rem 0 0; }
+  .sample fieldset { min-width:0; border:1px solid ButtonBorder; padding:var(--sample-inset); }
+  .sample fieldset label { display:flex; align-items:start; gap:var(--sample-group); margin-block:var(--sample-group); }
+  .sample input { accent-color:Highlight; }
+  .sample .reading { max-width:54ch; }
+  .sample .reading p { margin:0 0 var(--sample-paragraph); overflow-wrap:anywhere; }
+  .sample table { border-collapse:collapse; width:100%; table-layout:fixed; text-align:left; }
+  .sample td, .sample th { border-bottom:1px solid ButtonBorder; padding:var(--sample-cell) var(--sample-group); overflow-wrap:anywhere; vertical-align:top; }
+  .sample .status { font-weight:600; }
+  .sample[data-density="compact"] { --sample-gutter:1rem; --sample-section:1.5rem; --sample-group:.5rem; --sample-inset:.75rem; --sample-paragraph:.75rem; --sample-cell:.375rem; }
+  .sample[data-density="comfortable"] { --sample-gutter:1.25rem; --sample-section:2.25rem; --sample-group:.75rem; --sample-inset:1rem; --sample-paragraph:1rem; --sample-cell:.5rem; }
+  .sample[data-density="spacious"] { --sample-gutter:1.5rem; --sample-section:3.25rem; --sample-group:1rem; --sample-inset:1.25rem; --sample-paragraph:1.125rem; --sample-cell:.625rem; }
+  .note { padding-block:1.5rem; border-top:1px solid ButtonBorder; max-width:78ch; }
+  @media (forced-colors:active) { .sample,.tile,fieldset { border-color:CanvasText; } }
+
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="intro">
+      <h1>SPACE-001: spatial rhythm comparison</h1>
+      <p>Three candidate density policies rendered against identical synthetic content. These are non-normative, local CSS examples, not Chroma defaults, Venation props, a Lamina component or a public <code>data-density</code> carrier.</p>
+      <p>Compare section distance, sibling grouping, internal insets, prose, and status-table readability at narrow/wide widths, system light/dark and text enlargement. Use the <a href="#review-notes">review notes</a> to record evidence rather than treating this fixture as proof of accessibility or preference.</p>
+    </header>
+    <div class="compare" aria-label="Spatial density candidates">
+    <article class="sample" data-density="compact" aria-labelledby="compact-title">
+      <h2 id="compact-title">Compact</h2>
+      <p class="annotation">Example-only spacing values; not a released density API.</p>
+      <section class="spatial" data-sample-block="sections" aria-labelledby="compact-sections">
+        <h3 id="compact-sections">Section separation</h3>
+        <p>These independent content regions should feel distinct without needing shadows or decorative cards.</p>
+      </section>
+      <section class="spatial" data-sample-block="grid" aria-labelledby="compact-grid">
+        <h3 id="compact-grid">Repeated items</h3>
+        <div class="items">
+          <div class="tile"><strong>Collect</strong><p>Capture evidence.</p></div>
+          <div class="tile"><strong>Inspect</strong><p>Verify constraints.</p></div>
+        </div>
+      </section>
+      <section class="spatial" data-sample-block="controls" aria-labelledby="compact-controls">
+        <h3 id="compact-controls">Controls and grouping</h3>
+        <fieldset><legend>Notification preferences</legend>
+          <label><input type="checkbox" checked> Required updates</label>
+          <label><input type="checkbox"> Optional digests</label>
+        </fieldset>
+      </section>
+      <section class="spatial reading" data-sample-block="prose" aria-labelledby="compact-prose">
+        <h3 id="compact-prose">Prose rhythm</h3>
+        <p>Spacing between ideas supports comprehension. A heading, short paragraph, and the next topic should not collapse into one undifferentiated group.</p>
+        <p>Reading measure, line height, and paragraph separation interact. Enlarging all margins uniformly is not necessarily better.</p>
+      </section>
+      <section class="spatial" data-sample-block="status" aria-labelledby="compact-status">
+        <h3 id="compact-status">Dense status information</h3>
+        <table><thead><tr><th scope="col">Task</th><th scope="col">State</th></tr></thead>
+          <tbody><tr><th scope="row">Validation</th><td class="status">Passed</td></tr>
+          <tr><th scope="row">Review</th><td class="status">Pending</td></tr></tbody></table>
+      </section>
+    </article>
+    <article class="sample" data-density="comfortable" aria-labelledby="comfortable-title">
+      <h2 id="comfortable-title">Comfortable</h2>
+      <p class="annotation">Example-only spacing values; not a released density API.</p>
+      <section class="spatial" data-sample-block="sections" aria-labelledby="comfortable-sections">
+        <h3 id="comfortable-sections">Section separation</h3>
+        <p>These independent content regions should feel distinct without needing shadows or decorative cards.</p>
+      </section>
+      <section class="spatial" data-sample-block="grid" aria-labelledby="comfortable-grid">
+        <h3 id="comfortable-grid">Repeated items</h3>
+        <div class="items">
+          <div class="tile"><strong>Collect</strong><p>Capture evidence.</p></div>
+          <div class="tile"><strong>Inspect</strong><p>Verify constraints.</p></div>
+        </div>
+      </section>
+      <section class="spatial" data-sample-block="controls" aria-labelledby="comfortable-controls">
+        <h3 id="comfortable-controls">Controls and grouping</h3>
+        <fieldset><legend>Notification preferences</legend>
+          <label><input type="checkbox" checked> Required updates</label>
+          <label><input type="checkbox"> Optional digests</label>
+        </fieldset>
+      </section>
+      <section class="spatial reading" data-sample-block="prose" aria-labelledby="comfortable-prose">
+        <h3 id="comfortable-prose">Prose rhythm</h3>
+        <p>Spacing between ideas supports comprehension. A heading, short paragraph, and the next topic should not collapse into one undifferentiated group.</p>
+        <p>Reading measure, line height, and paragraph separation interact. Enlarging all margins uniformly is not necessarily better.</p>
+      </section>
+      <section class="spatial" data-sample-block="status" aria-labelledby="comfortable-status">
+        <h3 id="comfortable-status">Dense status information</h3>
+        <table><thead><tr><th scope="col">Task</th><th scope="col">State</th></tr></thead>
+          <tbody><tr><th scope="row">Validation</th><td class="status">Passed</td></tr>
+          <tr><th scope="row">Review</th><td class="status">Pending</td></tr></tbody></table>
+      </section>
+    </article>
+    <article class="sample" data-density="spacious" aria-labelledby="spacious-title">
+      <h2 id="spacious-title">Spacious</h2>
+      <p class="annotation">Example-only spacing values; not a released density API.</p>
+      <section class="spatial" data-sample-block="sections" aria-labelledby="spacious-sections">
+        <h3 id="spacious-sections">Section separation</h3>
+        <p>These independent content regions should feel distinct without needing shadows or decorative cards.</p>
+      </section>
+      <section class="spatial" data-sample-block="grid" aria-labelledby="spacious-grid">
+        <h3 id="spacious-grid">Repeated items</h3>
+        <div class="items">
+          <div class="tile"><strong>Collect</strong><p>Capture evidence.</p></div>
+          <div class="tile"><strong>Inspect</strong><p>Verify constraints.</p></div>
+        </div>
+      </section>
+      <section class="spatial" data-sample-block="controls" aria-labelledby="spacious-controls">
+        <h3 id="spacious-controls">Controls and grouping</h3>
+        <fieldset><legend>Notification preferences</legend>
+          <label><input type="checkbox" checked> Required updates</label>
+          <label><input type="checkbox"> Optional digests</label>
+        </fieldset>
+      </section>
+      <section class="spatial reading" data-sample-block="prose" aria-labelledby="spacious-prose">
+        <h3 id="spacious-prose">Prose rhythm</h3>
+        <p>Spacing between ideas supports comprehension. A heading, short paragraph, and the next topic should not collapse into one undifferentiated group.</p>
+        <p>Reading measure, line height, and paragraph separation interact. Enlarging all margins uniformly is not necessarily better.</p>
+      </section>
+      <section class="spatial" data-sample-block="status" aria-labelledby="spacious-status">
+        <h3 id="spacious-status">Dense status information</h3>
+        <table><thead><tr><th scope="col">Task</th><th scope="col">State</th></tr></thead>
+          <tbody><tr><th scope="row">Validation</th><td class="status">Passed</td></tr>
+          <tr><th scope="row">Review</th><td class="status">Pending</td></tr></tbody></table>
+      </section>
+    </article>
+    </div>
+    <section id="review-notes" class="note">
+      <h2>Review notes</h2>
+      <p>The compact specimen approximates the accepted Utility spacing scale where a role aligns, but inset, paragraph and cell metrics are locally owned illustrative choices. Comfortable and spacious values are candidates only. Surface treatment is intentionally flat and uses native canvas/text/link/contrast system colors so spacing remains the main variable.</p>
+      <p>Record tested browser, device, 320/375/768/1280 CSS-px viewport, light/dark, keyboard and forced-colors behavior, 200% text-only resize, zoom, WCAG text-spacing overrides, and any overflow or regrouping failure. Unsupported observations must remain explicitly unsupported.</p>
+    </section>
+  </main>
+</body>
+</html>
