@@ -54,7 +54,7 @@ Read:
 - [Chroma profile resolution contract](docs/architecture/chroma-profile-contract.md)
 - [Lamina editorial semantic contract](docs/architecture/lamina-editorial-contract.md)
 - [Accessibility capability requirement](docs/requirements/accessibility.md) — accepted by ADR-0004
-- [SPACE-001 spatial rhythm requirement](docs/requirements/spatial-rhythm.md) — proposed; [QART-0009](docs/decisions/QART-0009-spatial-rhythm.md) evaluates semantic gaps, insets, and density
+- [SPACE-001 spatial rhythm requirement](docs/requirements/spatial-rhythm.md) — proposed; [QART-0009](docs/decisions/QART-0009-spatial-rhythm.md) and [draft RFC-0009](docs/decisions/RFC-0009-spatial-rhythm.md) evaluate semantic gaps, insets, and density
 - [PERF-001 performance measurement requirement](docs/requirements/performance.md) — proposed
 - [Specification index](docs/specs/README.md)
 - [Public contract index](docs/contracts/README.md)
