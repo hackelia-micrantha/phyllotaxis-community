@@ -23,6 +23,8 @@
           cp ${./docs/examples/utility-reference.html} "$out/examples/utility-reference.html"
           cp ${./docs/examples/utility-reference.css} "$out/examples/utility-reference.css"
           cp ${./docs/examples/dimensional-utility-reference.html} "$out/examples/dimensional-utility-reference.html"
+          # TEXT-001: opt-in, non-normative static prose comparison; no runtime/package contract.
+          cp ${./docs/examples/text-rhythm-comparison.html} "$out/examples/text-rhythm-comparison.html"
         '';
     in
     {
