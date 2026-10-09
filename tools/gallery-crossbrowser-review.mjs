@@ -9,9 +9,9 @@ import { pathToFileURL } from "node:url";
 
 const args = process.argv.slice(2);
 const flag = (name) => { const index = args.indexOf(name); return index >= 0 ? args[index + 1] : null; };
-const site = flag("--site"), outDir = flag("--out");
-if (!site || !outDir || args.length !== 4) {
-  process.stderr.write("Usage: node tools/gallery-crossbrowser-review.mjs --site BUILT_SITE --out OUTPUT_DIR\n");
+const site = flag("--site"), outDir = flag("--out"), sourceSha = flag("--source-sha");
+if (!site || !outDir || !/^[a-f0-9]{40}$/.test(sourceSha || "") || args.length !== 6) {
+  process.stderr.write("Usage: node tools/gallery-crossbrowser-review.mjs --site BUILT_SITE --out OUTPUT_DIR --source-sha EXACT_COMMIT_SHA\n");
   process.exit(2);
 }
 await mkdir(outDir, { recursive: true });
@@ -112,6 +112,18 @@ async function run(browser, port) {
     if(!supported) return false;
     if(!ok) throw Error(browser+" "+page+" "+scheme+" "+width+" failed "+JSON.stringify(metrics));
     await screenshot(browser+"-"+page+"-"+scheme+"-"+width);
+    // Capture the body of the gallery as well: an above-the-fold screenshot
+    // alone cannot show the intentionally full-width third example.
+    await evaluate(`
+      const target=document.querySelector(${JSON.stringify(page==="gallery"?".gallery":".material-grid")});
+      if(target){
+        const top=target.getBoundingClientRect().top+window.scrollY-28;
+        window.scrollTo({top:Math.max(0,top),behavior:"instant"});
+      }
+      return window.scrollY;
+    `);
+    await pause(160);
+    await screenshot(browser+"-"+page+"-"+scheme+"-"+width+"-content");
     return true;
   }
   const main = pathToFileURL(path.join(path.resolve(site),"index.html")).href;
@@ -181,7 +193,7 @@ for(const [browser,port] of [["chromium",9526],["firefox",9527]]){
     process.exitCode=1;}
 }
 const counts=Object.fromEntries(["pass","unsupported","fail","harness_error"].map(k=>[k,observations.filter(x=>x.status===k).length]));
-const payload={schemaVersion:1,sourceCommit:process.env.GITHUB_SHA||"local-unpinned",
+const payload={schemaVersion:1,sourceCommit:sourceSha,
   status:"automated-gallery-evidence-not-human-evaluation",counts,limitations,observations,screenshots};
 await writeFile(path.join(outDir,"manifest.json"),JSON.stringify(payload,null,2)+"\n");
 await writeFile(path.join(outDir,"summary.md"),[
