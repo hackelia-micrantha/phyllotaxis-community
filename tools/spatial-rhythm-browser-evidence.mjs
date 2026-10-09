@@ -37,6 +37,7 @@ function parseArgs(args) {
 const config = parseArgs(process.argv.slice(2));
 const fixture = path.resolve(config.fixture);
 const output = path.resolve(config.output);
+let evidence = null;
 const port = 9526;
 const driver = spawn(process.env.CHROMEDRIVER_BIN || "chromedriver", ["--port=" + port], {
   stdio: ["ignore", "pipe", "pipe"],
@@ -137,7 +138,8 @@ async function run() {
     schemaVersion: 1,
     harnessVersion: VERSION,
     sourceSha: process.env.EVIDENCE_SOURCE_SHA || null,
-    fixture: "docs/examples/spatial-rhythm-comparison.html",
+    fixture: path.relative(process.cwd(), fixture) || path.basename(fixture),
+    fixtureBase: "process.cwd()",
     fixtureSha256: createHash("sha256").update(bytes).digest("hex"),
     browser: "chromium",
     observations: [],
@@ -152,6 +154,7 @@ async function run() {
       "real Utility / Editorial consumer behavior",
     ],
   };
+  evidence = result;
   await mkdir(output, { recursive: true });
   await ready();
   const resp = await webdriver("POST", "/session", {
@@ -166,12 +169,16 @@ async function run() {
   });
   session = resp.sessionId;
   assert.ok(session, "WebDriver session missing");
+  result.browserName = resp.capabilities?.browserName || null;
+  result.browserVersion = resp.capabilities?.browserVersion || null;
   const url = pathToFileURL(fixture).href;
   for (const scheme of SCHEMES) {
     for (const width of WIDTHS) {
       await setEnvironment(width, scheme);
       await cmd("POST", "/url", { url });
       const observation = await evaluate(geometrySource);
+      const caseRecord = { width, scheme, ...observation, status: "unverified" };
+      result.observations.push(caseRecord);
       assert.equal(observation.samples.length, 3, "three density specimens");
       assert.deepEqual(observation.samples.map(s => s.density), DENSITIES);
       for (const item of observation.samples) {
@@ -185,7 +192,7 @@ async function run() {
         const values = observation.samples.map(s => s[metric]);
         assert.ok(values[0] < values[1] && values[1] < values[2], "spacing not ordered for " + metric + ": " + values);
       }
-      result.observations.push({ width, scheme, ...observation });
+      caseRecord.status = "pass";
       if (width === 320 || width === 1280) {
         const screenshot = await cmd("GET", "/screenshot");
         const name = "space-" + scheme + "-" + width + ".png";
@@ -199,10 +206,11 @@ async function run() {
   await keyboard("\uE004");
   await keyboard("\uE004");
   const focused = await evaluate("const e=document.activeElement;const c=getComputedStyle(e);return {tag:e.tagName,type:e.type,outlineWidth:c.outlineWidth,outlineStyle:c.outlineStyle,focusVisible:e.matches(':focus-visible')};");
+  result.keyboard = { ...focused, status: "unverified" };
   assert.equal(focused.type, "checkbox", "second keyboard Tab reaches checkbox");
   assert.equal(focused.focusVisible, true, "keyboard focus-visible style");
   assert.ok(parseFloat(focused.outlineWidth) >= 3, "focus outline");
-  result.keyboard = focused;
+  result.keyboard.status = "pass";
   // Explicitly simulated CSS scenarios; do not claim true zoom or text-only resizing.
   for (const kind of ["root-font-200-percent-simulated", "wcag-text-spacing-override-simulated"]) {
     await setEnvironment(320, "light");
@@ -226,7 +234,24 @@ async function run() {
   else process.stdout.write("SPACE-001: PASS " + result.observations.length + " geometry cases; 4 screenshots; keyboard focus and 2 simulated text stress cases\n");
 }
 try { await run(); }
-catch (error) { process.stderr.write("SPACE-001 evidence FAILED: " + error.message + "\n" + stderr.slice(-3000) + "\n"); process.exitCode = 1; }
+catch (error) {
+  // Persist even an early-failure or partial case. Never turn a failed/unsupported case into a pass.
+  const report = evidence || { schemaVersion: 1, harnessVersion: VERSION, sourceSha: process.env.EVIDENCE_SOURCE_SHA || null,
+    fixture: path.relative(process.cwd(), fixture) || path.basename(fixture), fixtureBase: "process.cwd()",
+    browser: "chromium", observations: [], keyboard: null, stress: [], notAssessed: [] };
+  report.status = "failed";
+  report.failure = { message: String(error.message).slice(0, 1200) };
+  report.expectedCases = WIDTHS.length * SCHEMES.length;
+  report.notRunCases = Math.max(0, report.expectedCases - report.observations.length);
+  for (const item of report.observations) if (item.status === "unverified") item.status = "fail";
+  if (report.keyboard?.status === "unverified") report.keyboard.status = "fail";
+  try {
+    await mkdir(output, { recursive: true });
+    await writeFile(path.join(output, "evidence.json"), JSON.stringify(report, null, 2) + "\n");
+  } catch (writeError) { process.stderr.write("SPACE-001 failure report unavailable: " + writeError.message + "\n"); }
+  process.stderr.write("SPACE-001 evidence FAILED: " + error.message + "\n" + stderr.slice(-3000) + "\n");
+  process.exitCode = 1;
+}
 finally {
   if (session) { try { await cmd("DELETE", ""); } catch {} }
   driver.kill("SIGTERM");
