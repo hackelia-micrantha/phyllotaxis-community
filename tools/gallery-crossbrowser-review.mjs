@@ -24,7 +24,7 @@ const limitations = [
   "Safari/iOS and actual assistive technology are not available in this runner.",
   "Firefox forced-colors and OS light/dark preference are not emulated; material-page native radio selection is tested instead."
 ];
-const keyTab = "\\uE004", keyRight = "\\uE014", keyLeft = "\\uE012";
+const keyTab = String.fromCharCode(0xE004), keyRight = String.fromCharCode(0xE014), keyLeft = String.fromCharCode(0xE012);
 const setName = (name) => name.replace(/[^a-z0-9_-]/gi, "-");
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function collect(browser, kind, scheme, width, actual, state, details = {}) {
