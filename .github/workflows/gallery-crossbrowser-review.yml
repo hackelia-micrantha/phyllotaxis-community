@@ -1,0 +1,72 @@
+name: Gallery Cross-Browser Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'tools/gallery-crossbrowser-review.mjs'
+      - '.github/workflows/gallery-crossbrowser-review.yml'
+      - 'flake.nix'
+      - 'flake.lock'
+  push:
+    branches:
+      - main
+    paths:
+      - 'site/**'
+      - 'tools/gallery-crossbrowser-review.mjs'
+      - '.github/workflows/gallery-crossbrowser-review.yml'
+      - 'flake.nix'
+      - 'flake.lock'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phyllotaxis-gallery-crossbrowser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gallery-crossbrowser:
+    name: Capture Chromium and Firefox gallery evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact reviewed revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install Nix bootstrap
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+
+      - name: Build public gallery
+        run: nix build .#demo-site --out-link ./demo-output
+
+      - name: Capture exact gallery source and browser evidence
+        env:
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          nix develop .#browser-evidence --command
+          node tools/gallery-crossbrowser-review.mjs
+          --site ./demo-output --out ./review-evidence
+          --source-sha ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Assert screenshot manifest matches exact checkout
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test "$(jq -r '.sourceCommit' review-evidence/manifest.json)" = "$EXPECTED_SHA"
+          jq -e '.counts.fail == 0 and .counts.harness_error == 0 and
+                 .counts.pass >= 15 and (.screenshots | length) >= 20' review-evidence/manifest.json
+
+      - name: Upload screenshots, summary and limitation manifest
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gallery-crossbrowser-${{ github.event.pull_request.head.sha || github.sha }}
+          path: review-evidence/
+          if-no-files-found: warn
+          retention-days: 14
