@@ -20,13 +20,14 @@ The flake constructs an allowlisted static directory with seven explicit static 
 
 ## Deployment
 
-After the required merge-gate disposition and an explicitly authorized merge, an isolated GitHub Actions workflow publishes only the flake-built output from `main`. A repo administrator must set **Settings → Pages → Build and deployment → Source: GitHub Actions** if not already configured. The workflow cannot enable Pages or change repository settings.
+The public gallery is deployed from reviewed `main` through the dedicated [Pages demo gallery workflow](../.github/workflows/pages.yml), which publishes **only** the flake-built seven-file output. The repository's Pages build source is configured for **GitHub Actions**. The workflow cannot change repository Pages settings.
 
-Public reference gallery **verified live on October 8, 2026**; the new material lab is reachable only after this change is merged and its deployment verified:
+Both the gallery and material lab were **verified live on October 8, 2026** following [PR #75](https://github.com/hackelia-micrantha/phyllotaxis-community/pull/75) and [successful exact-main deployment #37881415053](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37881415053):
 
-`https://hackelia-micrantha.github.io/phyllotaxis-community/`
+- [Public reference gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/)
+- [Gloss and Bevel material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html)
 
-The workflow does not deploy from pull requests; `pages: write` and `id-token: write` are restricted to the deployment job.
+The material lab remains **experimental and non-normative**; it does not contain the released Phyllotaxis package. Pull requests only validate the gallery: they do not deploy, and `pages: write` plus `id-token: write` remain restricted to the deployment job. A new Pages deployment still requires a separately authorized, reviewed merge to `main`.
 
 ## Release-backed next step
 
