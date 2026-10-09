@@ -53,6 +53,12 @@
             python ${./tools/check-spatial-fixture.py} ${./docs/examples/spatial-rhythm-comparison.html}
             touch "$out"
           '';
+          text-rhythm-fixture = pkgs.runCommand "phyllotaxis-text-rhythm-fixture-integrity" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-text-rhythm-fixture.py} ${./docs/examples/text-rhythm-comparison.html} ${./docs/examples/text-rhythm-suggestions.json}
+            touch "$out"
+          '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
             nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''

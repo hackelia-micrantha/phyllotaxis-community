@@ -77,6 +77,12 @@ Compare the same reference text across: (1) unmarked paragraph baseline; (2) aut
 
 A static example/gallery may demonstrate options but is **non-normative**, not a released package or evidence of acceptability by itself.
 
+## Static comparison available (not yet acceptance evidence)
+
+The [TEXT-001 static comparison](../examples/text-rhythm-comparison.html), [illustrative prepublication suggestion data](../examples/text-rhythm-suggestions.json), and [review plan](../architecture/text-rhythm-review-plan.md) provide an initial reproducible authoring baseline. Its fixture checker verifies structural integrity, not the quality of a concept break, screen-reader announcements or browser layout. Evidence remains pending.
+
+**Current scope decision:** runtime Amaryllis personalization, browser-time inference and dynamic reflow are deferred. Evaluate only authored HTML and optional reviewed **build-time** suggestions. Earlier runtime alternatives remain historical design questions, not this iteration's implementation work.
+
 ## Proposed disposition and sequencing
 
 1. Confirm A as the no-regression baseline and collect comparisons across existing consumers; coordinate with #79 so text spacing and section spacing do not double-count.

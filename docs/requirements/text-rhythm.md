@@ -93,6 +93,10 @@ Compare authored baseline, manually marked transitions, native thematic breaks w
 
 A static demonstration may be published as an explicitly **non-normative** gallery fixture. A visual comparison or automated scan alone is not evidence of semantic correctness or WCAG conformance.
 
+## Non-normative authoring evidence
+
+The [static text-rhythm comparison](../examples/text-rhythm-comparison.html), [illustrative suggestion candidates](../examples/text-rhythm-suggestions.json), and [review plan](../architecture/text-rhythm-review-plan.md) exercise manual semantic boundaries and *reviewed build-time* suggestion cases. Their structural checks do not prove semantics or browser accessibility. Runtime inference and adaptive reflow are out of scope for the current evaluation.
+
 ## Decision path
 
 [QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) compares the native baseline, bounded styling roles, new components, and AI modes. Only after evidence resolves open questions should a corresponding RFC specify proposed stable values/components/schema, then an ADR decide adoption. Private implementation and AI integration follow an accepted, immutable pinned public contract, with exact-head testing and compatibility evidence.
