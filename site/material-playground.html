@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Non-normative dimensional UI demonstration: gloss, bevel, shadows, dark mode and bounded interaction motion.">
+  <title>Phyllotaxis · Material experiments</title>
+  <link rel="stylesheet" href="./site.css">
+  <link rel="stylesheet" href="./material-playground.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="topbar">
+    <a class="wordmark" href="./index.html">Phyllotaxis</a>
+    <nav aria-label="Primary">
+      <a href="./index.html">Gallery</a>
+      <a href="#materials">Materials</a>
+      <a href="#interactions">Interaction</a>
+      <a href="#notes">Notes</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Visual laboratory · Non-normative</p>
+      <h1 id="page-title">Dimension, without the clutter.</h1>
+      <p class="lead">A nostalgic 1990s material language, interpreted with modern spacing and accessibility. Compare glossy controls, beveled surfaces, soft shadows and restrained motion.</p>
+      <p class="notice"><strong>Experimental gallery styling.</strong> These are not released Phyllotaxis components, Chroma tokens or an approved dimensional default. Utility remains flat-first under ADR-0003; ADR-0008 supplies advisory review bounds.</p>
+    </section>
+
+    <section class="theme-lab" aria-labelledby="appearance-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / Appearance</p>
+          <h2 id="appearance-title">Try light and dark</h2>
+        </div>
+        <p class="section-aside">A CSS-only switch. No JavaScript, tracking or saved preference.</p>
+      </div>
+      <fieldset class="theme-switcher">
+        <legend>Color appearance</legend>
+        <div class="theme-options">
+          <input type="radio" id="mode-system" name="demo-theme" value="system" checked>
+          <label for="mode-system">System</label>
+          <input type="radio" id="mode-light" name="demo-theme" value="light">
+          <label for="mode-light">Light</label>
+          <input type="radio" id="mode-dark" name="demo-theme" value="dark">
+          <label for="mode-dark">Dark</label>
+        </div>
+      </fieldset>
+      <p class="subtle-note">Choose a theme to compare the same materials. The selection applies to this page only.</p>
+    </section>
+
+    <section id="materials" aria-labelledby="materials-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 / Surfaces</p>
+          <h2 id="materials-title">Separate effects, clear hierarchy</h2>
+        </div>
+        <p class="section-aside">These are static examples. Their surfaces do not move or pretend to be clickable.</p>
+      </div>
+      <div class="material-grid">
+        <article class="material-card material-matte">
+          <p class="material-index">A / Flat baseline</p>
+          <h3>Calm surface</h3>
+          <p>Paper-like neutrals and a simple border make content primary.</p>
+          <p class="sample-status">Status: stable</p>
+          <p class="material-caption">No elevation</p>
+        </article>
+        <article class="material-card material-bevel">
+          <p class="material-index">B / Subtle bevel</p>
+          <h3>Softly sculpted</h3>
+          <p>A two-sided highlight and inset edge recall classic desktop UI without heavy ornament.</p>
+          <p class="sample-status">Status: reviewing</p>
+          <p class="material-caption">Inlaid edge, no floating shadow</p>
+        </article>
+        <article class="material-card material-raised">
+          <p class="material-index">C / Soft shadow</p>
+          <h3>Raised once</h3>
+          <p>One purposeful layer adds emphasis while neighboring text stays legible.</p>
+          <p class="sample-status">Status: active</p>
+          <p class="material-caption">Shallow elevation, restrained radius</p>
+        </article>
+        <article class="material-card material-gloss">
+          <p class="material-index">D / Reflective finish</p>
+          <h3>Low-key gloss</h3>
+          <p>A gentle gradient gives the surface a polished finish, not a stack of nested cards.</p>
+          <p class="sample-status">Status: planned</p>
+          <p class="material-caption">Gloss is not a semantic state</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="interactions" aria-labelledby="interaction-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">03 / Interactions</p>
+          <h2 id="interaction-title">Motion belongs to actions</h2>
+        </div>
+        <p class="section-aside">Hover, focus and pressed states are visible; actual movement is at most 1px.</p>
+      </div>
+      <div class="interaction-stage">
+        <div class="action-demo">
+          <h3>Glossy action</h3>
+          <p>Try hover, click, keyboard focus, or the pressed state.</p>
+          <a class="material-action gloss-action" href="#notes">Inspect design notes <span aria-hidden="true">→</span></a>
+          <p class="material-caption">120ms ease-out · no scale or shadow animation</p>
+        </div>
+        <div class="action-demo">
+          <h3>Beveled navigation pills</h3>
+          <p>Each pill is a real link, not a decorative status label.</p>
+          <nav class="pill-nav" aria-label="Explore material examples">
+            <a class="bevel-pill" href="#materials">Surfaces</a>
+            <a class="bevel-pill" href="#appearance-title">Theme</a>
+            <a class="bevel-pill" href="#notes">Review notes</a>
+          </nav>
+          <p class="material-caption">Keyboard focus and reduced-motion are supported</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="notes" class="details" aria-labelledby="notes-title">
+      <p class="eyebrow">04 / Design boundaries</p>
+      <h2 id="notes-title">A demonstration, not a prescription</h2>
+      <p>Depth and gloss are applied to individual examples here so their effects are easy to compare. The examples intentionally avoid repeating raised or beveled framing around every nested element. Static informational cards remain still; only actual links receive hover movement.</p>
+      <p><strong>Accepted constraints:</strong> Flat-first Utility, semantic controls, visible focus, contrast, no color-only state, reduced-motion support and bounded interaction feedback. These experimental materials do not introduce any public Chroma or Lamina API.</p>
+      <p><a href="./examples/dimensional-utility-reference.html">Compare the F0–F5 reference fixtures</a> · <a href="https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/docs/decisions/ADR-0008-dimensional-utility-advisory-guidance.md">Read ADR-0008</a></p>
+    </section>
+  </main>
+
+  <footer><p>Micrantha · <a href="./index.html">Reference gallery</a> · <a href="https://github.com/hackelia-micrantha/phyllotaxis-community">Public contracts</a></p></footer>
+</body>
+</html>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed checks for the five-file public GitHub Pages artifact.
+"""Fail-closed checks for the seven-file public GitHub Pages artifact.
 
 This validates a deliberately small static asset surface, not arbitrary HTML/CSS.
 New external resources require explicit review and extension of this contract.
@@ -20,8 +20,10 @@ EXPECTED = {
     "examples/utility-reference.html",
     "examples/utility-reference.css",
     "examples/dimensional-utility-reference.html",
+    "material-playground.html",
+    "material-playground.css",
 }
-# The published build is exactly five reviewed text files. Do not accept
+# The published build contains exactly seven reviewed text files. Do not accept
 # attributes with implicit requests, executable behavior or extensions to the
 # fixture vocabulary without a new contract review.
 REFERENCES = ("href", "action")
@@ -29,6 +31,7 @@ ALLOWED_ATTRIBUTES = {
     "lang", "charset", "name", "content", "class", "id",
     "aria-label", "aria-labelledby", "aria-hidden",
     "href", "rel", "action", "type", "data-phyllotaxis-profile",
+    "for", "value", "checked",
 }
 FORBIDDEN_ELEMENTS = {"base", "embed", "iframe", "object", "script"}
 # Deliberately restrictive: no CSS-embedded assets are published today.
@@ -83,6 +86,12 @@ class ReferenceParser(HTMLParser):
         require(not unknown, f"{self.page}: unsupported or request-capable attributes: {sorted(unknown)}")
         require(tag in {"a", "link"} or "href" not in props, f"{self.page}: href on unsupported tag {tag}")
         require(tag == "form" or "action" not in props, f"{self.page}: action on unsupported tag {tag}")
+        require(tag == "label" or "for" not in props, f"{self.page}: for on unsupported tag {tag}")
+        require(tag == "input" or not ({"checked", "value"} & props.keys()),
+                f"{self.page}: control-only attributes on unsupported tag {tag}")
+        if tag == "input":
+            require(props.get("type") == "radio" and bool(props.get("name")),
+                    f"{self.page}: only named native radio inputs supported")
         if props.get("id"):
             require(props["id"] not in self.ids, f"{self.page}: duplicate id {props['id']}")
             self.ids.add(props["id"])
