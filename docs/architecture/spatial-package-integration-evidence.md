@@ -6,7 +6,7 @@
 - **Proposal:** [RFC-0009](../decisions/RFC-0009-spatial-rhythm.md), still **proposed**
 - **Prior actual public site-source rendering:** [Digitalis/Envuscator comparison](spatial-consumer-evidence.md)
 - **Private implementation evidence:** Phyllotaxis PR #102, reviewed test head `369a8f4832055517d09e5488b20f6b03b55844aa`, merged as `6256072042e524c1d939ac8c8f27486084d71821`
-- **Passing exact-head private CI:** [run #37906843673](https://github.com/hackelia-micrantha/phyllotaxis/actions/runs/37906843673); evidence artifact [#11604553977](https://github.com/hackelia-micrantha/phyllotaxis/actions/runs/37906843673/artifacts/11604553977) (private access; 7-day retention)
+- **Evidence provenance:** The private implementation candidate at the reviewed test head above passed its source-bound Nix quality gate. The underlying CI logs, images and short-retention evidence bundle remain under private implementation authority; this public record contains the source-safe aggregate observations and explicit limitations, not a publicly reproducible artifact.
 
 ## What actually ran
 
@@ -17,7 +17,7 @@ The **built, exported Phyllotaxis package** supplied `Stack`, `Container`, `Grid
 
 These are **package-backed local test compositions**, *not* the unmodified Digitalis or Envuscator websites, nor demonstrations that either site has adopted the package. The earlier real-site source comparison and this package test are **complementary evidence, not one end-to-end integration**.
 
-Three spacing treatments use the same content and stable `Stack gap="xl"` source API: baseline, targeted, and spacious. Targeted/spacious apply only a **consumer-owned, opt-in CSS class** and scoped test-only `--phyllotaxis-space-section` alias. No `Stack.gap="section"` prop is implemented. The suite asserts that the proposed role is absent from shipped Chroma CSS, Venation CSS and inspection v1.
+Three spacing treatments use the same content and stable `Stack gap="xl"` source API: baseline, targeted, and spacious. Targeted/spacious apply only a **consumer-owned, opt-in CSS class** and scoped test-only `--phyllotaxis-space-section` alias. No `Stack.gap="section"` prop is implemented. The suite asserts that the proposed role is absent from the built candidate's Chroma CSS, Venation CSS and inspection v1.
 
 The alias is redeclared on coherent Utility/Editorial profile carriers so that nested surfaces resolve their own accepted profile spacing rather than inheriting a root-computed alias. Explicit light/dark Chroma schemes are tested independently of spacing treatments.
 
@@ -41,7 +41,7 @@ Each composition has four major sections, hence three `Stack` gap intervals. Mea
 The initial private CI captured two distinct issues **before** the passing exact-head run:
 
 - Utility headings and labels needed ordinary narrow-layout word wrapping for the *compounded* 320px/200%-root-font stress test. The consumer example added bounded wrapping rules.
-- The exported Editorial `ArticleHeader` h1 overflowed in the same compounded stress case because its large title lacked a suitable break opportunity. This remains a separate component-level design/accessibility qualification issue, [#98](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/98). The experiment uses a **consumer-local narrow-width title-wrap safeguard**; it has **not fixed or modified released Lamina CSS**.
+- The exported Editorial `ArticleHeader` h1 overflowed in the same compounded stress case because its large title lacked a suitable break opportunity. This remains a separate component-level design/accessibility qualification issue, [#98](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/98). The experiment uses a **consumer-local narrow-width title-wrap safeguard**; it has **not fixed or modified the built Lamina CSS or any public release**.
 
 No earlier failed run should be represented as success. The final exact-head run succeeded with all six simulated stress scenarios after the consumer-scoped safeguard, and its manifest correctly records the exact reviewed PR source SHA rather than GitHub's temporary merge SHA.
 
