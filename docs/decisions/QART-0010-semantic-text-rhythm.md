@@ -1,6 +1,6 @@
 # QART-0010 — Semantic text rhythm, optional ornaments, and AI suggestions
 
-- **Status:** Open — alternatives and evidence pending; no stable API decision
+- **Status:** Resolved for authored semantic-boundary direction by [RFC-0010](RFC-0010-native-text-rhythm-guidance.md) and [ADR-0009](ADR-0009-native-text-rhythm-guidance.md); accessibility observations and optional build-time suggestion contracts remain unaccepted
 - **Date:** 2026-10-08
 - **Requirement:** [TEXT-001](../requirements/text-rhythm.md)
 - **Issue:** [#81](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/81)
@@ -77,7 +77,7 @@ Compare the same reference text across: (1) unmarked paragraph baseline; (2) aut
 
 A static example/gallery may demonstrate options but is **non-normative**, not a released package or evidence of acceptability by itself. Chromium accessibility-tree probes can test whether native `hr` remains an exposed `separator` and an `aria-hidden` ornament is excluded; **only a separate real screen-reader review** can assess announcement quality (see the [manual protocol](../architecture/text-rhythm-review-plan.md#manual-assistive-technology-review-protocol)).
 
-**Current technical disposition (provisional):** Retain **A (native HTML + current `Prose`)** as the default. Treat **B** solely as optional authored presentation guidance using SPACE-owned styling; the synthetic comparison does not justify a new public style role. Do not promote **C (new Lamina component)** without a concrete semantic need that native markup cannot satisfy. No ADR acceptance or release change is implied by these evidence-based constraints.
+**Accepted no-API authoring direction:** Retain **A (native HTML + current `Prose`)** as the default, per [ADR-0009](ADR-0009-native-text-rhythm-guidance.md). Treat **B** solely as optional authored presentation guidance using SPACE-owned styling; the synthetic comparison does not justify a new public style role. Do not promote **C (new Lamina component)** without a concrete semantic need that native markup cannot satisfy. No ADR acceptance or release change is implied by these evidence-based constraints.
 
 ## Static comparison available (not yet acceptance evidence)
 
@@ -85,7 +85,7 @@ The [TEXT-001 static comparison](../examples/text-rhythm-comparison.html), [illu
 
 **Current scope decision:** runtime Amaryllis personalization, browser-time inference and dynamic reflow are deferred. Evaluate only authored HTML and optional reviewed **build-time** suggestions. Earlier runtime alternatives remain historical design questions, not this iteration's implementation work.
 
-## Proposed disposition and sequencing
+## Historical proposed disposition and sequencing
 
 1. Confirm A as the no-regression baseline and collect comparisons across existing consumers; coordinate with #79 so text spacing and section spacing do not double-count.
 2. Resolve whether A with authoring guidance suffices, or whether B warrants more explicit semantic content markers. Route any proposed spacing role, paragraph/heading margin or reading measure to SPACE-001 / QART-0009 / RFC-0009. Leave C unpromoted without strong repeated evidence.
@@ -94,3 +94,15 @@ The [TEXT-001 static comparison](../examples/text-rhythm-comparison.html), [illu
 5. Keep AI trust, data locality and author approval externally governed. **Runtime/Amaryllis integration is deferred by operator direction;** current work is static authoring and optional build-time suggestions only.
 
 No new `ConceptBreak`/`EditorialFlow` export, CSS token, ornament carrier, inference service or runtime policy is accepted by this QART.
+
+## Decision disposition — October 9, 2026
+
+The decision owner approved the smallest native authoring direction after the published visual comparison and Chromium AX/keyboard/CSS-off evidence. [RFC-0010](RFC-0010-native-text-rhythm-guidance.md) records the bounded guidance; [ADR-0009](ADR-0009-native-text-rhythm-guidance.md) accepts **author-controlled native boundaries and optional decoration** without changing public package contracts, styling defaults, inspection schemas or browser-time behavior.
+
+- **Selected:** Option A, using existing `Prose` and native paragraphs, headings, sections and `hr`.
+- **Permitted as consumer-owned advisory treatment only:** Option B's optional visual decoration and spacing chosen through existing accepted ownership. SPACE-001 alone determines any future shared spacing roles.
+- **Not accepted:** Option C (`ConceptBreak` / `EditorialFlow` exports), Option D (visual whitespace or ornament as invented content meaning), model-inserted runtime boundaries and any new AI-suggestion wire schema.
+- **Unverified:** actual screen-reader speech, human placement accuracy across representative documents, CSS/print/browser matrix and build-time suggestion integration. The [review protocol](../architecture/text-rhythm-review-plan.md#manual-assistive-technology-review-protocol) and [issue #81](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/81) retain these as follow-up evidence, not a reason to claim WCAG conformance.
+- **Compatibility:** no existing consumer changes or migration. No private implementation/release authorization.
+
+The resolved choice is deliberately narrower than a new normative capability; reopen a separate QART/RFC before proposing a component, token, stable suggestion schema or inference integration.
