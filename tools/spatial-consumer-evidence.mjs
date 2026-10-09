@@ -235,6 +235,20 @@ async function browser(kind,port,root) {
     driver.kill("SIGTERM");
   }
 }
+// Only CSS measurements belong to the visual peer-spacing invariant.
+// Class names are captured for diagnostics but reveal/is-visible state changes asynchronously.
+const measuredPeerValues = peers => peers.map(({gap,firstPadding}) => ({gap,firstPadding}));
+// Negative and stable-identity tests: dynamic labels cannot cause false failures,
+// but an actual computed gap/padding regression must still be detected.
+assert.deepEqual(
+  measuredPeerValues([{type:"grid reveal",gap:"16px",firstPadding:"12px"}]),
+  measuredPeerValues([{type:"grid reveal is-visible",gap:"16px",firstPadding:"12px"}])
+);
+assert.notDeepEqual(
+  measuredPeerValues([{type:"grid",gap:"16px",firstPadding:"12px"}]),
+  measuredPeerValues([{type:"grid",gap:"24px",firstPadding:"12px"}])
+);
+
 function assess() {
   for(const page of PAGES) {
     const relevant=result.cases.filter(x=>x.page===page.id);
@@ -247,7 +261,7 @@ function assess() {
           const a=baseline.metrics,b=changed.metrics;
           const delta=b.targets.map((t,i)=>Math.round((t.paddingTop-a.targets[i].paddingTop)*100)/100);
           changed.comparison={baselinePageHeight:a.docHeight,deltaPageHeight:b.docHeight-a.docHeight,
-            targetPaddingDeltas:delta,peerStyleUnchanged:JSON.stringify(a.peerStyles)===JSON.stringify(b.peerStyles),
+            targetPaddingDeltas:delta,peerStyleUnchanged:JSON.stringify(measuredPeerValues(a.peerStyles))===JSON.stringify(measuredPeerValues(b.peerStyles)),
             noNewHorizontalOverflow:b.docWidth<=Math.max(a.docWidth,b.innerWidth)+1,
             uniformSectionOnlyDelta:delta.every(x=>Math.abs(x-(variant==="targeted"?24:48))<0.5),
             growthMatchesSections:Math.abs((b.docHeight-a.docHeight)-delta.reduce((sum,x)=>sum+x,0))<1};
