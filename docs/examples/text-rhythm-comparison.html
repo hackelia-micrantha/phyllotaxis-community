@@ -17,6 +17,8 @@
     .surface[data-fixture-profile="utility"]{--fixture-paragraph-gap:.75rem;--fixture-thought-gap:1.6rem;--fixture-break-gap:2rem;--fixture-measure:62ch;--fixture-line:1.5}
     .surface[data-fixture-profile="editorial"]{--fixture-paragraph-gap:1.15rem;--fixture-thought-gap:2.15rem;--fixture-break-gap:2.9rem;--fixture-measure:52ch;--fixture-line:1.7}
     .surface h2{margin:.25rem 0 .75rem}
+    /* Reflow large headings at 200% text size on 320 CSS-px surfaces. */
+    .intro h1,.surface h2,.specimen h3{overflow-wrap:anywhere}
     .surface-note{max-width:70ch;font-size:.9rem}
     .comparisons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem;align-items:stretch}
     .specimen{min-width:0;border:1px solid currentColor;padding:1rem}
