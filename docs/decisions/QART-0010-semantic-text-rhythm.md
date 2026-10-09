@@ -61,7 +61,7 @@ Priority: explicit authorial boundaries > approved immutable build-time suggesti
 5. **Density and personality:** Can more generous Editorial spacing coexist with dense Utility reference content? Does a proposed density selection from QART-0009 change value resolution only, without altering authored breaks?
 6. **Source formats:** Which native Markdown/HTML source patterns have stable, reproducible block identities across rebuilds and incremental editing?
 7. **Inference uncertainty:** How are false positives, stale anchors, content changes, provenance/version drift, prompt injection in article contents, and editorial overrides surfaced and rejected?
-8. **Runtime:** Can adaptation occur without reading-position loss, layout shifts, hydration mismatch, DOM reorder or client-side content transfer?
+8. **Runtime (historical alternative, expressly deferred):** Reader-time adaptation is outside current TEXT-001 scope and is **not** a blocker or implementation dependency for this authoring/build-time decision. No runtime analysis or Amaryllis integration is authorized.
 9. **Distribution:** Would additional CSS tokens or exported components require changes to versioned Chroma inspection or npm package surface? Describe semver, opt-in migration and rollback before accepting changes.
 
 ## Evidence matrix
@@ -75,7 +75,9 @@ Compare the same reference text across: (1) unmarked paragraph baseline; (2) aut
 - **AI evaluation:** gold authored annotations and adversarial samples; agreement/disagreement and false-positive costs, stale document revision and invalid anchors, prompt-injection resistance, no outbound private data by default.
 - **Performance:** paired payload/render/layout-shift evidence under PERF-001; do not invent performance thresholds.
 
-A static example/gallery may demonstrate options but is **non-normative**, not a released package or evidence of acceptability by itself.
+A static example/gallery may demonstrate options but is **non-normative**, not a released package or evidence of acceptability by itself. Chromium accessibility-tree probes can test whether native `hr` remains an exposed `separator` and an `aria-hidden` ornament is excluded; **only a separate real screen-reader review** can assess announcement quality (see the [manual protocol](../architecture/text-rhythm-review-plan.md#manual-assistive-technology-review-protocol)).
+
+**Current technical disposition (provisional):** Retain **A (native HTML + current `Prose`)** as the default. Treat **B** solely as optional authored presentation guidance using SPACE-owned styling; the synthetic comparison does not justify a new public style role. Do not promote **C (new Lamina component)** without a concrete semantic need that native markup cannot satisfy. No ADR acceptance or release change is implied by these evidence-based constraints.
 
 ## Static comparison available (not yet acceptance evidence)
 
