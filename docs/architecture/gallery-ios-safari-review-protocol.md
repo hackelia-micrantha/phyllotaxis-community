@@ -4,7 +4,7 @@ Status: **unexecuted**. This is a manual verification protocol and evidence reco
 
 ## Scope and preparation
 
-Open the **published** [reference gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/) and [material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html) on a real device running Apple Safari. Confirm that the URLs load; if the second address redirects to a trailing slash or gives a 404, use `material-playground.html` **without** the trailing slash.
+Open the **published** [reference gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/) and [material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html) on a real device running Apple Safari. Confirm both URLs load over HTTPS; record any redirect, cache issue or missing asset rather than assuming the page is live.
 
 Record the date, exact public repository main SHA deployed, device/model, iOS version, Safari version (where visible), content-blocker extensions or browser settings that could affect the page, physical orientation, and **observed CSS viewport dimensions**. Do not treat nominal screen resolution or device name as observed CSS viewport width. For a usable record, a browser inspection tool or capture with identifiable size and browser settings is needed.
 
