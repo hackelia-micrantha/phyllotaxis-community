@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEXT-001 — semantic prose rhythm comparison (non-normative)</title>
+  <style>
+    /* TEXT-001 study only: these selectors and --fixture-* values are NOT Phyllotaxis exports. */
+    *,*::before,*::after{box-sizing:border-box}
+    :root{font-family:system-ui,sans-serif;line-height:1.5;background:Canvas;color:CanvasText}
+    body{margin:0}
+    main{max-width:90rem;margin:auto;padding:clamp(1rem,3vw,2rem)}
+    .intro{max-width:72ch;margin-block-end:2rem}
+    .surface{min-width:0;margin-block:2rem;padding:clamp(.75rem,2vw,1.5rem);border:1px solid currentColor}
+    .surface[data-fixture-scheme="light"]{color-scheme:light;background:#fbfbfb;color:#171717}
+    .surface[data-fixture-scheme="dark"]{color-scheme:dark;background:#151a1d;color:#f1f1f1}
+    .surface[data-fixture-profile="utility"]{--fixture-paragraph-gap:.75rem;--fixture-thought-gap:1.6rem;--fixture-break-gap:2rem;--fixture-measure:62ch;--fixture-line:1.5}
+    .surface[data-fixture-profile="editorial"]{--fixture-paragraph-gap:1.15rem;--fixture-thought-gap:2.15rem;--fixture-break-gap:2.9rem;--fixture-measure:52ch;--fixture-line:1.7}
+    .surface h2{margin:.25rem 0 .75rem}
+    /* Reflow large headings at 200% text size on 320 CSS-px surfaces. */
+    .intro h1,.surface h2,.specimen h3{overflow-wrap:anywhere}
+    .surface-note{max-width:70ch;font-size:.9rem}
+    .comparisons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem;align-items:stretch}
+    .specimen{min-width:0;border:1px solid currentColor;padding:1rem}
+    .specimen h3{font-size:1rem;margin:0 0 1rem}
+    .prose{line-height:var(--fixture-line);max-width:var(--fixture-measure)}
+    .prose p{margin:0 0 var(--fixture-paragraph-gap);overflow-wrap:anywhere}
+    .prose p:last-child{margin-block-end:0}
+    .prose pre{max-width:100%;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere;border-inline-start:2px solid currentColor;padding-inline:.75rem;margin:.5rem 0 .75rem;font-size:.85rem}
+    .specimen[data-variant="transition"] .thought-start{margin-block-start:var(--fixture-thought-gap)}
+    .thematic-rule{border:0;border-top:1px solid currentColor;margin:var(--fixture-break-gap) auto;width:28%}
+    .thematic-ornament{position:relative;text-align:center;margin:var(--fixture-break-gap) auto}
+    .thematic-ornament .thematic-rule{position:absolute;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+    .ornament-glyph{display:inline-block;line-height:1.5;font-size:1.1rem}
+    .review-note{max-width:76ch;overflow-wrap:anywhere}
+    @media (forced-colors:active){
+      .surface{background:Canvas!important;color:CanvasText!important}
+      .specimen{border-color:CanvasText}
+    }
+    @media print{
+      .surface{break-inside:avoid;print-color-adjust:auto}
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="intro">
+    <h1>TEXT-001: semantic text rhythm comparison</h1>
+    <p>Static, synthetic, non-normative design evidence. Space can signal a related thought transition; a native thematic break means more than a large margin. Decorative symbols never establish meaning by themselves.</p>
+    <p>The example-only profile/scheme attributes and CSS values are <strong>not</strong> Chroma, Lamina or Venation contracts. There is no JavaScript, remote dependency, runtime inference or dynamic adaptation.</p>
+  </header>
+  <section class="surface" data-fixture-profile="utility" data-fixture-scheme="light" aria-labelledby="utility-light-heading">
+    <h2 id="utility-light-heading">Utility reference — light</h2>
+    <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
+    <div class="comparisons">
+      <article class="specimen" data-document="utility" data-variant="continuous" aria-labelledby="utility-light-continuous-heading">
+        <h3 id="utility-light-continuous-heading">Continuity</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="transition" aria-labelledby="utility-light-transition-heading">
+        <h3 id="utility-light-transition-heading">Thought transition</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <p data-block-id="u-p3" class="thought-start">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="thematic" aria-labelledby="utility-light-thematic-heading">
+        <h3 id="utility-light-thematic-heading">Thematic rule</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <hr class="thematic-rule">
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="ornament" aria-labelledby="utility-light-ornament-heading">
+        <h3 id="utility-light-ornament-heading">Thematic rule + ornament</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <div class="thematic-ornament"><hr class="thematic-rule"><span class="ornament-glyph" aria-hidden="true">⁂</span></div>
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="surface" data-fixture-profile="utility" data-fixture-scheme="dark" aria-labelledby="utility-dark-heading">
+    <h2 id="utility-dark-heading">Utility reference — dark</h2>
+    <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
+    <div class="comparisons">
+      <article class="specimen" data-document="utility" data-variant="continuous" aria-labelledby="utility-dark-continuous-heading">
+        <h3 id="utility-dark-continuous-heading">Continuity</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="transition" aria-labelledby="utility-dark-transition-heading">
+        <h3 id="utility-dark-transition-heading">Thought transition</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <p data-block-id="u-p3" class="thought-start">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="thematic" aria-labelledby="utility-dark-thematic-heading">
+        <h3 id="utility-dark-thematic-heading">Thematic rule</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <hr class="thematic-rule">
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="utility" data-variant="ornament" aria-labelledby="utility-dark-ornament-heading">
+        <h3 id="utility-dark-ornament-heading">Thematic rule + ornament</h3>
+        <div class="prose">
+          <p data-block-id="u-p1">A build process should separate the identity of a source revision from its execution authority.</p>
+          <pre data-block-id="u-code"><code>build → verify → authorize</code></pre>
+          <p data-block-id="u-p2">Evidence may support a release decision, but it does not grant permission to publish.</p>
+          <div class="thematic-ornament"><hr class="thematic-rule"><span class="ornament-glyph" aria-hidden="true">⁂</span></div>
+          <p data-block-id="u-p3">After the build, attention moves to the governed handoff between isolated stages.</p>
+          <p data-block-id="u-p4">The handoff must preserve provenance without accidentally exposing protected results.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="surface" data-fixture-profile="editorial" data-fixture-scheme="light" aria-labelledby="editorial-light-heading">
+    <h2 id="editorial-light-heading">Editorial narrative — light</h2>
+    <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
+    <div class="comparisons">
+      <article class="specimen" data-document="editorial" data-variant="continuous" aria-labelledby="editorial-light-continuous-heading">
+        <h3 id="editorial-light-continuous-heading">Continuity</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="transition" aria-labelledby="editorial-light-transition-heading">
+        <h3 id="editorial-light-transition-heading">Thought transition</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <p data-block-id="e-p3" class="thought-start">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="thematic" aria-labelledby="editorial-light-thematic-heading">
+        <h3 id="editorial-light-thematic-heading">Thematic rule</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <hr class="thematic-rule">
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="ornament" aria-labelledby="editorial-light-ornament-heading">
+        <h3 id="editorial-light-ornament-heading">Thematic rule + ornament</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <div class="thematic-ornament"><hr class="thematic-rule"><span class="ornament-glyph" aria-hidden="true">⁂</span></div>
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="surface" data-fixture-profile="editorial" data-fixture-scheme="dark" aria-labelledby="editorial-dark-heading">
+    <h2 id="editorial-dark-heading">Editorial narrative — dark</h2>
+    <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
+    <div class="comparisons">
+      <article class="specimen" data-document="editorial" data-variant="continuous" aria-labelledby="editorial-dark-continuous-heading">
+        <h3 id="editorial-dark-continuous-heading">Continuity</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="transition" aria-labelledby="editorial-dark-transition-heading">
+        <h3 id="editorial-dark-transition-heading">Thought transition</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <p data-block-id="e-p3" class="thought-start">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="thematic" aria-labelledby="editorial-dark-thematic-heading">
+        <h3 id="editorial-dark-thematic-heading">Thematic rule</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <hr class="thematic-rule">
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+      <article class="specimen" data-document="editorial" data-variant="ornament" aria-labelledby="editorial-dark-ornament-heading">
+        <h3 id="editorial-dark-ornament-heading">Thematic rule + ornament</h3>
+        <div class="prose">
+          <p data-block-id="e-p1">At the shoreline, the last light dissolved into the mist.</p>
+          <p data-block-id="e-p2">The boats drifted in silence, and everyone watched the horizon.</p>
+          <div class="thematic-ornament"><hr class="thematic-rule"><span class="ornament-glyph" aria-hidden="true">⁂</span></div>
+          <p data-block-id="e-p3">By morning, the village had changed its mind about the crossing.</p>
+          <p data-block-id="e-p4">What once seemed impossible now felt like the only remaining choice.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section id="review-notes" class="review-note">
+    <h2>Evidence boundaries</h2>
+    <p>Compare at 320, 375, 768 and 1280 CSS px, both illustrated profiles and schemes; enlarge text to 200%, apply user text-spacing overrides, enable forced colors, print and disable stylesheets. These are review instructions, not claims of tested behavior.</p>
+    <p>In the ornament specimen the <code>hr</code> remains the one semantic thematic break; the asterism is explicitly hidden from accessibility APIs. Browser/screen-reader verification is still required. If styles are disabled, the native rule remains visible.</p>
+    <p>The build-time suggestion data accompanying this example is synthetic, reviewable evidence. It is not run or consumed in readers, and it does not claim that AI selected a semantically correct boundary.</p>
+  </section>
+</main>
+</body>
+</html>
