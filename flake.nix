@@ -12,6 +12,16 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      demoForSystem = system:
+        let pkgs = import nixpkgs { inherit system; };
+        in pkgs.runCommand "phyllotaxis-public-demo" { } ''
+          mkdir -p "$out/examples"
+          cp ${./site/index.html} "$out/index.html"
+          cp ${./site/site.css} "$out/site.css"
+          cp ${./docs/examples/utility-reference.html} "$out/examples/utility-reference.html"
+          cp ${./docs/examples/utility-reference.css} "$out/examples/utility-reference.css"
+          cp ${./docs/examples/dimensional-utility-reference.html} "$out/examples/dimensional-utility-reference.html"
+        '';
     in
     {
       checks = forAllSystems (
@@ -21,6 +31,13 @@
           python = pkgs.python3.withPackages (ps: [ ps.jsonschema ]);
         in
         {
+          demo-site = pkgs.runCommand "phyllotaxis-public-demo-links" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-demo-site.py} --self-test
+            python ${./tools/check-demo-site.py} ${demoForSystem system}
+            touch "$out"
+          '';
           independent-review-kit-archive = pkgs.runCommand "phyllotaxis-community-independent-review-kit-validation" {
             nativeBuildInputs = [ pkgs.python3 ];
           } ''
@@ -58,6 +75,7 @@
           pkgs = import nixpkgs { inherit system; };
         in
         {
+          demo-site = demoForSystem system;
           independent-review-kit = pkgs.runCommand "phyllotaxis-independent-review-kit" {
             nativeBuildInputs = [ pkgs.python3 ];
           } ''

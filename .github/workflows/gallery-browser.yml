@@ -1,0 +1,53 @@
+name: Gallery Browser Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'docs/examples/**'
+      - 'tools/gallery-browser-smoke.mjs'
+      - 'tools/check-demo-site.py'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/gallery-browser.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'site/**'
+      - 'docs/examples/**'
+      - 'tools/gallery-browser-smoke.mjs'
+      - 'tools/check-demo-site.py'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.github/workflows/gallery-browser.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phyllotaxis-gallery-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gallery-browser:
+    name: Validate public Pages gallery
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout reviewed revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install Nix bootstrap
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+
+      - name: Build exact public gallery
+        run: nix build .#demo-site --out-link ./demo-output
+
+      - name: Test gallery in Chromium
+        run: >-
+          nix develop .#browser-evidence --command
+          node tools/gallery-browser-smoke.mjs --site ./demo-output
