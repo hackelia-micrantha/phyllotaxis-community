@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPACE-001 — Coherent-surface alias resolution probe (non-normative)</title>
+  <style>
+    /* Illustration only: --sample-* variables and data-sample-* attributes are NOT Phyllotaxis API. */
+    :root {
+      font-family: system-ui, sans-serif;
+      --sample-xl: 2rem;
+      --sample-section: var(--sample-xl);
+      --sample-root-only-section: var(--sample-xl);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 1rem; }
+    /* Reset the role on EACH coherent publishing-surface boundary, never only on :root. */
+    [data-sample-profile="utility"] {
+      --sample-xl: 2rem;
+      --sample-section: var(--sample-xl);
+    }
+    [data-sample-profile="editorial"] {
+      --sample-xl: 2.25rem;
+      --sample-section: var(--sample-xl);
+    }
+    [data-sample-case="override-xl"] { --sample-xl: 2.75rem; }
+    [data-sample-case="override-section"] { --sample-section: 3.5rem; }
+    .scope { padding: .25rem; }
+    .stack { display: flex; flex-direction: column; row-gap: var(--sample-section); }
+    .stack > p { margin: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SPACE-001 coherent-surface alias probe</h1>
+    <p>Non-normative CSS experiment. The sample values, DOM carriers and properties below are not released public tokens, implementation, or an accepted RFC.</p>
+    <section class="scope" data-sample-case="root" id="root-case">
+      <div class="stack"><p>Root Utility</p><p>Second section</p></div>
+    </section>
+    <section class="scope" data-sample-profile="utility" data-sample-case="utility-parent" id="utility-parent">
+      <div class="stack"><p>Explicit Utility</p><p>Second section</p></div>
+      <section class="scope" data-sample-profile="editorial" data-sample-case="nested-editorial" id="nested-editorial">
+        <div class="stack"><p>Nested Editorial</p><p>Second section</p></div>
+        <section class="scope" data-sample-profile="utility" data-sample-case="nested-utility" id="nested-utility">
+          <div class="stack"><p>Nested Utility</p><p>Second section</p></div>
+        </section>
+      </section>
+    </section>
+    <section class="scope" data-sample-profile="editorial" data-sample-case="override-xl" id="override-xl">
+      <div class="stack"><p>Editorial with host XL override</p><p>Second section</p></div>
+    </section>
+    <section class="scope" data-sample-profile="editorial" data-sample-case="override-section" id="override-section">
+      <div class="stack"><p>Editorial with explicit section override</p><p>Second section</p></div>
+    </section>
+  </main>
+</body>
+</html>
