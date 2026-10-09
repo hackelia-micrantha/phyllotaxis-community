@@ -56,11 +56,11 @@ const PAGES = [
   },
   {
     id: "envuscator-architecture", source: "envuscator", html: "index.html",
-    selector: "section.section",
+    selector: "section.section:not(.honesty)",
     variants: {
       baseline: "",
-      targeted: ".section { padding-top:calc(clamp(4rem,8vw,7rem) + 1.5rem) !important; }",
-      spacious: ".section { padding-top:calc(clamp(4rem,8vw,7rem) + 3rem) !important; }",
+      targeted: ".section:not(.honesty) { padding-top:calc(clamp(4rem,8vw,7rem) + 1.5rem) !important; }",
+      spacious: ".section:not(.honesty) { padding-top:calc(clamp(4rem,8vw,7rem) + 3rem) !important; }",
     },
     category: "technical-architecture",
   },
@@ -248,8 +248,12 @@ function assess() {
           const delta=b.targets.map((t,i)=>Math.round((t.paddingTop-a.targets[i].paddingTop)*100)/100);
           changed.comparison={baselinePageHeight:a.docHeight,deltaPageHeight:b.docHeight-a.docHeight,
             targetPaddingDeltas:delta,peerStyleUnchanged:JSON.stringify(a.peerStyles)===JSON.stringify(b.peerStyles),
-            noNewHorizontalOverflow:b.docWidth<=Math.max(a.docWidth,b.innerWidth)+1};
-          const pass=delta.every(x=>x>0)&&changed.comparison.peerStyleUnchanged&&changed.comparison.noNewHorizontalOverflow;
+            noNewHorizontalOverflow:b.docWidth<=Math.max(a.docWidth,b.innerWidth)+1,
+            uniformSectionOnlyDelta:delta.every(x=>Math.abs(x-(variant==="targeted"?24:48))<0.5),
+            growthMatchesSections:Math.abs((b.docHeight-a.docHeight)-delta.reduce((sum,x)=>sum+x,0))<1};
+          const pass=delta.every(x=>x>0)&&changed.comparison.peerStyleUnchanged&&
+            changed.comparison.noNewHorizontalOverflow&&changed.comparison.uniformSectionOnlyDelta&&
+            changed.comparison.growthMatchesSections;
           if(!pass){changed.status="fail";changed.error="Consumer-only section delta/peer-preservation regression";}
           else changed.status="pass";
         }
@@ -259,6 +263,10 @@ function assess() {
     const lights=relevant.filter(x=>x.browser==="chromium"&&x.schemeRequested==="light"&&x.variant==="baseline");
     const darks=relevant.filter(x=>x.browser==="chromium"&&x.schemeRequested==="dark"&&x.variant==="baseline");
     const observed=lights.some((x,i)=>x.metrics?.background!==darks[i]?.metrics?.background);
+    if(!observed) for(const entry of relevant.filter(x=>x.browser==="chromium"&&x.schemeRequested==="dark"&&x.status==="pass")){
+      entry.status="unsupported";
+      entry.reason="Source site does not change its background with an emulated dark preference; layout measurements retained but not dark-theme conformance";
+    }
     result.unsupported.push(page.id+": "+(observed?"scheme background differs; explicit palette not certified":"no observable light/dark background change; dark-theme support not demonstrated"));
   }
 }
