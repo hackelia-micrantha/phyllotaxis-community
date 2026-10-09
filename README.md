@@ -55,7 +55,7 @@ Read:
 - [Lamina editorial semantic contract](docs/architecture/lamina-editorial-contract.md)
 - [Accessibility capability requirement](docs/requirements/accessibility.md) — accepted by ADR-0004
 - [SPACE-001 spatial rhythm requirement](docs/requirements/spatial-rhythm.md) — proposed; [QART-0009](docs/decisions/QART-0009-spatial-rhythm.md) and [draft RFC-0009](docs/decisions/RFC-0009-spatial-rhythm.md) evaluate semantic gaps, insets, and density
-- [TEXT-001 semantic text rhythm requirement](docs/requirements/text-rhythm.md) — proposed; authored conceptual breaks and reviewed build-time AI suggestions ([QART-0010](docs/decisions/QART-0010-semantic-text-rhythm.md)); spacing remains SPACE-001-owned
+- [TEXT-001 semantic text rhythm](docs/requirements/text-rhythm.md) — native authored HTML and optional consumer-owned ornaments accepted as **no-API guidance** ([ADR-0009](docs/decisions/ADR-0009-native-text-rhythm-guidance.md), [RFC-0010](docs/decisions/RFC-0010-native-text-rhythm-guidance.md)); build-time AI suggestions, accessibility conformance and any new component/token remain unaccepted; spacing remains SPACE-001-owned
 - [PERF-001 performance measurement requirement](docs/requirements/performance.md) — proposed
 - [Specification index](docs/specs/README.md)
 - [Public contract index](docs/contracts/README.md)
