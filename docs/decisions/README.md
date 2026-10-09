@@ -37,3 +37,5 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0008 — Bounded dimensional Utility materials](QART-0008-dimensional-utility-materials.md) — alternatives resolved into RFC-0008; accepted Utility guidance remains unchanged.
 - [RFC-0008 — Bounded dimensional material for Utility](RFC-0008-dimensional-utility-materials.md) — accepted by ADR-0008 **only as advisory composition-review guidance**, not as a new Utility default or stable token/component API.
 - [ADR-0008 — Accept advisory bounds for dimensional Utility composition](ADR-0008-dimensional-utility-advisory-guidance.md) — accepted advisory decision preserving ADR-0003's flat-first norm and all existing public interfaces.
+
+- [QART-0009 — First-class spatial rhythm and density](QART-0009-spatial-rhythm.md) — open alternatives analysis for proposed SPACE-001; no new tokens or density carrier accepted.

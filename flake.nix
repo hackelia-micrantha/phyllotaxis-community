@@ -47,6 +47,12 @@
             python ${./tools/package-independent-review.py} --root ${./.} --archive "$archive" --verify-only
             touch "$out"
           '';
+          spatial-fixture = pkgs.runCommand "phyllotaxis-space-reference-integrity" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-spatial-fixture.py} ${./docs/examples/spatial-rhythm-comparison.html}
+            touch "$out"
+          '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
             nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''

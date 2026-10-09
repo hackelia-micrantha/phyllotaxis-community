@@ -25,7 +25,8 @@
   }
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* Body is capped at 74rem: fill the viewport gutters in every color scheme. */
+html { scroll-behavior: smooth; background: var(--page); }
 body {
   width: min(74rem, 100%);
   margin: 0 auto;
@@ -54,6 +55,9 @@ h3 { font-size: 1.13rem; margin: .15rem 0 .7rem; }
 .lead { font-size: 1.12rem; max-width: 62ch; }
 .notice { border-inline-start: 4px solid var(--line); padding: 1.1rem 1.35rem; background: var(--soft); margin-top: 2rem; border-radius: 0 .55rem .55rem 0; }
 .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2rem); }
+/* A deliberate featured third example, not an orphan in a two-column row. */
+.gallery > .example:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.gallery > .example:last-child:nth-child(odd) > p { max-width: 70ch; }
 .example { padding: clamp(1.5rem, 3vw, 2.25rem); background: var(--paper); border: 1px solid var(--line); border-radius: .8rem; box-shadow: 0 5px 18px rgb(27 36 61 / .055); min-width: 0; }
 .example:nth-child(even) { background: var(--soft); }
 .example-link { display: inline-block; border: 1px solid currentColor; padding: .3rem .55rem; background: transparent; transition: border-color 120ms ease-out, transform 120ms ease-out; }

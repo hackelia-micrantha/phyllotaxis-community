@@ -10,6 +10,7 @@ This repository is the public source of truth for **published Phyllotaxis design
 | Understand visual direction | [Visual directive](architecture/visual-directive.md), [Visual profiles](architecture/visual-profiles.md), [Interaction motion](architecture/interaction-motion.md), [Utility consumer evidence](architecture/utility-evidence.md) |
 | Review consumer experimentation / A/B testing | [ADR-0002](decisions/ADR-0002-consumer-experimentation-boundary.md), [RFC-0003](decisions/RFC-0003-consumer-experimentation-boundary.md) |
 | Review Utility composition refinement | [RFC-0004](decisions/RFC-0004-utility-composition-patterns.md), [reference fixture](examples/utility-reference.html) |
+| Review first-class spatial rhythm and density (proposed) | [SPACE-001 requirement](requirements/spatial-rhythm.md), [QART-0009 alternatives](decisions/QART-0009-spatial-rhythm.md), [comparison and evidence plan](architecture/spatial-rhythm-review-plan.md); existing Chroma/Venation contracts remain authoritative |
 | Review design-system performance measurement | [PERF-001 requirement](requirements/performance.md) — proposed; paired baseline and browser evidence |
 | Review accessibility capability floor | [Accessibility requirement](requirements/accessibility.md), [RFC-0005](decisions/RFC-0005-accessibility-capability-contract.md), [ADR-0004](decisions/ADR-0004-accessibility-capability-floor.md) |
 | Review interaction-motion boundary | [ADR-0005](decisions/ADR-0005-interaction-motion.md), [RFC-0006](decisions/RFC-0006-interaction-motion.md) |
