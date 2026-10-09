@@ -89,6 +89,10 @@ Compare at 320/375/768/1280 CSS px, in light and dark; include 200% text resize,
 
 The evaluation must answer whether semantic separation is clearer than ad hoc padding **and** whether a compact Utility screen remains effective. A preference for larger gaps alone does not prove that all tokens should grow.
 
+## Reference comparison (pending rendered evidence)
+
+A [static three-policy comparison specimen](../examples/spatial-rhythm-comparison.html) and [evidence matrix](../architecture/spatial-rhythm-review-plan.md) now provide identical synthetic sections, cards, checkboxes, prose and status tables with separate local values for sections, groups, insets, paragraphs and table cells. These example-only values and `data-density` attributes are not public Chroma or density contracts. **Structural fixture checks are not proof of rendered browser behavior.** QART-0009 remains unresolved until browser comparisons and independent consumer evidence exist.
+
 ## Proposed disposition path
 
 1. Gather the reference comparisons and answer the open questions.
