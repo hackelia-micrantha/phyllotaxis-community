@@ -18,6 +18,8 @@
           mkdir -p "$out/examples"
           cp ${./site/index.html} "$out/index.html"
           cp ${./site/site.css} "$out/site.css"
+          cp ${./site/material-playground.html} "$out/material-playground.html"
+          cp ${./site/material-playground.css} "$out/material-playground.css"
           cp ${./docs/examples/utility-reference.html} "$out/examples/utility-reference.html"
           cp ${./docs/examples/utility-reference.css} "$out/examples/utility-reference.css"
           cp ${./docs/examples/dimensional-utility-reference.html} "$out/examples/dimensional-utility-reference.html"
