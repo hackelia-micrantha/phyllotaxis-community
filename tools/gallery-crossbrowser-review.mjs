@@ -228,7 +228,7 @@ async function run(browser, port) {
     // Native radio controls allow explicit light/dark without OS emulation in Firefox.
     for(const mode of ["light","dark"]) {
       if(!firefox) await setScheme(mode);
-      for(const width of [375,768,1280]) {
+      for(const width of [320,375,768,1280]) {
         await setViewport(width);
         await navigate(materials);
         await evaluate("document.getElementById('mode-"+mode+"').click();return true;");
