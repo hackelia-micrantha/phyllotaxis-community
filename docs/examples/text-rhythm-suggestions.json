@@ -1,0 +1,39 @@
+{
+  "_note": "TEXT-001 synthetic authoring fixture only; not a Phyllotaxis or Amaryllis protocol.",
+  "documentRevision": "fixture-revision-001",
+  "approvedSuggestionId": "manual-review-approved",
+  "suggestions": [
+    {
+      "id": "manual-review-approved",
+      "afterBlockId": "u-p2",
+      "documentRevision": "fixture-revision-001",
+      "kind": "thematic-break",
+      "reviewState": "accepted",
+      "source": "synthetic-editorial-example"
+    },
+    {
+      "id": "needs-review",
+      "afterBlockId": "e-p2",
+      "documentRevision": "fixture-revision-001",
+      "kind": "thematic-break",
+      "reviewState": "pending",
+      "source": "synthetic-editorial-example"
+    },
+    {
+      "id": "stale",
+      "afterBlockId": "u-p2",
+      "documentRevision": "prior-revision",
+      "kind": "thematic-break",
+      "reviewState": "accepted",
+      "source": "synthetic-editorial-example"
+    },
+    {
+      "id": "missing-anchor",
+      "afterBlockId": "not-a-block",
+      "documentRevision": "fixture-revision-001",
+      "kind": "thematic-break",
+      "reviewState": "accepted",
+      "source": "synthetic-editorial-example"
+    }
+  ]
+}

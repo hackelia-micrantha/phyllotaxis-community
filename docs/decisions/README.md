@@ -41,3 +41,4 @@ Delivery issues may remain private when they expose implementation details, but 
 - [QART-0009 — First-class spatial rhythm and density](QART-0009-spatial-rhythm.md) — open alternatives analysis for proposed SPACE-001; no new tokens or density carrier accepted.
 
 - [RFC-0009 — Spatial intent and bounded section rhythm](RFC-0009-spatial-rhythm.md) — **proposed**, not accepted; opt-in Chroma/Venation section semantics and no density carrier until consumer evidence supports them.
+- [QART-0010 — Semantic text rhythm and build-time AI suggestions](QART-0010-semantic-text-rhythm.md) — open; authorial boundaries and optional ornaments only; spacing decisions remain under QART-0009/RFC-0009.
