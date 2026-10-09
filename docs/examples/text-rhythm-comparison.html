@@ -42,6 +42,14 @@
     .thematic-ornament .thematic-rule{position:absolute;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     .ornament-glyph{display:inline-block;line-height:1.5;font-size:1.1rem}
     .review-note{max-width:76ch;overflow-wrap:anywhere}
+    /* Study-only fallback: forced-colors and print use the actual native line, never glyph availability. */
+    @media (forced-colors:active), print{
+      .thematic-ornament .thematic-rule{
+        position:static;width:28%;height:0;margin:0 auto;clip-path:none;overflow:visible;
+        border-top:1px solid currentColor
+      }
+      .thematic-ornament .ornament-glyph{display:none}
+    }
     @media (forced-colors:active){
       .surface{background:Canvas!important;color:CanvasText!important}
       .specimen{border-color:CanvasText}
@@ -257,7 +265,7 @@
   <section id="review-notes" class="review-note">
     <h2>Evidence boundaries</h2>
     <p>Compare at 320, 375, 768 and 1280 CSS px, both illustrated profiles and schemes; enlarge text to 200%, apply user text-spacing overrides, enable forced colors, print and disable stylesheets. These are review instructions, not claims of tested behavior.</p>
-    <p>In the ornament specimen the <code>hr</code> remains the one semantic thematic break; the asterism is explicitly hidden from accessibility APIs. Browser/screen-reader verification is still required. If styles are disabled, the native rule remains visible.</p>
+    <p>In the ornament specimen the <code>hr</code> remains the one semantic thematic break; the asterism is explicitly hidden from accessibility APIs. Forced-colors and print CSS reveal the native line instead of depending on the glyph; without styles, the native rule also remains visible. These browser probes do not replace real screen-reader or print-output verification.</p>
     <p>The build-time suggestion data accompanying this example is synthetic, reviewable evidence. It is not run or consumed in readers, and it does not claim that AI selected a semantically correct boundary.</p>
   </section>
 </main>
