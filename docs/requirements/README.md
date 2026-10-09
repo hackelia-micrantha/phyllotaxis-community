@@ -9,7 +9,7 @@
 5. **Consumer-owned content.** Navigation, CMS models, authored content, media loading policy, and application-specific brand/content decisions remain outside reusable component semantics.
 
 6. **First-class spatial rhythm (proposed).** [SPACE-001](spatial-rhythm.md) captures page/section/sibling/inset/readability spacing jobs for design evaluation. It does not alter the accepted Utility default, Chroma token surface, Venation props, or accessibility floor.
-7. **Semantic text rhythm (proposed).** [TEXT-001](text-rhythm.md) distinguishes continuation, related transitions, and thematic breaks in authored prose, with optional ornaments and governed AI suggestions; [QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) reviews alternatives. It does not change accepted `Prose` behavior.
+7. **Semantic text rhythm (native guidance accepted; new interfaces proposed only).** [TEXT-001](text-rhythm.md) uses authored native prose boundaries and optional decorative ornaments under existing `Prose`; [QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) resolves that question through [RFC-0010](../decisions/RFC-0010-native-text-rhythm-guidance.md) and [ADR-0009](../decisions/ADR-0009-native-text-rhythm-guidance.md). Build-time AI suggestions, screen-reader certification and new component/token APIs remain unaccepted; spacing belongs to SPACE-001.
 8. **Measured performance.** [PERF-001](performance.md) proposes paired baseline, browser and artifact evidence before numerical budgets are accepted. Its proposed status does not impose unmeasured limits.
 
 ## CLI requirements
