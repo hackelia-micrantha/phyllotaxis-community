@@ -21,7 +21,7 @@ Existing `Prose` deliberately preserves authored HTML and does not generate, reo
 | C. New Lamina component(s) | Proposed `ConceptBreak` or `EditorialFlow` could express meaningful break strength/ornament | Explicit in JSX and review tools | New public API without evidence; Markdown/SSR interop, a11y semantics, and CMS coupling; conflicts with `Prose` no-inference rule |
 | D. Generic margins/symbol-only separators | Arbitrary per-paragraph spacing and decorative glyphs, or text-generation-driven HTML | Fast for one-off presentation | Loses semantic distinctions, inaccessible or duplicate announcements, arbitrary styles, fragile export and reading order |
 
-**Provisional direction:** start with A; evaluate B where repeated independent Utility + Editorial consumers demonstrate a real semantic-marker need. Route evidence for any new *spacing* roles to QART-0009 / RFC-0009, never an independent TEXT-001 spacing decision. Reserve C for a distinct relationship that native markup and `Prose` cannot express. Reject D as a shared contract.
+**Historical provisional direction (before ADR-0009):** start with A; evaluate B where repeated independent Utility + Editorial consumers demonstrate a real semantic-marker need. Route evidence for any new *spacing* roles to QART-0009 / RFC-0009, never an independent TEXT-001 spacing decision. Reserve C for a distinct relationship that native markup and `Prose` cannot express. Reject D as a shared contract.
 
 A genuine thematic break maps to native `<hr>` (HTML thematic-break semantics). A related change of thought without a thematic change may need only an authored paragraph grouping or heading, not a fabricated separator. Neither whitespace quantity nor AI prediction by itself proves a thematic break.
 
@@ -29,7 +29,7 @@ A genuine thematic break maps to native `<hr>` (HTML thematic-break semantics). 
 
 - **No ornament:** visually bounded whitespace or native thematic-rule line, strongest Utility baseline.
 - **Opt-in theme-resolved ornament:** tiny asterism `⁂`, fleuron `❧` or restrained geometric marker in place of a visually styled rule where compatible with content, user preference, and assistive technology.
-- **Mandatory ornament:** rejected provisionally; introduces decoration into technical reference content and user experiences that do not request it.
+- **Mandatory ornament:** rejected by ADR-0009; introduces decoration into technical reference content and user experiences that do not request it.
 
 The symbol is never the semantic source of truth. Compare CSS background/mask artwork and an explicitly `aria-hidden` decorative element with native `<hr>` semantics; CSS `content` text may reach assistive tech and requires testing. Do not add a second live separator or rely on Unicode glyph availability without fallback. Profile, scheme, density and ornament preferences are distinct concepts. No new carrier or custom-property name is accepted here.
 
@@ -77,9 +77,9 @@ Compare the same reference text across: (1) unmarked paragraph baseline; (2) aut
 
 A static example/gallery may demonstrate options but is **non-normative**, not a released package or evidence of acceptability by itself. Chromium accessibility-tree probes can test whether native `hr` remains an exposed `separator` and an `aria-hidden` ornament is excluded; **only a separate real screen-reader review** can assess announcement quality (see the [manual protocol](../architecture/text-rhythm-review-plan.md#manual-assistive-technology-review-protocol)).
 
-**Accepted no-API authoring direction:** Retain **A (native HTML + current `Prose`)** as the default, per [ADR-0009](ADR-0009-native-text-rhythm-guidance.md). Treat **B** solely as optional authored presentation guidance using SPACE-owned styling; the synthetic comparison does not justify a new public style role. Do not promote **C (new Lamina component)** without a concrete semantic need that native markup cannot satisfy. No ADR acceptance or release change is implied by these evidence-based constraints.
+**Accepted no-API authoring direction:** Retain **A (native HTML + current `Prose`)** as the default, per [ADR-0009](ADR-0009-native-text-rhythm-guidance.md). Treat **B** solely as optional authored presentation guidance using SPACE-owned styling; the synthetic comparison does not justify a new public style role. Do not promote **C (new Lamina component)** without a concrete semantic need that native markup cannot satisfy. The limited ADR-0009 authoring guidance is accepted, but no **new normative API, accessibility conformance or release change** is implied.
 
-## Static comparison available (not yet acceptance evidence)
+## Static comparison available (not normative API or accessibility acceptance evidence)
 
 The [TEXT-001 static comparison](../examples/text-rhythm-comparison.html), [illustrative prepublication suggestion data](../examples/text-rhythm-suggestions.json), and [review plan](../architecture/text-rhythm-review-plan.md) provide an initial reproducible authoring baseline. Its fixture checker verifies structural integrity, not the quality of a concept break, screen-reader announcements or browser layout. Evidence remains pending.
 
