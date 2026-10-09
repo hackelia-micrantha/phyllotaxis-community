@@ -28,7 +28,7 @@ The synthetic suggestion JSON illustrates prepublication review: an author-appro
 - Expected positive and negative synthetic suggestion states (approved revision+anchor, pending, stale, missing).
 - A set of negative mutations must be rejected by the checker itself.
 
-These checks are structural only, not visual, accessibility, or model-accuracy conclusions. The HTML and JSON are not included in the published package, or the GitHub Pages allowlist, as part of this task.
+These checks are structural only, not visual, accessibility, or model-accuracy conclusions. The HTML/JSON are **not part of the published Phyllotaxis package**. The HTML alone is allowlisted for the static GitHub Pages review gallery; the JSON suggestion cases are **not** published as a Pages data resource. This adds a visual review link, not an accepted component or runtime feature.
 
 ## Automated Chromium geometry evidence (experimental)
 
@@ -67,4 +67,4 @@ Use at least two independently reviewed representative passages (one documentati
 3. Resolve QART-0010, then RFC and ADR for **any** stable API/token/inspection change.
 4. If static AI integration proves useful, specify a separately versioned authoring contract with privacy, revision binding, prompt-injection defenses, human approval and rollback. Do not create a runtime dependency.
 
-No release, publication, protected merge, or private implementation change is implied by static fixture validation.
+No Phyllotaxis package release, runtime capability, accepted contract, or private implementation change is implied by static fixture validation. Publication of this HTML under a separate, explicitly reviewed static Pages preview remains distinct from release or design acceptance.

@@ -60,3 +60,24 @@ jobs:
       - name: Deploy from exact main build
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+      - name: Verify published TEXT-001 review URL
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          test -n "$PAGE_URL"
+          url="${PAGE_URL%/}/examples/text-rhythm-comparison.html"
+          target="$RUNNER_TEMP/text-rhythm-published.html"
+          for attempt in $(seq 1 20); do
+            if curl --fail --location --silent --show-error \
+                --connect-timeout 5 --max-time 15 "$url" --output "$target" &&
+                grep -Fq 'TEXT-001: semantic text rhythm comparison' "$target"; then
+              echo "Verified review page: $url"
+              printf '[TEXT-001 static review page](%s)\n' "$url" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "TEXT-001 Pages URL could not be verified: $url" >&2
+          exit 1
+

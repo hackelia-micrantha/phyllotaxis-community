@@ -116,6 +116,7 @@ try {
       h1: document.querySelectorAll("h1").length,
       gallery: [...document.querySelectorAll(".example-link")].map(a => ({href: a.getAttribute("href"), text: a.textContent.trim()})),
       skip: document.querySelector("a.skip-link")?.getAttribute("href"),
+      textRhythm: document.getElementById("text-rhythm-preview")?.getAttribute("href"),
       scripts: document.scripts.length
     };
   `);
@@ -128,6 +129,7 @@ try {
     semantics.gallery[2].href === "./material-playground.html");
   record("semantic skip link", semantics.skip === "#content");
   record("gallery works without JavaScript", semantics.scripts === 0);
+  record("TEXT-001 static review link", semantics.textRhythm === "./examples/text-rhythm-comparison.html");
 
   // Keyboard-generated focus is needed: focus() alone does not guarantee :focus-visible.
   await command("POST", "/actions", { actions: [{

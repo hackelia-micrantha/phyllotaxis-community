@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed checks for the seven-file public GitHub Pages artifact.
+"""Fail-closed checks for the eight-file public GitHub Pages artifact.
 
 This validates a deliberately small static asset surface, not arbitrary HTML/CSS.
 New external resources require explicit review and extension of this contract.
@@ -20,10 +20,11 @@ EXPECTED = {
     "examples/utility-reference.html",
     "examples/utility-reference.css",
     "examples/dimensional-utility-reference.html",
+    "examples/text-rhythm-comparison.html",
     "material-playground.html",
     "material-playground.css",
 }
-# The published build contains exactly seven reviewed text files. Do not accept
+# The published build contains exactly eight reviewed text files. Do not accept
 # attributes with implicit requests, executable behavior or extensions to the
 # fixture vocabulary without a new contract review.
 REFERENCES = ("href", "action")
@@ -32,6 +33,12 @@ ALLOWED_ATTRIBUTES = {
     "aria-label", "aria-labelledby", "aria-hidden",
     "href", "rel", "action", "type", "data-phyllotaxis-profile",
     "for", "value", "checked",
+}
+# Narrowly allow candidate fixture markers only in the added TEXT-001 preview page.
+# Never broaden the existing gallery/package publication contract by accident.
+TEXT_RHYTHM_ATTRIBUTES = {
+    "data-fixture-profile", "data-fixture-scheme", "data-document",
+    "data-variant", "data-block-id",
 }
 FORBIDDEN_ELEMENTS = {"base", "embed", "iframe", "object", "script"}
 # Deliberately restrictive: no CSS-embedded assets are published today.
@@ -82,7 +89,9 @@ class ReferenceParser(HTMLParser):
         require(tag not in FORBIDDEN_ELEMENTS, f"{self.page}: prohibited active element <{tag}>")
         props = dict(attrs)
         require(len(props) == len(attrs), f"{self.page}: duplicate HTML attributes")
-        unknown = props.keys() - ALLOWED_ATTRIBUTES
+        is_text_fixture = self.page.parts[-2:] == ("examples", "text-rhythm-comparison.html")
+        allowed = ALLOWED_ATTRIBUTES | (TEXT_RHYTHM_ATTRIBUTES if is_text_fixture else set())
+        unknown = props.keys() - allowed
         require(not unknown, f"{self.page}: unsupported or request-capable attributes: {sorted(unknown)}")
         require(tag in {"a", "link"} or "href" not in props, f"{self.page}: href on unsupported tag {tag}")
         require(tag == "form" or "action" not in props, f"{self.page}: action on unsupported tag {tag}")
@@ -163,6 +172,18 @@ def self_test() -> None:
             pass
         else:
             raise AssertionError(f"resource-boundary negative fixture unexpectedly passed: {tag} {attribute} {value}")
+    for page, should_accept in [
+        ("fixture.html", False),
+        ("examples/text-rhythm-comparison.html", True),
+    ]:
+        try:
+            parser = ReferenceParser(Path(page))
+            parser.feed('<p data-block-id="example">Text</p>')
+            parser.close()
+        except ValueError:
+            require(not should_accept, f"{page}: text fixture attributes unexpectedly rejected")
+        else:
+            require(should_accept, f"{page}: text fixture attributes accepted outside allowlist")
     require(
         classify_reference("a", "href", "https://github.com/hackelia-micrantha") == "external-navigation",
         "public documentation navigation must be allowed",
