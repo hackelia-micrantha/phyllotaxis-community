@@ -214,10 +214,11 @@ async function run() {
     }
     const g = await evaluate(geometrySource);
     const overflow = g.rootOverflow > 1 || g.samples.some(s => s.overflow > 1 || s.bounds.right > 321);
-    result.stress.push({ kind, width: 320, scheme: "light", rootOverflow: g.rootOverflow, sampleOverflows: g.samples.map(s => s.overflow), pass: !overflow });
-    assert.ok(!overflow, kind + " horizontal overflow");
+    const offenders = overflow ? await evaluate("const w=innerWidth;return [...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect();return r.right>w+1||(e.scrollWidth-e.clientWidth)>1}).slice(0,16).map(e=>({tag:e.tagName,cls:e.className,id:e.id,right:Math.round(e.getBoundingClientRect().right),scrollWidth:e.scrollWidth,clientWidth:e.clientWidth}));") : [];
+    result.stress.push({ kind, width: 320, scheme: "light", rootOverflow: g.rootOverflow, sampleOverflows: g.samples.map(s => ({density:s.density,overflow:s.overflow,right:s.bounds.right})), offenders, pass: !overflow });
   }
   await writeFile(path.join(output, "evidence.json"), JSON.stringify(result, null, 2) + "\n");
+  assert.ok(result.stress.every(item => item.pass), "simulated text stress overflow: " + JSON.stringify(result.stress));
   if (config.format === "json") process.stdout.write(JSON.stringify({
     schemaVersion: result.schemaVersion, browser: result.browser,
     cases: result.observations.length, screenshots: 4, stress: result.stress, passed: true,
