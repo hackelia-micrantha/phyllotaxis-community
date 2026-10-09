@@ -36,8 +36,11 @@ The [TEXT-001 browser evidence harness](../../tools/text-rhythm-browser-evidence
 
 - eight CDP-emulated 320/375/768/1280 CSS-px viewport × light/dark measurements covering all sixteen authored specimens per case;
 - bounded checks for document/specimen overflow, native `hr` presence, optional `aria-hidden` ornaments, and explicit surface color-scheme behavior;
-- four screenshots, two explicitly **CSS-simulated** text stress checks, exact source/fixture identity and persisted failure evidence;
+- eight screenshots targeting both the applicable light/dark surfaces **and actual ornament locations** (Utility at 320px, Editorial at 1280px), plus two explicitly **CSS-simulated** text stress checks, exact source/fixture identity and persisted failure evidence;
+- a fixed 1-column narrow layout / 2-column wide layout keeps continuity adjacent to transition and thematic rule adjacent to ornament; five native fragment navigation links and per-surface return links make the long comparison reviewable without JavaScript;
 - no inference, application JavaScript, runtime personalization, publication or deployment.
+
+**Visual review correction (from original merged-main screenshots):** the first 1280px screenshot showed three side-by-side treatments and a fourth wrapping to a later row; light/dark captures both began at the first Utility-light specimen. The revised structure and targeted captures address those reviewability problems. They are not proof that readers prefer the result.
 
 **CI is evidence, not semantic approval.** Screenshots require human visual inspection. The automation does not establish correct authored break placement, actual browser zoom or operating-system text-only resizing, screen-reader announcement, CSS-off handling, Firefox/Safari/iOS parity, or real consumer accessibility. Record actual run SHA and conclusion before marking any measured scenario passed.
 

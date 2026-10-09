@@ -13,7 +13,7 @@ const fixture=get("--fixture"), output=get("--output");
 if(!fixture||!output||args.length!==4){process.stderr.write("Required --fixture HTML --output DIR\n");process.exit(2);}
 const file=path.resolve(fixture),out=path.resolve(output),port=9636;
 const report={schemaVersion:1,sourceSha:process.env.EVIDENCE_SOURCE_SHA||null,fixture:path.relative(process.cwd(),file),
-  browser:"chromium",cases:[],stress:[],screenshots:[],limitations:[
+  browser:"chromium",cases:[],stress:[],screenshots:[],screenshotTargets:[],limitations:[
     "CDP viewport emulation is not browser zoom",
     "CSS-simulated text stress is not operating-system text resize",
     "Geometry/screenshot evidence is not human editorial review or accessibility certification",
@@ -38,6 +38,8 @@ async function environment(width,scheme){
 function geometry(){
   const rect=e=>{const r=e.getBoundingClientRect();return {right:r.right,width:r.width};};
   return {viewport:innerWidth,overflow:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth,
+    navigation:[...document.querySelectorAll("#comparison-nav a[href^='#']")].map(a=>a.getAttribute("href")),
+    columns:[...document.querySelectorAll(".comparisons")].map(e=>getComputedStyle(e).gridTemplateColumns.trim().split(/\s+/).length),
     surfaces:[...document.querySelectorAll("section[data-fixture-profile][data-fixture-scheme]")].map(e=>({
       profile:e.dataset.fixtureProfile,scheme:e.dataset.fixtureScheme,colorScheme:getComputedStyle(e).colorScheme,bounds:rect(e)})),
     specimens:[...document.querySelectorAll("article[data-document][data-variant]")].map(e=>{
@@ -65,6 +67,8 @@ try{
     const m=await evaluate(geometrySource),caseRecord={width,scheme,measurements:m,status:"failed"};
     report.cases.push(caseRecord);
     assert.equal(m.surfaces.length,4);assert.equal(m.specimens.length,16);
+    assert.deepEqual(m.navigation,["#utility-light","#utility-dark","#editorial-light","#editorial-dark","#review-notes"]);
+    assert.deepEqual(m.columns,[width>=832?2:1,width>=832?2:1,width>=832?2:1,width>=832?2:1],"No orphaned fourth variant");
     assert.ok(m.overflow<=1,"Document overflow at "+width+"/"+scheme);
     assert.deepEqual(m.surfaces.map(s=>s.profile+":"+s.scheme),["utility:light","utility:dark","editorial:light","editorial:dark"]);
     for(const s of m.surfaces){assert.equal(s.colorScheme,s.scheme);assert.ok(s.bounds.right<=width+1);}
@@ -80,9 +84,23 @@ try{
     }
     caseRecord.status="pass";
     if(width===320||width===1280){
-      const name="text-"+scheme+"-"+width+".png";
+      // Capture the requested scheme, not the always-first light surface.
+      const profile=width===320?"utility":"editorial";
+      const id=profile+"-"+scheme;
+      const selection=await evaluate("const e=document.getElementById("+JSON.stringify(id)+");if(!e)throw Error('Missing surface');e.scrollIntoView({block:'start',behavior:'instant'});const r=e.getBoundingClientRect();return {id:e.id,top:r.top,scheme:getComputedStyle(e).colorScheme};");
+      assert.equal(selection.id,id);assert.equal(selection.scheme,scheme);
+      const name="text-"+profile+"-"+scheme+"-"+width+"-surface.png";
       await writeFile(path.join(out,name),Buffer.from(await cmd("GET","/screenshot"),"base64"));
       report.screenshots.push(name);
+      report.screenshotTargets.push({name,id,kind:"surface",width,scheme,profile});
+      // Center the *actual ornament* with adjoining prose in the viewport.
+      const target=await evaluate("const e=document.querySelector("+JSON.stringify("#"+id+" article[data-variant='ornament'] .ornament-glyph")+");if(!e)throw Error('Missing ornament');const r=e.getBoundingClientRect();window.scrollTo({top:scrollY+r.top-innerHeight*.45,behavior:'instant'});const v=e.getBoundingClientRect();return {visible:v.top>=0&&v.bottom<=innerHeight,top:v.top,bottom:v.bottom,ornament:e.textContent.trim(),hidden:e.getAttribute('aria-hidden')};");
+      assert.ok(target.visible,"Ornament not in captured viewport");
+      assert.equal(target.ornament,"⁂");assert.equal(target.hidden,"true");
+      const ornamentName="text-"+profile+"-"+scheme+"-"+width+"-ornament.png";
+      await writeFile(path.join(out,ornamentName),Buffer.from(await cmd("GET","/screenshot"),"base64"));
+      report.screenshots.push(ornamentName);
+      report.screenshotTargets.push({name:ornamentName,id,kind:"ornament",width,scheme,profile,top:target.top});
     }
   }
   for(const kind of ["root-200-percent-simulated","wcag-text-spacing-simulated"]){
@@ -95,7 +113,7 @@ try{
     assert.ok(pass,"Overflow in "+kind);
   }
   report.status="passed";await save();
-  process.stdout.write("TEXT-001 browser evidence PASS: 8 viewport/scheme cases, 2 simulated text stress cases, 4 screenshots\n");
+  process.stdout.write("TEXT-001 browser evidence PASS: 8 viewport/scheme cases, 2 simulated text stress cases, 8 targeted screenshots\n");
 }catch(err){
   report.status="failed";report.failure=String(err.message).slice(0,1000);
   report.notRunCases=Math.max(0,8-report.cases.length);
