@@ -28,8 +28,19 @@ interface StackProps {
 
 ```css
 /* Candidate Chroma property; NOT published or accepted. */
---phyllotaxis-space-section: var(--phyllotaxis-space-xl);
+/* Candidate default scoped to each coherent profile, NOT accepted CSS. */
+:root,
+[data-phyllotaxis-profile="utility"],
+[data-phyllotaxis-profile="editorial"] {
+  --phyllotaxis-space-section: var(--phyllotaxis-space-xl);
+}
 ```
+
+**Proposed alias resolution and inheritance (P1 review):** A CSS custom property that references `var(--phyllotaxis-space-xl)` is resolved at its declaration scope. Declaring the alias only on `:root` would make the already-computed Utility value inherit unchanged into a nested Editorial carrier. For this proposal the alias **must be redeclared at `:root` and each coherent Utility/Editorial profile carrier**, where it is computed from that carrier's `space-xl`.
+
+A host overriding `space-xl` on a coherent carrier should have the alias follow that carrier's value; an explicit `space-section` override on the same carrier takes precedence. A parent `space-section` override does **not** automatically flow into a nested coherent profile that redeclares the alias; that child resolves its own profile unless the host also overrides the child. Scheme-only surfaces inherit the structural value and do not change spatial resolution. CSS selector specificity/import ordering require dedicated regression tests.
+
+The [non-normative inheritance probe](../examples/spatial-role-inheritance.html) and [Chromium harness](../../tools/spatial-rhythm-browser-evidence.mjs) exercise root, nested Utility/Editorial, explicit XL/section overrides, and the root-only inheritance trap. The probe's `--sample-*` values and carrier attributes are **not** published contracts.
 
 Proposed `<Stack gap="section">` means **a recurring major-section relationship**, not a general numeric synonym for `xl`. Its resolution belongs to Chroma. The default alias to `space-xl` is only a *proposed compatibility-preserving initial value*; no observed consumer values are automatically imported. It leaves existing callers using `gap="xs|sm|md|lg|xl"` or omitted `gap` unchanged.
 
@@ -60,7 +71,7 @@ The proposal makes **spacious composition possible through deliberate role selec
 | `phyllo` | Future static inspection could identify role once accepted/versioned | No new CLI diagnostics or machine contract |
 | Consumers | Can explore coherent CSS overrides and compare current baseline | No existing consumer becomes invalid |
 
-The proposed CSS property would be defined by `chroma.css` and consumed only for the new opt-in `Stack` behavior; standalone Venation consumption without Chroma must provide the property when selecting `section`. No runtime provider, JS observer, global theme state, or automatic CSS migration is contemplated. Profile-specific aliases/overrides must be tested against existing Chroma carrier inheritance and color-scheme resolution.
+The proposed CSS property would be defined by `chroma.css` and consumed only for the new opt-in `Stack` behavior; standalone Venation consumption without Chroma must provide the property when selecting `section`. No runtime provider, JS observer, global theme state, or automatic CSS migration is contemplated. Profile alias resolution, host override precedence, scheme independence, CSS import ordering and standalone Venation behavior must be verified against the public contract. This RFC does **not** change Chroma inspection v1 or its role inventory: adding a new `space.section` role would require explicit version/compatibility review of the inspection JSON, public interface metadata, declarations and any `phyllo tokens` consumers. Do not silently modify v1.
 
 A public interface/inspection contract change must be versioned if its schema enumerates every Chroma property or Venation enum. Review exact compatibility for `phyllo tokens` JSON consumers and exported declarations before adopting. No published version is changed by this RFC.
 
