@@ -39,7 +39,7 @@ function geometry(){
   const rect=e=>{const r=e.getBoundingClientRect();return {right:r.right,width:r.width};};
   return {viewport:innerWidth,overflow:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth,
     navigation:[...document.querySelectorAll("#comparison-nav a[href^='#']")].map(a=>a.getAttribute("href")),
-    columns:[...document.querySelectorAll(".comparisons")].map(e=>getComputedStyle(e).gridTemplateColumns.trim().split(/\\s+/).length),
+    columns:[...document.querySelectorAll(".comparisons")].map(e=>getComputedStyle(e).gridTemplateColumns.trim().split(/\s+/).length),
     surfaces:[...document.querySelectorAll("section[data-fixture-profile][data-fixture-scheme]")].map(e=>({
       profile:e.dataset.fixtureProfile,scheme:e.dataset.fixtureScheme,colorScheme:getComputedStyle(e).colorScheme,bounds:rect(e)})),
     specimens:[...document.querySelectorAll("article[data-document][data-variant]")].map(e=>{
