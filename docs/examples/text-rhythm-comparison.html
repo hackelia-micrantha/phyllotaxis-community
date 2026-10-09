@@ -10,7 +10,14 @@
     :root{font-family:system-ui,sans-serif;line-height:1.5;background:Canvas;color:CanvasText}
     body{margin:0}
     main{max-width:90rem;margin:auto;padding:clamp(1rem,3vw,2rem)}
-    .intro{max-width:72ch;margin-block-end:2rem}
+    .intro{max-width:72ch;margin-block-end:1.5rem}
+    .intro h1{font-size:clamp(1.7rem,3vw,2.2rem);line-height:1.2}
+    .jump-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;margin-block:1.5rem 2.5rem}
+    .jump-nav .jump-label{font-weight:700;margin-inline-end:.25rem}
+    .jump-nav a{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.35rem .85rem;color:inherit;text-decoration:underline;text-underline-offset:.14em;overflow-wrap:anywhere}
+    .jump-nav a:focus-visible,.back-link a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+    .back-link{font-size:.85rem;margin-block:1.75rem 0}
+    .back-link a{color:inherit;text-underline-offset:.18em}
     .surface{min-width:0;margin-block:2rem;padding:clamp(.75rem,2vw,1.5rem);border:1px solid currentColor}
     .surface[data-fixture-scheme="light"]{color-scheme:light;background:#fbfbfb;color:#171717}
     .surface[data-fixture-scheme="dark"]{color-scheme:dark;background:#151a1d;color:#f1f1f1}
@@ -20,8 +27,10 @@
     /* Reflow large headings at 200% text size on 320 CSS-px surfaces. */
     .intro h1,.surface h2,.specimen h3{overflow-wrap:anywhere}
     .surface-note{max-width:70ch;font-size:.9rem}
-    .comparisons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1rem;align-items:stretch}
-    .specimen{min-width:0;border:1px solid currentColor;padding:1rem}
+    /* Pairs remain adjacent: continuity/transition, thematic/ornament; no orphan fourth card. */
+    .comparisons{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1rem,2vw,1.5rem);align-items:stretch}
+    @media (min-width:52rem){.comparisons{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .specimen{min-width:0;border:1px solid currentColor;padding:clamp(1rem,2vw,1.5rem)}
     .specimen h3{font-size:1rem;margin:0 0 1rem}
     .prose{line-height:var(--fixture-line);max-width:var(--fixture-measure)}
     .prose p{margin:0 0 var(--fixture-paragraph-gap);overflow-wrap:anywhere}
@@ -49,7 +58,15 @@
     <p>Static, synthetic, non-normative design evidence. Space can signal a related thought transition; a native thematic break means more than a large margin. Decorative symbols never establish meaning by themselves.</p>
     <p>The example-only profile/scheme attributes and CSS values are <strong>not</strong> Chroma, Lamina or Venation contracts. There is no JavaScript, remote dependency, runtime inference or dynamic adaptation.</p>
   </header>
-  <section class="surface" data-fixture-profile="utility" data-fixture-scheme="light" aria-labelledby="utility-light-heading">
+  <nav id="comparison-nav" class="jump-nav" aria-label="Jump to comparison">
+    <span class="jump-label">Compare:</span>
+    <a href="#utility-light">Utility · light</a>
+    <a href="#utility-dark">Utility · dark</a>
+    <a href="#editorial-light">Editorial · light</a>
+    <a href="#editorial-dark">Editorial · dark</a>
+    <a href="#review-notes">Review criteria</a>
+  </nav>
+  <section id="utility-light" class="surface" data-fixture-profile="utility" data-fixture-scheme="light" aria-labelledby="utility-light-heading">
     <h2 id="utility-light-heading">Utility reference — light</h2>
     <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
     <div class="comparisons">
@@ -96,8 +113,9 @@
         </div>
       </article>
     </div>
+    <p class="back-link"><a href="#comparison-nav">Back to comparison choices ↑</a></p>
   </section>
-  <section class="surface" data-fixture-profile="utility" data-fixture-scheme="dark" aria-labelledby="utility-dark-heading">
+  <section id="utility-dark" class="surface" data-fixture-profile="utility" data-fixture-scheme="dark" aria-labelledby="utility-dark-heading">
     <h2 id="utility-dark-heading">Utility reference — dark</h2>
     <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
     <div class="comparisons">
@@ -144,8 +162,9 @@
         </div>
       </article>
     </div>
+    <p class="back-link"><a href="#comparison-nav">Back to comparison choices ↑</a></p>
   </section>
-  <section class="surface" data-fixture-profile="editorial" data-fixture-scheme="light" aria-labelledby="editorial-light-heading">
+  <section id="editorial-light" class="surface" data-fixture-profile="editorial" data-fixture-scheme="light" aria-labelledby="editorial-light-heading">
     <h2 id="editorial-light-heading">Editorial narrative — light</h2>
     <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
     <div class="comparisons">
@@ -188,8 +207,9 @@
         </div>
       </article>
     </div>
+    <p class="back-link"><a href="#comparison-nav">Back to comparison choices ↑</a></p>
   </section>
-  <section class="surface" data-fixture-profile="editorial" data-fixture-scheme="dark" aria-labelledby="editorial-dark-heading">
+  <section id="editorial-dark" class="surface" data-fixture-profile="editorial" data-fixture-scheme="dark" aria-labelledby="editorial-dark-heading">
     <h2 id="editorial-dark-heading">Editorial narrative — dark</h2>
     <p class="surface-note">Four authored presentation choices. The same prose and reading order are preserved in each example.</p>
     <div class="comparisons">
@@ -232,6 +252,7 @@
         </div>
       </article>
     </div>
+    <p class="back-link"><a href="#comparison-nav">Back to comparison choices ↑</a></p>
   </section>
   <section id="review-notes" class="review-note">
     <h2>Evidence boundaries</h2>
