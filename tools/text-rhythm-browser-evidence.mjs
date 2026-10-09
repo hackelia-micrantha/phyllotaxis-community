@@ -90,7 +90,8 @@ try{
     if(kind.startsWith("root-"))await evaluate("document.documentElement.style.fontSize='200%';return true;");
     else await evaluate("const s=document.createElement('style');s.textContent='*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important} p{margin-bottom:2em!important}';document.head.append(s);return true;");
     const m=await evaluate(geometrySource),pass=m.overflow<=1&&m.specimens.every(s=>s.overflow<=1&&s.bounds.right<=321);
-    report.stress.push({kind,width:320,rootOverflow:m.overflow,pass});
+    const offenders=pass?[]:await evaluate("const w=innerWidth;return [...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect();return r.right>w+1||(e.scrollWidth-e.clientWidth)>1}).slice(0,24).map(e=>({tag:e.tagName,cls:String(e.className).slice(0,80),id:e.id,right:Math.round(e.getBoundingClientRect().right),scrollWidth:e.scrollWidth,clientWidth:e.clientWidth}));");
+    report.stress.push({kind,width:320,rootOverflow:m.overflow,pass,offenders});
     assert.ok(pass,"Overflow in "+kind);
   }
   report.status="passed";await save();
