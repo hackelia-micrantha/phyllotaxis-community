@@ -20,7 +20,7 @@ const screenshots = [];
 const limitations = [
   "Screenshots alone are not independent human visual evaluation or task/affordance evidence.",
   "Chromium CDP viewport dimensions are CSS emulation, not real browser zoom or OS scaling.",
-  "Firefox headless window minimum width may prevent 320/375px tests; mismatches are unsupported, not passes.",
+  "Firefox narrow layout uses WebDriver BiDi browsingContext.setViewport when supported; if it cannot set the requested CSS width, the case stays unsupported, not a pass.",
   "Safari/iOS and actual assistive technology are not available in this runner.",
   "Firefox forced-colors and OS light/dark preference are not emulated; material-page native radio selection is tested instead."
 ];
@@ -40,6 +40,53 @@ async function run(browser, port) {
     driverLog = (driverLog+data.toString("utf8")).slice(-5000);
   });
   let session = null;
+  let bidiSocket = null;
+  let bidiContext = null;
+  let bidiNextId = 0;
+  const bidiPending = new Map();
+  async function connectBiDi(url) {
+    if (!url || typeof WebSocket !== "function") return false;
+    return await new Promise((resolve) => {
+      const socket = new WebSocket(url);
+      const timer = setTimeout(() => { socket.close(); resolve(false); }, 8000);
+      socket.addEventListener("open", () => {
+        clearTimeout(timer);
+        bidiSocket = socket;
+        resolve(true);
+      }, { once: true });
+      socket.addEventListener("error", () => { clearTimeout(timer); resolve(false); }, { once: true });
+      socket.addEventListener("message", event => {
+        let packet;
+        try { packet = JSON.parse(event.data); } catch { return; }
+        if (typeof packet.id !== "number" || !bidiPending.has(packet.id)) return;
+        const request = bidiPending.get(packet.id);
+        bidiPending.delete(packet.id);
+        clearTimeout(request.timer);
+        if (packet.type === "success") request.resolve(packet.result);
+        else request.reject(new Error(JSON.stringify(packet).slice(0,650)));
+      });
+      socket.addEventListener("close", () => {
+        bidiSocket = null;
+        for (const request of bidiPending.values()) {
+          clearTimeout(request.timer);
+          request.reject(new Error("WebDriver BiDi socket closed"));
+        }
+        bidiPending.clear();
+      });
+    });
+  }
+  async function bidi(method,params) {
+    if (!bidiSocket || bidiSocket.readyState !== WebSocket.OPEN) throw new Error("BiDi unavailable");
+    const id = ++bidiNextId;
+    return await new Promise((resolve,reject) => {
+      const timer = setTimeout(() => {
+        bidiPending.delete(id);
+        reject(new Error("WebDriver BiDi timeout: "+method));
+      }, 12000);
+      bidiPending.set(id,{resolve,reject,timer});
+      bidiSocket.send(JSON.stringify({id,method,params}));
+    });
+  }
   async function http(method,route,body) {
     const response = await fetch("http://127.0.0.1:"+port+route,{
       method,headers:body===undefined?{}:{"content-type":"application/json"},
@@ -59,6 +106,19 @@ async function run(browser, port) {
   }
   async function setViewport(width) {
     if(firefox) {
+      // BiDi sets a tab's CSS layout viewport without the headless window's
+      // 500px minimum; verify actual innerWidth in basic() after navigation.
+      if (bidiContext && bidiSocket) {
+        try {
+          await bidi("browsingContext.setViewport",{
+            context:bidiContext,viewport:{width,height:900}
+          });
+          return;
+        } catch (error) {
+          limitations.push("Firefox BiDi setViewport failed for "+width+"px: "+String(error).slice(0,220));
+        }
+      }
+      // Unavailable/failed BiDi must never turn a clamped width into a pass.
       await command("POST","/window/rect",{width,height:900});
     } else {
       await command("POST","/goog/cdp/execute",{cmd:"Emulation.setDeviceMetricsOverride",
@@ -138,12 +198,24 @@ async function run(browser, port) {
     if(!ready) throw Error("driver not ready "+driverLog);
     const payload=await http("POST","/session",{capabilities:{alwaysMatch:{
       browserName:firefox?"firefox":"chrome",pageLoadStrategy:"normal",
-      ...(firefox?{"moz:firefoxOptions":{binary:process.env.FIREFOX_BIN||"firefox",args:["-headless"]}}:
+      ...(firefox?{webSocketUrl:true,"moz:firefoxOptions":{binary:process.env.FIREFOX_BIN||"firefox",args:["-headless"]}}:
         {"goog:chromeOptions":{binary:process.env.CHROMIUM_BIN||"chromium",
           args:["--headless=new","--disable-gpu","--disable-dev-shm-usage","--no-sandbox"]}})
     }}});
     session=payload.sessionId;
     assert.ok(session,"no webdriver session");
+    if (firefox) {
+      const url = payload.capabilities?.webSocketUrl;
+      if (await connectBiDi(url)) {
+        try {
+          const tree = await bidi("browsingContext.getTree",{maxDepth:0});
+          bidiContext = tree.contexts?.[0]?.context || null;
+        } catch (error) {
+          limitations.push("Firefox BiDi context discovery failed: "+String(error).slice(0,220));
+        }
+      }
+      if (!bidiContext) limitations.push("Firefox BiDi CSS viewport unavailable; narrow requests may remain unsupported.");
+    }
     // Gallery media emulation is available only in Chromium; never label Firefox system as dark.
     for(const mode of firefox?["system"]:["light","dark"]) {
       if(!firefox) await setScheme(mode);
@@ -183,6 +255,7 @@ async function run(browser, port) {
     await collect(browser,"theme-keyboard","light",1280,1280,"pass",
       {note:"Real WebDriver Tab/ArrowRight/ArrowLeft checked state, focus-visible and CSS :has theme response"});
   } finally {
+    try { bidiSocket?.close(); } catch {}
     if(session)try{await command("DELETE","");}catch{}
     driver.kill("SIGTERM");
   }
