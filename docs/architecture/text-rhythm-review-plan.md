@@ -12,6 +12,8 @@
 
 The HTML fixture is self-contained, contains **no scripts** or external dependencies, and compares four authoring/presentation cases over the same content. The four cases are continuity (existing paragraphs), related transition (author mark, no invented semantics), genuine thematic rule (`hr`), and thematic rule plus an explicitly decorative asterism. All conditions share the same prose and reading order; difference is entirely the authored boundary and its local presentation.
 
+All numerical paragraph, transition and thematic-rule gaps in this fixture are **illustrative study inputs**, not proposed normative roles. [SPACE-001 / QART-0009 / proposed RFC-0009](../decisions/RFC-0009-spatial-rhythm.md) exclusively govern spacing-value and typography decisions; TEXT-001 governs authored break semantics, reviewed static suggestions and optional ornamentation.
+
 The specimen covers two content classes, Utility technical/reference and Editorial narrative, and shows each in light and dark. Example attributes (`data-fixture-profile`, `data-fixture-scheme`, `data-variant`) and `--fixture-*` values are **test-only** and must never be promoted to a Chroma/HTML public carrier by implication.
 
 The synthetic suggestion JSON illustrates prepublication review: an author-approved suggestion with exact revision and stable block ID, a pending suggestion, a stale revision and a non-existent block anchor. There is no model invocation, inferred semantics, reader-time mutation or released schema. In production, approval and revision/anchor validation would need a separate host-owned tool and policy. The fixture checker only proves this example's static predicates.
