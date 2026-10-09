@@ -2,6 +2,23 @@
 
 Status: **unexecuted**. This is a manual verification protocol and evidence record for [issue #76](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/76), **not** Safari test evidence or a release gate for the private package.
 
+## Quick iPhone Safari check (minimal, no uploads)
+
+Open these two live pages in **Safari** (not a web view inside another app):
+
+- [Public gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/)
+- [Gloss and Bevel material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html)
+
+Perform these short checks; **do not guess** for cases you could not test:
+
+1. **Portrait then landscape:** Scroll the gallery's three examples and the material lab. Look for cut-off text, horizontal scrolling, overlapping links or unexpectedly collapsed gaps.
+2. **Theme:** On the material lab select **Light**, then **Dark**, then **System**. Verify that the surface visibly changes in the first two modes. With System selected, toggle the iPhone's **Settings → Display & Brightness → Appearance** (or Control Center's supported appearance control) between Light and Dark and confirm that the page follows. Safari may need to be brought back to the foreground.
+3. **Touch and reduced motion:** Tap the material lab's actual action/pill links. Make sure static status panels cannot be mistaken for links. If convenient, toggle **Settings → Accessibility → Motion → Reduce Motion** and check that movement stops. No hardware keyboard is needed for this quick pass.
+
+To report results, reply in the ChatGPT conversation with **gallery layout: pass/fail**, **Light/Dark/System: pass/fail**, **touch/motion: pass/fail/not tested**, your iPhone/iOS version if known, and one short description of anything that looked wrong. Do not share account information or private screenshots. A full device-tested approval requires the longer protocol below.
+
+**No telemetry or form submission:** These two demo pages are static HTML/CSS and do not collect your answers. A report is evidence **only after** the device test is actually performed; this protocol itself is not Safari evidence.
+
 ## Scope and preparation
 
 Open the **published** [reference gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/) and [material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html) on a real device running Apple Safari. Confirm both URLs load over HTTPS; record any redirect, cache issue or missing asset rather than assuming the page is live.
