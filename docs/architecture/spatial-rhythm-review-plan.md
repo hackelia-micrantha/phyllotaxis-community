@@ -21,6 +21,14 @@ Static fixture integrity runs under `nix flake check` via `tools/check-spatial-f
 
 Those checks **do not** establish actual browser behavior, accessibility conformance, good visual hierarchy, or superiority of a spacing mode.
 
+## Dedicated SPACE-001 browser harness (evidence, not an accepted API)
+
+The [Chromium geometry harness](../../tools/spatial-rhythm-browser-evidence.mjs) is executed by the read-only [SPACE-001 Browser Evidence workflow](../../.github/workflows/space-browser-evidence.yml) when its own source or fixture changes. It records fixture SHA-256, exact source commit, local CSS/computed layout metrics, screenshots, and explicit test coverage in `evidence.json` (14-day artifact retention). It is independent of the original gallery and dimensional-Utility harnesses; those tests cannot substitute for spatial review.
+
+Automated dimensions: 320/375/768/1280 CSS px × light/dark × all three specimen densities; horizontal overflow, resolved gap/inset ordering, and native keyboard Tab/focus-visible. At 320px it also runs **CSS-simulated** 200% root-font and WCAG text-spacing override stress, recording results separately. Screenshots are captured at 320 and 1280px in both schemes. Tool validation must report unsupported rather than pass for actual browser zoom, text-only browser resize, Firefox, Safari/iOS, human hierarchy preference, and real product-consumer behavior.
+
+The fixture stylesheet's `--sample-*` values and `data-density` remain **local experiment mechanisms**. Passing this browser harness does not promote them as public Chroma/Venation/Lamina interface or select an RFC density policy. Compare the sample with actual consumers before making a public contract decision.
+
 ## Review matrix
 
 | Dimension | Required contexts | Observation |
