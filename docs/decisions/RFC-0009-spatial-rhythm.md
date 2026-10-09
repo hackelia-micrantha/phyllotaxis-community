@@ -105,4 +105,6 @@ This RFC does not auto-insert `<hr>`, decorative glyphs or editorial blocks base
 
 **Draft for technical and visual-contract review.** No public API, default spacing, published CSS variable, CLI machine contract, private code or release changes are authorized by this document. The [synthetic browser run](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37889809553) supports reflow-safe experimentation under limited conditions, not adoption of the proposed `section` role.
 
-If real consumer evidence disproves the need for a new `Stack` role, close this RFC as not accepted and retain SPACE-001 as first-class *composition guidance* under the existing stable `Space` scale.
+The first [real public consumer source comparison](../architecture/spatial-consumer-evidence.md) found that existing Digitalis and Envuscator section padding can be varied by 24px/48px without changing measured card/peer gaps, *provided* special inset-panel sections are not treated as ordinary section boundaries. This is bounded offline source rendering, **not** a package-backed Venation `Stack` integration or evidence of visual preference. Dark theme and actual zoom were not validated; RFC status remains **proposed**.
+
+If package-integrated and human consumer evidence disproves the need for a new `Stack` role, close this RFC as not accepted and retain SPACE-001 as first-class *composition guidance* under the existing stable `Space` scale.
