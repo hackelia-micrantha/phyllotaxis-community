@@ -320,11 +320,18 @@ try {
     forcedRadioFocus.outline !== "none");
   await pressKey("\uE014");
   const forcedNext = await evalInPage(`
-    return {id:document.activeElement?.id,checked:document.activeElement?.checked,
+    const n=document.activeElement;
+    const label=n?.matches('.theme-switcher input') ? n.nextElementSibling : null;
+    return {id:n?.id,checked:n?.checked,focused:n?.matches(':focus-visible'),
+      labelBorder:label && getComputedStyle(label).borderTopStyle,
+      labelOutline:label && getComputedStyle(label).outlineStyle,
       scheme:getComputedStyle(document.documentElement).colorScheme};
   `);
-  record("forced-color reduced-motion keyboard theme selection remains native",
-    forcedNext.id === "mode-light" && forcedNext.checked && forcedNext.scheme === "light");
+  // Forced-colors may override the computed color-scheme independently of the
+  // theme radio. Check genuine selection/focus/affordance, not UA color mapping.
+  record("forced-color reduced-motion keyboard theme selection remains native " + JSON.stringify(forcedNext),
+    forcedNext.id === "mode-light" && forcedNext.checked && forcedNext.focused &&
+    forcedNext.labelBorder !== "none" && forcedNext.labelOutline !== "none");
 
   await media("light");
   await navigate(materialUrl);
