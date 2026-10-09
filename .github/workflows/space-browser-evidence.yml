@@ -46,6 +46,23 @@ jobs:
           --fixture docs/examples/spatial-rhythm-comparison.html
           --output artifacts/spatial-rhythm
           --format json
+      - name: Verify failure report contract
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          if nix develop .#browser-evidence --command node tools/spatial-rhythm-browser-evidence.mjs \
+              --fixture "$scratch/nonexistent.html" --output "$scratch/evidence" --format json; then
+            echo "Unexpected success against missing fixture" >&2
+            exit 1
+          fi
+          nix develop .#browser-evidence --command node -e '
+            const fs = require("node:fs");
+            const d = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+            if (d.status !== "failed" || d.notRunCases !== 8 ||
+                !d.fixture.endsWith("nonexistent.html") || !d.failure?.message ||
+                d.observations.length !== 0) process.exit(1);
+          ' "$scratch/evidence/evidence.json"
       - name: Upload bounded browser evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
