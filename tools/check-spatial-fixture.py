@@ -41,7 +41,7 @@ class FixtureParser(HTMLParser):
             value = a.get(name, "")
             if value and not value.startswith("#"):
                 self.externals.append(value)
-        if self.block is not None:
+        if self.block is not None and tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
             self.block_depth += 1
         if "data-density" in a:
             assert tag == "article" and self.sample is None
