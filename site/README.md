@@ -2,7 +2,7 @@
 
 Status: **pre-release public reference gallery**. The site is not the canonical design authority and is not a substitute for a published Phyllotaxis package.
 
-The site includes **only** the reviewed landing page and the two existing synthetic reference fixtures. The first is a Utility contract illustration. The second is an RFC-0008 comparison under [ADR-0008's accepted, non-binding advisory review guidance](https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/docs/decisions/ADR-0008-dimensional-utility-advisory-guidance.md), **not** an accepted visual profile, a validated example, or an implementation guarantee. None of the styling here is a Chroma token contract or a private implementation copy.
+The site includes the landing page, two synthetic reference fixtures and an **experimental, non-normative material lab** for gloss, beveled controls, soft shadow, CSS-only System/Light/Dark selection and bounded hover states. The gallery uses neutral surfaces and more spacing so these treatments are easier to compare. The first is a Utility contract illustration. The second is an RFC-0008 comparison under [ADR-0008's accepted, non-binding advisory review guidance](https://github.com/hackelia-micrantha/phyllotaxis-community/blob/main/docs/decisions/ADR-0008-dimensional-utility-advisory-guidance.md), **not** an accepted visual profile, a validated example, or an implementation guarantee. None of the styling here is a Chroma token contract or a private implementation copy.
 
 ## Build and verify
 
@@ -16,13 +16,13 @@ nix flake check
 nix develop .#browser-evidence --command node tools/gallery-browser-smoke.mjs --site ./result
 ```
 
-The flake constructs an allowlisted static directory with `index.html`, `site.css` and `examples/`. Links, local assets and remote-resource rejection (including negative cases) are checked in the flake check. The gallery browser smoke verifies core navigation, light/dark contrast, visible keyboard focus, reduced motion, forced colors, and responsive reflow, including a narrow CSS viewport stress. It is **not** a browser-zoom or assistive-technology certification. No third-party front-end packages, external resources, or private-repository credentials are needed.
+The flake constructs an allowlisted static directory with seven explicit static files: `index.html`, `site.css`, `material-playground.html`, `material-playground.css` and the three `examples/` resources. The material page has **no JavaScript**; the three native radio controls use CSS state selectors to switch between System, Light and Dark on that page. Static cards remain stationary; only real links can move by at most 1px. Links, local assets and remote-resource rejection (including negative cases) are checked in the flake check. The gallery browser smoke verifies core navigation, light/dark contrast, visible keyboard focus, reduced motion, forced colors, and responsive reflow, including a narrow CSS viewport stress. It is **not** a browser-zoom or assistive-technology certification. No third-party front-end packages, external resources, or private-repository credentials are needed.
 
 ## Deployment
 
 After the required merge-gate disposition and an explicitly authorized merge, an isolated GitHub Actions workflow publishes only the flake-built output from `main`. A repo administrator must set **Settings → Pages → Build and deployment → Source: GitHub Actions** if not already configured. The workflow cannot enable Pages or change repository settings.
 
-Expected project URL, **not confirmed live until successfully deployed and checked**:
+Public reference gallery **verified live on October 8, 2026**; the new material lab is reachable only after this change is merged and its deployment verified:
 
 `https://hackelia-micrantha.github.io/phyllotaxis-community/`
 
