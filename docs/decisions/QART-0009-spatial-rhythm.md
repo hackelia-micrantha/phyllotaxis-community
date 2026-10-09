@@ -1,6 +1,6 @@
 # QART-0009 — First-class spatial rhythm and density
 
-- **Status:** Open — alternatives under review; no stable API decision
+- **Status:** Open — alternatives analyzed into [proposed RFC-0009](RFC-0009-spatial-rhythm.md); no accepted ADR or stable API change
 - **Date:** 2026-10-08
 - **Authority:** Public design analysis; no implementation authorization
 - **Design requirement:** [SPACE-001](../requirements/spatial-rhythm.md)
@@ -89,9 +89,13 @@ Compare at 320/375/768/1280 CSS px, in light and dark; include 200% text resize,
 
 The evaluation must answer whether semantic separation is clearer than ad hoc padding **and** whether a compact Utility screen remains effective. A preference for larger gaps alone does not prove that all tokens should grow.
 
+## Reference comparison (synthetic browser evidence recorded; consumer rendering still pending)
+
+A [three-policy comparison specimen](../examples/spatial-rhythm-comparison.html) and [evidence matrix](../architecture/spatial-rhythm-review-plan.md) provide identical synthetic sections, cards, checkboxes, prose and status tables. A dedicated [Chromium evidence run](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37889809553) now checks geometry and CSS-simulated text stress, with findings in the [source-pinned consumer survey](../architecture/spatial-rhythm-consumer-survey.md). These example-only values and `data-density` attributes are not public Chroma or density contracts. **Synthetic browser passes do not establish real consumer adoption, real zoom or cross-browser parity.** The [narrow proposed RFC-0009](RFC-0009-spatial-rhythm.md) explores opt-in `Stack` section rhythm while deferring a density carrier; no ADR is accepted.
+
 ## Proposed disposition path
 
-1. Gather the reference comparisons and answer the open questions.
-2. Draft **RFC-0009** only after choosing whether density needs a public carrier and which, if any, semantic spacing roles earn stable names. Include change classification, backwards-compatible defaults, migration, Chroma inspection/versioning, and full validation matrix.
+1. Complete real consumer render comparisons and answer the open acceptance questions; source-only observations and synthetic browser runs do not satisfy the full evidence gate.
+2. Review [proposed RFC-0009](RFC-0009-spatial-rhythm.md) for a minimal section role, explicit absence of a v1 density carrier, interface/version compatibility, and the outstanding validation matrix.
 3. Record an accepted ADR before modifying current Chroma defaults, Venation/Lamina public APIs, `phyllo` diagnostics, or private implementation.
 4. Keep existing accepted public contracts authoritative until then. A public gallery change is not a release or compatibility decision.

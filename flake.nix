@@ -23,6 +23,8 @@
           cp ${./docs/examples/utility-reference.html} "$out/examples/utility-reference.html"
           cp ${./docs/examples/utility-reference.css} "$out/examples/utility-reference.css"
           cp ${./docs/examples/dimensional-utility-reference.html} "$out/examples/dimensional-utility-reference.html"
+          # TEXT-001: opt-in, non-normative static prose comparison; no runtime/package contract.
+          cp ${./docs/examples/text-rhythm-comparison.html} "$out/examples/text-rhythm-comparison.html"
         '';
     in
     {
@@ -45,6 +47,18 @@
           } ''
             archive="${self.packages.${system}.independent-review-kit}/independent-review-kit.zip"
             python ${./tools/package-independent-review.py} --root ${./.} --archive "$archive" --verify-only
+            touch "$out"
+          '';
+          spatial-fixture = pkgs.runCommand "phyllotaxis-space-reference-integrity" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-spatial-fixture.py} ${./docs/examples/spatial-rhythm-comparison.html}
+            touch "$out"
+          '';
+          text-rhythm-fixture = pkgs.runCommand "phyllotaxis-text-rhythm-fixture-integrity" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-text-rhythm-fixture.py} ${./docs/examples/text-rhythm-comparison.html} ${./docs/examples/text-rhythm-suggestions.json}
             touch "$out"
           '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {

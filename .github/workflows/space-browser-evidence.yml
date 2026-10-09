@@ -1,0 +1,76 @@
+name: SPACE-001 Browser Evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/space-browser-evidence.yml"
+      - "docs/examples/spatial-rhythm-comparison.html"
+      - "docs/examples/spatial-role-inheritance.html"
+      - "tools/spatial-rhythm-browser-evidence.mjs"
+      - "flake.nix"
+      - "flake.lock"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/space-browser-evidence.yml"
+      - "docs/examples/spatial-rhythm-comparison.html"
+      - "docs/examples/spatial-role-inheritance.html"
+      - "tools/spatial-rhythm-browser-evidence.mjs"
+      - "flake.nix"
+      - "flake.lock"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phyllotaxis-space-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  space-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact reviewed source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Install Nix
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+      - name: Spatial browser measurements
+        env:
+          EVIDENCE_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          nix develop .#browser-evidence --command
+          node tools/spatial-rhythm-browser-evidence.mjs
+          --fixture docs/examples/spatial-rhythm-comparison.html
+          --role-fixture docs/examples/spatial-role-inheritance.html
+          --output artifacts/spatial-rhythm
+          --format json
+      - name: Verify failure report contract
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          if nix develop .#browser-evidence --command node tools/spatial-rhythm-browser-evidence.mjs \
+              --fixture "$scratch/nonexistent.html" --output "$scratch/evidence" --format json; then
+            echo "Unexpected success against missing fixture" >&2
+            exit 1
+          fi
+          nix develop .#browser-evidence --command node -e '
+            const fs = require("node:fs");
+            const d = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+            if (d.status !== "failed" || d.notRunCases !== 8 ||
+                !d.fixture.endsWith("nonexistent.html") || !d.failure?.message ||
+                d.observations.length !== 0) process.exit(1);
+          ' "$scratch/evidence/evidence.json"
+      - name: Upload bounded browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: space001-browser-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/spatial-rhythm/
+          if-no-files-found: warn
+          retention-days: 14
