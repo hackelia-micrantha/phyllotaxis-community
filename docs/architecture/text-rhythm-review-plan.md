@@ -38,11 +38,24 @@ The [TEXT-001 browser evidence harness](../../tools/text-rhythm-browser-evidence
 - bounded checks for document/specimen overflow, native `hr` presence, optional `aria-hidden` ornaments, and explicit surface color-scheme behavior;
 - eight screenshots targeting both the applicable light/dark surfaces **and actual ornament locations** (Utility at 320px, Editorial at 1280px), plus two explicitly **CSS-simulated** text stress checks, exact source/fixture identity and persisted failure evidence;
 - a fixed 1-column narrow layout / 2-column wide layout keeps continuity adjacent to transition and thematic rule adjacent to ornament; five native fragment navigation links and per-surface return links make the long comparison reviewable without JavaScript;
+- experimental Chromium DevTools accessibility-tree inspection (native `hr` present as exactly one exposed `separator` per thematic/ornament variant, `aria-hidden` glyph ignored), keyboard Tab focus, forced-colors affordance and CSS-off DOM/anchor preservation; results are recorded only after exact-head CI;
 - no inference, application JavaScript, runtime personalization, publication or deployment.
 
 **Visual review correction (from original merged-main screenshots):** the first 1280px screenshot showed three side-by-side treatments and a fourth wrapping to a later row; light/dark captures both began at the first Utility-light specimen. The revised structure and targeted captures address those reviewability problems. They are not proof that readers prefer the result.
 
-**CI is evidence, not semantic approval.** Screenshots require human visual inspection. The automation does not establish correct authored break placement, actual browser zoom or operating-system text-only resizing, screen-reader announcement, CSS-off handling, Firefox/Safari/iOS parity, or real consumer accessibility. Record actual run SHA and conclusion before marking any measured scenario passed.
+**CI is evidence, not semantic approval.** Screenshots require human visual inspection. A Chromium accessibility-tree `separator` role and hidden decorative glyph are **not** evidence of how NVDA, VoiceOver or TalkBack announces the document. Automated forced-colors and stylesheet-removal probes, when passing, establish limited browser and DOM behavior only—not a manual visual audit, actual browser zoom/OS text-only resize, Firefox/Safari/iOS parity, semantic correctness or real consumer accessibility. Record exact run SHA and conclusion before marking any scenario passed.
+
+### Manual assistive-technology review protocol
+
+On the [live static TEXT-001 review page](https://hackelia-micrantha.github.io/phyllotaxis-community/examples/text-rhythm-comparison.html), record the browser/version and screen-reader/version, input method, date and observed speech or braille. Use at least one **real** screen-reader/browser pairing such as VoiceOver+Safari or NVDA+Firefox/Chromium; do not substitute the CDP accessibility tree.
+
+1. Follow the jump links with keyboard only; verify meaningful focus and headings in the intended order. Test both a Utility and an Editorial surface, one in light and one in dark.
+2. Read through the boundary between the second and third paragraph of each variant. **Continuity** and **thought transition** must not announce a separator. **Thematic rule** and **ornament** should each announce exactly one meaningful separator according to that reader's native behavior.
+3. Confirm `⁂` is not spoken separately in the ornament case, and that no thematic boundary is lost when the visual rule is clipped for ornament presentation. Record literal observed speech rather than assuming native `hr` announcement terminology.
+4. Disable CSS and repeat the semantics/navigation check; then test forced colors, actual browser 200% zoom, print and a missing-glyph fallback separately. Record skipped/unsupported cases explicitly.
+5. If any screen-reader pairing drops the clipped `hr`, doubles the separator, or announces the ornament, retain TEXT-001 as **unresolved**, fix author-owned markup/CSS and repeat the same paired test. Do not add an API or declare WCAG conformity from the synthetic fixture.
+
+This protocol is an **instruction for human testing**, not a claim it has been performed.
 
 ## Manual evidence matrix
 

@@ -13,11 +13,13 @@ const fixture=get("--fixture"), output=get("--output");
 if(!fixture||!output||args.length!==4){process.stderr.write("Required --fixture HTML --output DIR\n");process.exit(2);}
 const file=path.resolve(fixture),out=path.resolve(output),port=9636;
 const report={schemaVersion:1,sourceSha:process.env.EVIDENCE_SOURCE_SHA||null,fixture:path.relative(process.cwd(),file),
-  browser:"chromium",cases:[],stress:[],screenshots:[],screenshotTargets:[],limitations:[
+  browser:"chromium",cases:[],stress:[],screenshots:[],screenshotTargets:[],
+  accessibilityTree:[],unstyled:null,forcedColors:null,keyboard:null,limitations:[
     "CDP viewport emulation is not browser zoom",
     "CSS-simulated text stress is not operating-system text resize",
     "Geometry/screenshot evidence is not human editorial review or accessibility certification",
-    "Assistive technology, Firefox, Safari and iOS not assessed",
+    "Chromium accessibility-tree inspection is not screen-reader speech/output evidence",
+    "Actual screen-reader software, Firefox, Safari and iOS not assessed",
     "No AI inference or semantic-placement accuracy assessed"
   ]};
 let driver=null,session=null;
@@ -103,6 +105,54 @@ try{
       report.screenshotTargets.push({name:ornamentName,id,kind:"ornament",width,scheme,profile,top:target.top});
     }
   }
+  // CDP browser accessibility tree: a machine-checkable prerequisite, NOT an AT announcement.
+  await environment(375,"light");await cmd("POST","/url",{url});
+  await cdp("Accessibility.enable",{});
+  const dom=await cdp("DOM.getDocument",{depth:0});
+  async function axFor(selector){
+    const node=await cdp("DOM.querySelector",{nodeId:dom.root.nodeId,selector});
+    assert.ok(node.nodeId,"Missing accessibility sample: "+selector);
+    const desc=await cdp("DOM.describeNode",{nodeId:node.nodeId});
+    const tree=await cdp("Accessibility.getPartialAXTree",{backendNodeId:desc.node.backendNodeId,fetchRelatives:false});
+    assert.ok(tree.nodes?.length,"No accessibility-tree nodes: "+selector);
+    return {role:tree.nodes[0].role?.value||null,ignored:tree.nodes[0].ignored===true};
+  }
+  for(const surface of ["utility-light","utility-dark","editorial-light","editorial-dark"]){
+    for(const variant of ["thematic","ornament"]){
+      const selector="#"+surface+" article[data-variant='"+variant+"'] hr";
+      const observed=await axFor(selector);
+      report.accessibilityTree.push({surface,variant,element:"hr",...observed});
+      assert.equal(observed.ignored,false,"Authored thematic separator excluded: "+surface+"/"+variant);
+      assert.equal(observed.role,"separator","Thematic rule loses native separator role: "+surface+"/"+variant);
+    }
+    const selector="#"+surface+" article[data-variant='ornament'] .ornament-glyph";
+    const observed=await axFor(selector);
+    report.accessibilityTree.push({surface,variant:"ornament",element:"glyph",...observed});
+    assert.equal(observed.ignored,true,"Decorative asterism exposed in accessibility tree: "+surface);
+  }
+  await cdp("Accessibility.disable",{});
+  // Real keyboard Tab to the first native fragment control; no browser DOM injection.
+  await cmd("POST","/url",{url});
+  await cmd("POST","/actions",{actions:[{type:"key",id:"text-evidence-tab",
+    actions:[{type:"keyDown",value:"\uE004"},{type:"keyUp",value:"\uE004"}]}]});
+  await cmd("DELETE","/actions");
+  const focused=await evaluate("const e=document.activeElement;return {tag:e?.tagName,href:e?.getAttribute('href'),visible:e?.matches(':focus-visible'),outline:getComputedStyle(e).outlineStyle};");
+  report.keyboard=focused;
+  assert.equal(focused.tag,"A","Tab should reach a native fragment anchor");
+  assert.equal(focused.href,"#utility-light","Tab should reach first comparison link");
+  assert.ok(focused.visible&&focused.outline!=="none","Focus-visible outline missing");
+  // Forced colors and style-removal probes are separate evidence classes.
+  await cdp("Emulation.setEmulatedMedia",{media:"screen",features:[
+    {name:"forced-colors",value:"active"},{name:"prefers-color-scheme",value:"light"}]});
+  const forced=await evaluate("return {active:matchMedia('(forced-colors: active)').matches,separator:getComputedStyle(document.querySelector('#utility-light article[data-variant=thematic] hr')).borderTopStyle};");
+  report.forcedColors=forced;
+  assert.equal(forced.active,true,"Forced-colors emulation unavailable");
+  assert.notEqual(forced.separator,"none","Native thematic rule loses its visual affordance in forced colors");
+  await environment(375,"light");await cmd("POST","/url",{url});
+  const unstyled=await evaluate("document.querySelectorAll('style,link[rel=stylesheet]').forEach(e=>e.remove());return {styles:document.styleSheets.length,hr:document.querySelectorAll('article[data-variant=thematic] hr,article[data-variant=ornament] hr').length,ornaments:document.querySelectorAll('.ornament-glyph[aria-hidden=true]').length,nav:[...document.querySelectorAll('#comparison-nav a')].every(e=>!!document.getElementById(e.hash.slice(1)))};");
+  report.unstyled=unstyled;
+  assert.equal(unstyled.styles,0);assert.equal(unstyled.hr,8);assert.equal(unstyled.ornaments,4);
+  assert.equal(unstyled.nav,true,"Unstyled fragment links invalid");
   for(const kind of ["root-200-percent-simulated","wcag-text-spacing-simulated"]){
     await environment(320,"light");await cmd("POST","/url",{url});
     if(kind.startsWith("root-"))await evaluate("document.documentElement.style.fontSize='200%';return true;");
@@ -113,7 +163,7 @@ try{
     assert.ok(pass,"Overflow in "+kind);
   }
   report.status="passed";await save();
-  process.stdout.write("TEXT-001 browser evidence PASS: 8 viewport/scheme cases, 2 simulated text stress cases, 8 targeted screenshots\n");
+  process.stdout.write("TEXT-001 browser evidence PASS: 8 geometry cases, 2 simulated stress cases, 8 screenshots, 12 Chromium AX probes, keyboard/forced-colors/no-CSS probes\n");
 }catch(err){
   report.status="failed";report.failure=String(err.message).slice(0,1000);
   report.notRunCases=Math.max(0,8-report.cases.length);
