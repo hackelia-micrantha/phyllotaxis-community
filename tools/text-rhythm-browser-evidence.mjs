@@ -14,9 +14,10 @@ if(!fixture||!output||args.length!==4){process.stderr.write("Required --fixture 
 const file=path.resolve(fixture),out=path.resolve(output),port=9636;
 const report={schemaVersion:1,sourceSha:process.env.EVIDENCE_SOURCE_SHA||null,fixture:path.relative(process.cwd(),file),
   browser:"chromium",cases:[],stress:[],screenshots:[],screenshotTargets:[],
-  accessibilityTree:[],unstyled:null,forcedColors:null,keyboard:null,limitations:[
+  accessibilityTree:[],unstyled:null,forcedColors:null,printFallback:null,keyboard:null,limitations:[
     "CDP viewport emulation is not browser zoom",
     "CSS-simulated text stress is not operating-system text resize",
+    "CDP forced-colors and print-media emulation are not physical high-contrast or paper-output observations",
     "Geometry/screenshot evidence is not human editorial review or accessibility certification",
     "Chromium accessibility-tree inspection is not screen-reader speech/output evidence",
     "Actual screen-reader software, Firefox, Safari and iOS not assessed",
@@ -144,10 +145,29 @@ try{
   // Forced colors and style-removal probes are separate evidence classes.
   await cdp("Emulation.setEmulatedMedia",{media:"screen",features:[
     {name:"forced-colors",value:"active"},{name:"prefers-color-scheme",value:"light"}]});
+  const ornamentFallbackSource="return [...document.querySelectorAll(\"section.surface\")].map(surface=>{\n  const rule=surface.querySelector(\"article[data-variant='ornament'] hr\");\n  const glyph=surface.querySelector(\"article[data-variant='ornament'] .ornament-glyph\");\n  const computed=getComputedStyle(rule),box=rule.getBoundingClientRect();\n  return {surface:surface.id,position:computed.position,clip:computed.clipPath,\n    border:computed.borderTopStyle,borderWidth:computed.borderTopWidth,width:box.width,\n    glyphDisplay:getComputedStyle(glyph).display};\n});";
+  const expectedSurfaces=["utility-light","utility-dark","editorial-light","editorial-dark"];
+  const assertFallbacks=(items,mode)=>{
+    assert.deepEqual(items.map(x=>x.surface),expectedSurfaces,mode+" surface list");
+    for(const x of items){
+      assert.equal(x.position,"static",mode+" native rule out of flow: "+x.surface);
+      assert.equal(x.clip,"none",mode+" native rule still clipped: "+x.surface);
+      assert.equal(x.border,"solid",mode+" native rule invisible: "+x.surface);
+      assert.ok(parseFloat(x.borderWidth)>0&&x.width>24,mode+" rule not visibly rendered: "+x.surface);
+      assert.equal(x.glyphDisplay,"none",mode+" must not rely on ornament glyph: "+x.surface);
+    }
+  };
   const forced=await evaluate("return {active:matchMedia('(forced-colors: active)').matches,separator:getComputedStyle(document.querySelector('#utility-light article[data-variant=thematic] hr')).borderTopStyle};");
+  forced.ornamentSurfaces=await evaluate(ornamentFallbackSource);
   report.forcedColors=forced;
   assert.equal(forced.active,true,"Forced-colors emulation unavailable");
   assert.notEqual(forced.separator,"none","Native thematic rule loses its visual affordance in forced colors");
+  assertFallbacks(forced.ornamentSurfaces,"Forced-colors");
+  await cdp("Emulation.setEmulatedMedia",{media:"print",features:[]});
+  const print={active:await evaluate("return matchMedia('print').matches;"),ornamentSurfaces:await evaluate(ornamentFallbackSource)};
+  report.printFallback=print;
+  assert.equal(print.active,true,"Print media emulation unavailable");
+  assertFallbacks(print.ornamentSurfaces,"Print media");
   await environment(375,"light");await cmd("POST","/url",{url});
   const unstyled=await evaluate("document.querySelectorAll('style,link[rel=stylesheet]').forEach(e=>e.remove());return {styles:document.styleSheets.length,hr:document.querySelectorAll('article[data-variant=thematic] hr,article[data-variant=ornament] hr').length,ornaments:document.querySelectorAll('.ornament-glyph[aria-hidden=true]').length,nav:[...document.querySelectorAll('#comparison-nav a')].every(e=>!!document.getElementById(e.hash.slice(1)))};");
   report.unstyled=unstyled;
@@ -163,7 +183,7 @@ try{
     assert.ok(pass,"Overflow in "+kind);
   }
   report.status="passed";await save();
-  process.stdout.write("TEXT-001 browser evidence PASS: 8 geometry cases, 2 simulated stress cases, 8 screenshots, 12 Chromium AX probes, keyboard/forced-colors/no-CSS probes\n");
+  process.stdout.write("TEXT-001 browser evidence PASS: 8 geometry cases, 2 simulated stress cases, 8 screenshots, 12 Chromium AX probes, keyboard/forced-colors/print-fallback/no-CSS probes\n");
 }catch(err){
   report.status="failed";report.failure=String(err.message).slice(0,1000);
   report.notRunCases=Math.max(0,8-report.cases.length);
