@@ -8,6 +8,8 @@
 4. **Accessible modern capability.** The Utility profile may evoke late-1990s visual restraint, but semantics, accessibility, responsiveness, reduced-motion support, and browser capability remain modern. The accepted cross-layer capability floor is defined in [Accessibility capability requirement](accessibility.md) / [ADR-0004](../decisions/ADR-0004-accessibility-capability-floor.md).
 5. **Consumer-owned content.** Navigation, CMS models, authored content, media loading policy, and application-specific brand/content decisions remain outside reusable component semantics.
 
+6. **Measured performance.** [PERF-001](performance.md) proposes paired baseline, browser and artifact evidence before numerical budgets are accepted. Its proposed status does not impose unmeasured limits.
+
 ## CLI requirements
 
 Before any `phyllo` command family is described as supported, it must satisfy Micrantha CLI standards:

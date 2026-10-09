@@ -3,7 +3,7 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-  outputs = { nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
       systems = [
         "x86_64-linux"
@@ -24,10 +24,6 @@
         '';
     in
     {
-      packages = forAllSystems (system: {
-        demo-site = demoForSystem system;
-      });
-
       checks = forAllSystems (
         system:
         let
@@ -35,8 +31,22 @@
           python = pkgs.python3.withPackages (ps: [ ps.jsonschema ]);
         in
         {
+          demo-site = pkgs.runCommand "phyllotaxis-public-demo-links" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python ${./tools/check-demo-site.py} --self-test
+            python ${./tools/check-demo-site.py} ${demoForSystem system}
+            touch "$out"
+          '';
+          independent-review-kit-archive = pkgs.runCommand "phyllotaxis-community-independent-review-kit-validation" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            archive="${self.packages.${system}.independent-review-kit}/independent-review-kit.zip"
+            python ${./tools/package-independent-review.py} --root ${./.} --archive "$archive" --verify-only
+            touch "$out"
+          '';
           public-contracts = pkgs.runCommand "phyllotaxis-community-contracts" {
-            nativeBuildInputs = [ python ];
+            nativeBuildInputs = [ python pkgs.nodejs_22 ];
           } ''
             cp -R ${./contracts} contracts
             chmod -R u+w contracts
@@ -53,15 +63,24 @@
             public = json.loads(Path("contracts/public-interface-v1.json").read_text())
             assert "tokens" in public["cli"]["commands"]
             PY
+            python ${./tools/check-independent-review.py} ${./docs/examples/dimensional-utility-review-session.html}
             touch "$out"
           '';
+        }
+      );
 
-          demo-site = pkgs.runCommand "phyllotaxis-public-demo-links" {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          demo-site = demoForSystem system;
+          independent-review-kit = pkgs.runCommand "phyllotaxis-independent-review-kit" {
             nativeBuildInputs = [ pkgs.python3 ];
           } ''
-            python ${./tools/check-demo-site.py} --self-test
-            python ${./tools/check-demo-site.py} ${demoForSystem system}
-            touch "$out"
+            mkdir -p "$out"
+            python ${./tools/package-independent-review.py} --root ${./.} --archive "$out/independent-review-kit.zip"
           '';
         }
       );

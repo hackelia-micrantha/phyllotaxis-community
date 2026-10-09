@@ -54,6 +54,7 @@ Read:
 - [Chroma profile resolution contract](docs/architecture/chroma-profile-contract.md)
 - [Lamina editorial semantic contract](docs/architecture/lamina-editorial-contract.md)
 - [Accessibility capability requirement](docs/requirements/accessibility.md) — accepted by ADR-0004
+- [PERF-001 performance measurement requirement](docs/requirements/performance.md) — proposed
 - [Specification index](docs/specs/README.md)
 - [Public contract index](docs/contracts/README.md)
 - [Public interface index](docs/interfaces/README.md)
