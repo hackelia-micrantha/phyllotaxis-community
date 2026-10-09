@@ -10,7 +10,7 @@
 
 Make **space between ideas** a deliberate part of reading rhythm. Distinguish continuity within one argument, a related thought transition, and a true thematic/conceptual break. Content meaning and visual density are not equivalent: a large blank margin cannot reliably replace a meaningful document boundary.
 
-This extends SPACE-001's reading-measure/paragraph concerns without replacing its layout-spacing scope. It applies to genuine prose under both Utility and Editorial profiles, including reference documents, engineering essays, and longer narrative articles. Utility must not be reclassified as Editorial merely because text is long.
+**Single decision owner:** [SPACE-001](spatial-rhythm.md), [QART-0009](../decisions/QART-0009-spatial-rhythm.md), and its [proposed RFC-0009](../decisions/RFC-0009-spatial-rhythm.md) exclusively govern spacing values, paragraph/heading rhythm, reading measure, visual density, and any new Chroma role or Venation gap. TEXT-001 governs the *authored location and meaning of conceptual boundaries*, native thematic-break semantics, optional decorative representation, and reviewed build-time suggestions. Local CSS measurements in TEXT-001 fixtures are non-normative comparison inputs, not a second typography-token or layout-default authority. It applies to genuine prose under both Utility and Editorial profiles, including reference documents, engineering essays, and longer narrative articles. Utility must not be reclassified as Editorial merely because text is long.
 
 ## Proposed reading relationships
 
@@ -38,7 +38,7 @@ A decorative asterism (`⁂`), fleuron (`❧`), or geometric glyph could replace
 ## Ownership and integration boundaries
 
 - **Content/authoring pipeline:** owns document blocks, headings, authored breaks, and human approval of suggestions. AI never becomes a source of truth for prose or reading order.
-- **Chroma:** owns typography and spacing values, profile/scheme resolution, and any *future accepted* separator appearance roles.
+- **Chroma:** owns typography and spacing values, profile/scheme resolution, and any future spacing/appearance roles only through SPACE-001 / QART-0009 / RFC-0009. TEXT-001 cannot independently introduce spacing variables.
 - **Venation:** owns structural relationships *between sections/containers* under accepted constrained primitives. It must not become a text-analysis engine or margin passthrough.
 - **Lamina:** existing accepted `Prose` presents authored native HTML without inferring/reordering it. Proposed prose-break treatment can be evaluated inside that boundary before a distinct `ConceptBreak`/`EditorialFlow` component is justified.
 - **Cambium:** may later provide opt-in, previewable migrations from authored legacy break patterns. It must not infer semantics from margins or silently rewrite prose.
@@ -99,6 +99,6 @@ The [static text-rhythm comparison](../examples/text-rhythm-comparison.html), [i
 
 ## Decision path
 
-[QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) compares the native baseline, bounded styling roles, new components, and AI modes. Only after evidence resolves open questions should a corresponding RFC specify proposed stable values/components/schema, then an ADR decide adoption. Private implementation and AI integration follow an accepted, immutable pinned public contract, with exact-head testing and compatibility evidence.
+[QART-0010](../decisions/QART-0010-semantic-text-rhythm.md) compares the native baseline, bounded styling roles, new components, and AI modes. Only after evidence resolves open questions should a corresponding RFC specify proposed semantic content markers or an optional build-time suggestion schema, then an ADR decide adoption. Any spacing, typography or CSS-token proposal remains under SPACE-001 / QART-0009 / RFC-0009. Private implementation and AI integration follow an accepted, immutable pinned public contract, with exact-head testing and compatibility evidence.
 
 This document does **not** authorize new stable CSS properties, a `ConceptBreak` export, an Amaryllis inference protocol, auto-insertion, publication, or changes to the accepted contracts.
