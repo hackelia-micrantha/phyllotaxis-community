@@ -10,18 +10,18 @@
 
 How should Phyllotaxis present **conceptual separation inside text**, optionally with an ornament and AI-assisted suggestions, without confusing visual whitespace with authored meaning, duplicating the accepted `Prose` contract, or making reading depend on inference?
 
-Existing `Prose` deliberately preserves authored HTML and does not generate, reorder, or infer content. Chroma supplies typography and spacing; Venation supplies layout relationships; authors own document meaning. Existing SPACE-001/QART-0009 separately evaluate section/component spacing and possible density selection. This QART concerns **within-prose semantic segmentation**, not another layout layer.
+Existing `Prose` deliberately preserves authored HTML and does not generate, reorder, or infer content. Chroma supplies typography and spacing; Venation supplies layout relationships; authors own document meaning. Existing SPACE-001/QART-0009 separately evaluate section/component spacing and possible density selection. This QART concerns **within-prose semantic segmentation**, not another layout layer. **SPACE-001 / QART-0009 / proposed RFC-0009 exclusively govern paragraph and heading spacing, reading measure, density, and new Chroma/Venation spacing tokens.** TEXT-001 may propose an authored boundary and optional decorative representation, but cannot independently resolve margins, tokens, CSS values, or layout defaults.
 
 ## Alternatives: content model and presentation
 
 | Option | Description | Benefits | Risks / required evidence |
 | --- | --- | --- | --- |
 | **A. Native markup + current `Prose` (initial baseline)** | Authored paragraphs/headings/`<hr>` communicate continuation and thematic breaks; profile-aware CSS handles rhythm. Consumer-owned ornamental styling for prototypes. | Accessible progressive enhancement, zero stable API churn, predictable SSR/Markdown | Lacks standardized intensity and ornament preferences; consumer styling divergence |
-| **B. Bounded `Prose` treatment rules (candidate preferred)** | Reuse native semantic markers and evaluate narrow semantic Chroma/Prose styling roles if repeated consumers warrant them | Consistent rhythm without duplicating document semantics or adding props | CSS specificity/selector inheritance, nested prose, over-generalization, v1 inspection compatibility |
+| **B. Native markers with SPACE-owned presentation (candidate preferred)** | Reuse native markers and existing `Prose`; refer proposed visual spacing roles or CSS resolutions to QART-0009 / RFC-0009 | Author-owned meaning without duplicate spacing authority | Need evidence distinguishing thematic semantics from merely larger paragraph gaps |
 | C. New Lamina component(s) | Proposed `ConceptBreak` or `EditorialFlow` could express meaningful break strength/ornament | Explicit in JSX and review tools | New public API without evidence; Markdown/SSR interop, a11y semantics, and CMS coupling; conflicts with `Prose` no-inference rule |
 | D. Generic margins/symbol-only separators | Arbitrary per-paragraph spacing and decorative glyphs, or text-generation-driven HTML | Fast for one-off presentation | Loses semantic distinctions, inaccessible or duplicate announcements, arbitrary styles, fragile export and reading order |
 
-**Provisional direction:** start with A; evaluate B where repeated independent Utility + Editorial consumer evidence shows a real missing styling role. Reserve C for a distinct relationship that native markup and `Prose` cannot express. Reject D as a shared contract.
+**Provisional direction:** start with A; evaluate B where repeated independent Utility + Editorial consumers demonstrate a real semantic-marker need. Route evidence for any new *spacing* roles to QART-0009 / RFC-0009, never an independent TEXT-001 spacing decision. Reserve C for a distinct relationship that native markup and `Prose` cannot express. Reject D as a shared contract.
 
 A genuine thematic break maps to native `<hr>` (HTML thematic-break semantics). A related change of thought without a thematic change may need only an authored paragraph grouping or heading, not a fabricated separator. Neither whitespace quantity nor AI prediction by itself proves a thematic break.
 
@@ -86,9 +86,9 @@ The [TEXT-001 static comparison](../examples/text-rhythm-comparison.html), [illu
 ## Proposed disposition and sequencing
 
 1. Confirm A as the no-regression baseline and collect comparisons across existing consumers; coordinate with #79 so text spacing and section spacing do not double-count.
-2. Resolve whether B needs any new named Chroma role or whether a documentation-only composition guide suffices. Leave C unpromoted without strong repeated evidence.
+2. Resolve whether A with authoring guidance suffices, or whether B warrants more explicit semantic content markers. Route any proposed spacing role, paragraph/heading margin or reading measure to SPACE-001 / QART-0009 / RFC-0009. Leave C unpromoted without strong repeated evidence.
 3. Evaluate static suggestions independently of runtime style adaptation; define a candidate representation in RFC only if integration need is demonstrated.
-4. Advance **QART-0010 -> a subsequent RFC -> ADR** before changing accepted `Prose`, CSS variables, component API, `phyllo`, public schemas or private implementation.
-5. Create delivery/Amaryllis integration issues only against accepted contracts; keep AI trust, data locality and author approval externally governed.
+4. Advance **QART-0010 -> a subsequent TEXT-specific RFC -> ADR** only for authored markers, `Prose` semantics or build-time suggestions. CSS spacing values/roles must be decided by the SPACE-001 path before any related private implementation.
+5. Keep AI trust, data locality and author approval externally governed. **Runtime/Amaryllis integration is deferred by operator direction;** current work is static authoring and optional build-time suggestions only.
 
 No new `ConceptBreak`/`EditorialFlow` export, CSS token, ornament carrier, inference service or runtime policy is accepted by this QART.
