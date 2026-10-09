@@ -34,3 +34,15 @@
 - **Human preference / accessibility:** Screenshot inspection by the implementation assistant is **not** an independent reviewer, participant preference study, WCAG certification, native 200% browser zoom, text-only resize, or assistive-technology audit. Keep [issue #76](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/76) open for the remaining platform tasks and [issue #63](https://github.com/hackelia-micrantha/phyllotaxis-community/issues/63) for independent B1–B3 task/affordance review.
 
 The source and artifact are public. No private implementation, stable token/component API or production consumer was changed.
+
+## Firefox BiDi narrow-viewport follow-up (2026-10-09 UTC)
+
+The original Firefox 500px minimum-window limitation recorded **above** remains a correct statement about the first run and its classic WebDriver `/window/rect` method, **not about the newer BiDi test**.
+
+- [PR #88](https://github.com/hackelia-micrantha/phyllotaxis-community/pull/88) adds standards-based Firefox `browsingContext.getTree` and `browsingContext.setViewport` support (tab CSS viewport), with a classic-window fallback that **must never score a clamped width as passing**.
+- [Exact-source run #37891781713](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37891781713), checked out `7ed7bfa389f9ab2d60ced1c2be24c88e68e9413b`: **30 passes, zero unsupported, zero failures, zero harness errors, 56 screenshots** (viewport top and scrolled content). Contract CI passed on that head as well. Evidence artifact `gallery-crossbrowser-7ed7bfa389f9ab2d60ced1c2be24c88e68e9413b`, ID `11598710473`, wrapper digest `sha256:59cf56313712871811ae166a7e90476cd854f287806488ddd7af7e54d31e2732`.
+- Browser-observed `innerWidth` was exactly **320 and 375** CSS pixels in Firefox gallery and **320/375** in Firefox explicit Light/Dark material states. No horizontal overflow or incorrect gallery column/third-card geometry was reported by the harness. Native WebDriver keyboard focus/theme switching continued to pass.
+- These tests simulate a **tab CSS viewport** on pinned desktop Firefox; they are not a real phone, Firefox Android, OS text enlargement, browser zoom or Safari/iOS results. The [unexecuted Safari/iOS device review protocol](gallery-ios-safari-review-protocol.md) remains required for actual device verification.
+- Existing screenshots were assessed earlier with the same neutral layout. The additional narrow Firefox image set can support further comparison, but does **not** constitute independent human user preference, WCAG certification or device testing.
+
+**Current disposition:** Firefox desktop at CSS 320/375 is qualified through BiDi. Close only the previous **headless viewport-clamp evidence gap**, leaving Safari/iOS and genuinely device-specific accessibility work open in #76.
