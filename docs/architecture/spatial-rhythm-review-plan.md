@@ -64,9 +64,9 @@ Use current supported Chrome/Chromium and Firefox evidence where possible; Safar
 
 ## Current evidence state
 
-- **Authoring:** synthetic specimen and integrity checker prepared on a design branch.
-- **Automated fixture integrity:** pending exact-head CI.
-- **Rendered browser comparisons, screenshots, actual zoom and accessibility review:** not yet established.
-- **Decision:** QART-0009 remains open; no accepted density mode or spacing-role extension.
+- **Authoring:** synthetic specimen and integrity checker are merged; original SPACE-001 Chromium geometry, keyboard, simulated text growth and nested-profile alias probes have passed their scoped CI.
+- **Bounded real consumer-source rendering:** the [pinned Digitalis/Envuscator comparative evidence](spatial-consumer-evidence.md) records 54 passing test cases, 36 unsupported dark-theme cases and 36 screenshots from two independent public site repositories. It preserves actual source HTML/CSS while applying temporary section-only overlays; no consumer product branch changes.
+- **Full design evidence not complete:** these public pages do not import the Phyllotaxis package. Actual browser zoom, accessible text-only scaling, forced colors, Safari/iOS, screen readers, full human usability/scan preferences, cross-profile package behavior and performance remain unassessed.
+- **Decision:** QART-0009 and RFC-0009 remain proposals; no accepted density carrier or spacing-role API extension.
 
 A future RFC should cite concrete reviewer observations and consumer revisions, state whether `compact|comfortable|spacious` remains consumer-local, and include migration/compatibility effects if it proposes a stable API.
