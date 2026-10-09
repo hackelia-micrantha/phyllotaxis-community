@@ -29,6 +29,12 @@ Automated dimensions: 320/375/768/1280 CSS px × light/dark × all three specime
 
 The fixture stylesheet's `--sample-*` values and `data-density` remain **local experiment mechanisms**. Passing this browser harness does not promote them as public Chroma/Venation/Lamina interface or select an RFC density policy. Compare the sample with actual consumers before making a public contract decision.
 
+## Effective section geometry and scoped alias evidence
+
+The dedicated browser harness checks **bounding-box separation for all four adjacent section pairs** in each synthetic density column, not merely CSS margin-token ordering. It records both resolved margins and measured gaps. The gaps must remain positive and strictly ordered between compact, comfortable and spacious cases at the tested viewports and schemes. This still cannot certify all margin-collapsing interactions in real consumers.
+
+The [nested-profile alias probe](../examples/spatial-role-inheritance.html) measures computed section values at root, nested coherent Utility/Editorial surfaces, consumer overrides of scale and section roles, and a root-only alias counterexample. The [proposed RFC-0009](../decisions/RFC-0009-spatial-rhythm.md) defines intended precedence; the probe's local values and attributes remain **example-only**. Reproducible browser evidence is not an accepted Chroma role.
+
 ## Review matrix
 
 | Dimension | Required contexts | Observation |
