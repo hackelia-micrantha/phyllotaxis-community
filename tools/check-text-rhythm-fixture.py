@@ -25,9 +25,13 @@ class Reader(HTMLParser):
         self.sample_depth = 0
         self.tags = []
         self.ornaments = []
+        self.surfaces = []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == "section" and "data-fixture-profile" in a:
+            assert a.get("data-fixture-profile") in PROFILES and a.get("data-fixture-scheme") in SCHEMES
+            self.surfaces.append((a["data-fixture-profile"], a["data-fixture-scheme"]))
         if tag == "script":
             self.scripts.append(tag)
         self.handlers.extend(k for k in a if k.startswith("on"))
@@ -86,8 +90,7 @@ def validate(html: str, plan: dict) -> tuple[int, int]:
     assert len(parser.ids) == len(set(parser.ids)), "duplicate HTML IDs"
     expected = {(p,v) for p in PROFILES for v in VARIANTS}
     assert set(parser.samples) == expected and all(len(parser.samples[k]) == len(SCHEMES) for k in expected), "missing profile/scheme/variant specimen"
-    assert html.count('data-fixture-scheme="light"') == 2 and html.count('data-fixture-scheme="dark"') == 2
-    assert html.count('data-fixture-profile="utility"') == 2 and html.count('data-fixture-profile="editorial"') == 2
+    assert len(parser.surfaces) == 4 and set(parser.surfaces) == {(p, s) for p in PROFILES for s in SCHEMES}, "missing or duplicate profile/scheme surface"
     assert "non-normative" in html and "no JavaScript" in html.lower().replace("no javascript", "no JavaScript"), "proposal banner missing"
     for profile in PROFILES:
         expected_blocks = None
