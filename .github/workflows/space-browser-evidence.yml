@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/space-browser-evidence.yml"
       - "docs/examples/spatial-rhythm-comparison.html"
+      - "docs/examples/spatial-role-inheritance.html"
       - "tools/spatial-rhythm-browser-evidence.mjs"
       - "flake.nix"
       - "flake.lock"
@@ -14,6 +15,7 @@ on:
     paths:
       - ".github/workflows/space-browser-evidence.yml"
       - "docs/examples/spatial-rhythm-comparison.html"
+      - "docs/examples/spatial-role-inheritance.html"
       - "tools/spatial-rhythm-browser-evidence.mjs"
       - "flake.nix"
       - "flake.lock"
@@ -44,6 +46,7 @@ jobs:
           nix develop .#browser-evidence --command
           node tools/spatial-rhythm-browser-evidence.mjs
           --fixture docs/examples/spatial-rhythm-comparison.html
+          --role-fixture docs/examples/spatial-role-inheritance.html
           --output artifacts/spatial-rhythm
           --format json
       - name: Verify failure report contract

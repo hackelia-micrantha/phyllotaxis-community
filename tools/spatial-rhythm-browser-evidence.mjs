@@ -8,21 +8,21 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const VERSION = "0.1.0";
+const VERSION = "0.2.0";
 const DENSITIES = ["compact", "comfortable", "spacious"];
 const WIDTHS = [320, 375, 768, 1280];
 const SCHEMES = ["light", "dark"];
 const WAIT_MS = 12000;
 function parseArgs(args) {
-  const config = { fixture: null, output: null, format: "text", version: false };
+  const config = { fixture: null, roleFixture: "docs/examples/spatial-role-inheritance.html", output: null, format: "text", version: false };
   while (args.length) {
     const key = args.shift();
-    if (key === "--fixture" || key === "--output" || key === "--format") {
+    if (key === "--fixture" || key === "--role-fixture" || key === "--output" || key === "--format") {
       if (!args.length || args[0].startsWith("--")) throw new Error("Missing value for " + key);
-      config[key.slice(2)] = args.shift();
+      config[key === "--role-fixture" ? "roleFixture" : key.slice(2)] = args.shift();
     } else if (key === "--version") config.version = true;
     else if (key === "--help" || key === "-h") {
-      process.stdout.write("Usage: node tools/spatial-rhythm-browser-evidence.mjs --fixture PATH --output DIR [--format text|json] [--version]\n");
+      process.stdout.write("Usage: node tools/spatial-rhythm-browser-evidence.mjs --fixture PATH --role-fixture PATH --output DIR [--format text|json] [--version]\n");
       process.exit(0);
     } else throw new Error("Unknown argument: " + key);
   }
@@ -36,6 +36,7 @@ function parseArgs(args) {
 }
 const config = parseArgs(process.argv.slice(2));
 const fixture = path.resolve(config.fixture);
+const roleFixture = path.resolve(config.roleFixture);
 const output = path.resolve(config.output);
 let evidence = null;
 const port = 9526;
@@ -108,6 +109,7 @@ const geometryScript = function () {
       const sections = [...sample.querySelectorAll("section.spatial")];
       const first = sections[0], second = sections[1];
       const gap = second.getBoundingClientRect().top - first.getBoundingClientRect().bottom;
+      const sectionGaps = sections.slice(1).map((next, index) => near(next.getBoundingClientRect().top - sections[index].getBoundingClientRect().bottom));
       const heading = find(first, "h3");
       const card = find(sample, ".tile");
       const paragraph = find(sample, ".reading p");
@@ -120,6 +122,7 @@ const geometryScript = function () {
         overflow: sample.scrollWidth - sample.clientWidth,
         sectionMargin: near(parseFloat(getComputedStyle(first).marginTop)),
         measuredSectionGap: near(gap),
+        sectionGaps,
         groupGap: near(parseFloat(getComputedStyle(heading).marginBottom)),
         cardPadding: near(parseFloat(getComputedStyle(card).paddingInlineStart)),
         paragraphGap: near(parseFloat(getComputedStyle(paragraph).marginBottom)),
@@ -141,10 +144,13 @@ async function run() {
     fixture: path.relative(process.cwd(), fixture) || path.basename(fixture),
     fixtureBase: "process.cwd()",
     fixtureSha256: createHash("sha256").update(bytes).digest("hex"),
+    roleFixture: path.relative(process.cwd(), roleFixture) || path.basename(roleFixture),
+    roleFixtureSha256: createHash("sha256").update(await readFile(roleFixture)).digest("hex"),
     browser: "chromium",
     observations: [],
     keyboard: null,
     stress: [],
+    roleResolution: [],
     notAssessed: [
       "actual browser zoom",
       "actual operating-system text-only resize",
@@ -188,6 +194,12 @@ async function run() {
         assert.ok(item.sectionMargin > 0 && item.cardPadding > 0, "measured spacing " + item.density);
       }
       assert.ok(observation.rootOverflow <= 1, "horizontal overflow " + width + "/" + scheme + ": " + observation.rootOverflow);
+      const gaps = observation.samples.map(s => s.sectionGaps);
+      assert.ok(gaps.every(row => row.length === 4 && row.every(gap => Number.isFinite(gap) && gap > 0)), "all adjacent section pairs visibly separated");
+      for (let pair = 0; pair < 4; pair++) {
+        const values = gaps.map(row => row[pair]);
+        assert.ok(values[0] < values[1] && values[1] < values[2], "effective section separation not ordered for pair " + pair + ": " + values);
+      }
       for (const metric of ["sectionMargin", "groupGap", "cardPadding", "paragraphGap", "cellPadding"]) {
         const values = observation.samples.map(s => s[metric]);
         assert.ok(values[0] < values[1] && values[1] < values[2], "spacing not ordered for " + metric + ": " + values);
@@ -199,6 +211,31 @@ async function run() {
         await writeFile(path.join(output, name), Buffer.from(screenshot, "base64"));
       }
     }
+  }
+  // CSS aliases resolve on their declaration scope, not after being inherited.
+  // This is an example-only probe, not a change to published Chroma.
+  for (const scheme of SCHEMES) {
+    await setEnvironment(375, scheme);
+    await cmd("POST", "/url", { url: pathToFileURL(roleFixture).href });
+    const probe = await evaluate("const cases=[...document.querySelectorAll('[data-sample-case]')];" +
+      "const px=e=>parseFloat(getComputedStyle(e).rowGap);" +
+      "const rootSize=parseFloat(getComputedStyle(document.documentElement).fontSize);" +
+      "return {rootSize,cases:cases.map(e=>({" +
+      "name:e.dataset.sampleCase,resolvedPx:px(e.querySelector('.stack'))," +
+      "inheritedRootOnly:getComputedStyle(e).getPropertyValue('--sample-root-only-section').trim()," +
+      "localXL:getComputedStyle(e).getPropertyValue('--sample-xl').trim()}))};");
+    const expected = { root: 2, "utility-parent": 2, "nested-editorial": 2.25,
+      "nested-utility": 2, "override-xl": 2.75, "override-section": 3.5 };
+    assert.equal(probe.cases.length, Object.keys(expected).length, "coherent-surface case coverage");
+    for (const sample of probe.cases) {
+      assert.ok(Object.hasOwn(expected, sample.name), "unexpected scope " + sample.name);
+      assert.ok(Math.abs(sample.resolvedPx - probe.rootSize * expected[sample.name]) < 0.6,
+        "incorrect scope resolution for " + sample.name + ": " + sample.resolvedPx);
+    }
+    const nested = probe.cases.find(c => c.name === "nested-editorial");
+    assert.ok(nested && parseFloat(nested.inheritedRootOnly) * probe.rootSize !== nested.resolvedPx,
+      "root-only alias must demonstrate stale inherited value on nested profile");
+    result.roleResolution.push({ scheme, ...probe, status: "pass" });
   }
   // Test native keyboard Tab path, not programmatic .focus() alone.
   await setEnvironment(375, "light");

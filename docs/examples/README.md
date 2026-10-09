@@ -9,6 +9,8 @@ Files in this directory are evidence-bearing reference compositions, not package
 
 - [TEXT-001 text-rhythm comparison](text-rhythm-comparison.html) — non-normative, no-JavaScript comparison of continuity, transitions, thematic breaks and a decorative asterism under Utility/Editorial and light/dark. [Synthetic static suggestion cases](text-rhythm-suggestions.json) demonstrate accepted/pending/stale/invalid document anchors; see the [review plan](../architecture/text-rhythm-review-plan.md) for evidence still needed.
 
+- [Nested-profile spacing alias probe](spatial-role-inheritance.html) — non-normative counterexample and test for computed-value inheritance across coherent profile boundaries; not a stable token or density carrier.
+
 Reference CSS may use local example-only values to demonstrate a design property. Those values do not become Chroma contract roles unless separately accepted through the design-decision process.
 
 The pending [GitHub Pages reference gallery](../../site/README.md) collects these public fixtures. It is **not** a package-backed component demo, and its live publication status must be verified separately.
