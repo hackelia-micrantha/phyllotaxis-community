@@ -112,10 +112,11 @@ try {
   `);
   record("page title", semantics.title.includes("Phyllotaxis"));
   record("one main and one h1", semantics.main === 1 && semantics.h1 === 1);
-  record("two linked examples", semantics.gallery.length === 2);
+  record("three linked examples", semantics.gallery.length === 3);
   record("references only existing example fixtures",
     semantics.gallery[0].href === "./examples/utility-reference.html" &&
-    semantics.gallery[1].href === "./examples/dimensional-utility-reference.html");
+    semantics.gallery[1].href === "./examples/dimensional-utility-reference.html" &&
+    semantics.gallery[2].href === "./material-playground.html");
   record("semantic skip link", semantics.skip === "#content");
   record("gallery works without JavaScript", semantics.scripts === 0);
 
@@ -184,15 +185,101 @@ try {
 
   await media("light");
   await viewport(1280);
-  for (const [idx, suffix] of ["utility-reference.html", "dimensional-utility-reference.html"].entries()) {
+  for (const [idx, suffix] of ["utility-reference.html", "dimensional-utility-reference.html", "../material-playground.html"].entries()) {
     await navigate(indexUrl);
     await evalInPage("document.querySelectorAll('.example-link')[" + idx + "].click();");
     const currentUrl = await command("GET", "/url");
-    record("fixture " + suffix + " navigates", currentUrl.endsWith("/examples/" + suffix));
+    record("fixture " + suffix + " navigates", currentUrl.endsWith(suffix.startsWith("../") ? "/material-playground.html" : "/examples/" + suffix));
     const content = await evalInPage("return {main: !!document.querySelector('main'), scripts: document.scripts.length};");
     record("fixture " + suffix + " semantic main", content.main);
     record("fixture " + suffix + " works without JS", content.scripts === 0);
   }
+
+  // The material lab is source-only and needs no JavaScript or remote resources.
+  const materialUrl = pathToFileURL(path.join(site, "material-playground.html")).href;
+  for (const scheme of ["light", "dark"]) {
+    await media(scheme);
+    await navigate(materialUrl);
+    for (const width of [320, 375, 1280]) {
+      await viewport(width);
+      const layout = await evalInPage(`
+        const cards = document.querySelectorAll(".material-card");
+        const grid = document.querySelector(".material-grid");
+        const style = getComputedStyle(grid);
+        return {inner: innerWidth, scroll: document.documentElement.scrollWidth,
+          cards: cards.length, columns: style.gridTemplateColumns.split(" ").length,
+          gap: parseFloat(style.columnGap), scripts: document.scripts.length};
+      `);
+      record("material lab " + scheme + " " + width + "px viewport", layout.inner === width);
+      record("material lab " + scheme + " " + width + "px no horizontal overflow",
+        layout.scroll <= width + 1);
+      record("material lab " + scheme + " roomy non-animated cards",
+        layout.cards === 4 && layout.gap >= 20 && layout.columns === (width < 768 ? 1 : 2));
+      record("material lab script-free", layout.scripts === 0);
+    }
+    await viewport(1280);
+    const materials = await evalInPage(`
+      const style = selector => getComputedStyle(document.querySelector(selector));
+      return {
+        bevel: style(".material-bevel").boxShadow,
+        raised: style(".material-raised").boxShadow,
+        gloss: style(".material-gloss").backgroundImage,
+        staticTransition: style(".material-raised").transitionDuration,
+        linkTransition: style(".gloss-action").transitionDuration,
+        darkMedia: matchMedia("(prefers-color-scheme: dark)").matches
+      };
+    `);
+    record("material bevel, elevation and gloss are visually distinct",
+      materials.bevel.includes("inset") && materials.raised !== "none" &&
+      materials.gloss.includes("gradient") && materials.staticTransition === "0s");
+    record("interactive-only short motion", materials.linkTransition.split(",")
+      .every(x => parseFloat(x) >= .08 && parseFloat(x) <= .16));
+    record("system scheme observable", materials.darkMedia === (scheme === "dark"));
+  }
+
+  await media("light");
+  await navigate(materialUrl);
+  const forcedThemes = await evalInPage(`
+    const appearance = () => ({
+      paper: getComputedStyle(document.body).backgroundColor,
+      scheme: getComputedStyle(document.documentElement).colorScheme
+    });
+    document.getElementById("mode-dark").click();
+    const dark = appearance();
+    document.getElementById("mode-light").click();
+    const light = appearance();
+    document.getElementById("mode-system").click();
+    const system = appearance();
+    return {dark, light, system, radios: document.querySelectorAll(".theme-switcher input[type=radio]").length};
+  `);
+  record("CSS-only switch has three native radio options", forcedThemes.radios === 3);
+  record("CSS-only dark/light controls change the page",
+    forcedThemes.dark.scheme === "dark" && forcedThemes.light.scheme === "light" &&
+    forcedThemes.dark.paper !== forcedThemes.light.paper);
+  record("system theme restores system scheme", forcedThemes.system.scheme === "light dark");
+
+  await media("light", "reduce");
+  await navigate(materialUrl);
+  const demoReduced = await evalInPage(`
+    const link = getComputedStyle(document.querySelector(".gloss-action"));
+    const staticPanel = getComputedStyle(document.querySelector(".material-raised"));
+    return {duration: link.transitionDuration, transform: link.transform,
+      staticDuration: staticPanel.transitionDuration};
+  `);
+  record("material demo reduced motion disabled", demoReduced.duration.split(",")
+    .every(x=>parseFloat(x)===0) && demoReduced.transform === "none" &&
+    demoReduced.staticDuration === "0s");
+
+  await media("light", "no-preference", "active");
+  await navigate(materialUrl);
+  const demoForced = await evalInPage(`
+    const a = getComputedStyle(document.querySelector(".gloss-action"));
+    const card = getComputedStyle(document.querySelector(".material-raised"));
+    return {active: matchMedia("(forced-colors: active)").matches,
+      actionBorder: a.borderTopStyle, cardShadow: card.boxShadow};
+  `);
+  record("forced-colors removes decorative elevation and preserves control edges",
+    demoForced.active && demoForced.actionBorder !== "none" && demoForced.cardShadow === "none");
 
   await navigate(indexUrl);
   await media("light");
