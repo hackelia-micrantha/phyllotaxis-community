@@ -68,6 +68,15 @@ async function media(scheme, reduced = "no-preference", forced = "none") {
 const viewport = (width) => cdp("Emulation.setDeviceMetricsOverride", {
   width, height: 850, deviceScaleFactor: 1, mobile: false,
 });
+const pressKey = async (value) => {
+  await command("POST", "/actions", { actions: [{
+    type: "key", id: "keyboard-review", actions: [
+      { type: "keyDown", value },
+      { type: "keyUp", value },
+    ],
+  }] });
+  await command("DELETE", "/actions");
+};
 function luminance(value) {
   const values = value.match(/[\d.]+/g)?.slice(0, 3).map(Number);
   assert.ok(values && values.length === 3, "parse RGB: " + value);
@@ -140,15 +149,29 @@ try {
   const backgrounds = [];
   for (const scheme of ["light", "dark"]) {
     await media(scheme);
-    for (const width of [320, 375, 1280]) {
+    for (const width of [320, 375, 1280, 1920]) {
       await viewport(width);
       const view = await evalInPage(`
-        return { inner: innerWidth, scroll: document.documentElement.scrollWidth,
-          cards: getComputedStyle(document.querySelector(".gallery")).gridTemplateColumns.split(" ").length };
+        const items = [...document.querySelectorAll(".gallery > .example")];
+        const first = items[0].getBoundingClientRect();
+        const last = items.at(-1).getBoundingClientRect();
+        const htmlColor = getComputedStyle(document.documentElement).backgroundColor;
+        const bodyColor = getComputedStyle(document.body).backgroundColor;
+        return {inner: innerWidth, scroll: document.documentElement.scrollWidth,
+          cards: getComputedStyle(document.querySelector(".gallery")).gridTemplateColumns.split(" ").length,
+          htmlColor, bodyColor, bodyWidth: document.body.getBoundingClientRect().width,
+          first: {left:first.left, width:first.width}, last: {left:last.left,width:last.width} };
       `);
       record(scheme + " " + width + "px viewport applied", view.inner === width);
       record(scheme + " " + width + "px no horizontal overflow", view.scroll <= width + 1);
       record(scheme + " " + width + "px layout", width < 672 ? view.cards === 1 : view.cards === 2);
+      record(scheme + " " + width + "px viewport background continuity", view.htmlColor === view.bodyColor);
+      if (width === 1280 || width === 1920) {
+        record(scheme + " " + width + "px intentional featured third card",
+          Math.abs(view.first.left - view.last.left) < 2 && view.last.width >= 1.9 * view.first.width);
+      }
+      if (width === 1920) record(scheme + " wide body remains centered and constrained",
+        view.bodyWidth < view.inner);
     }
     const colors = await evalInPage(`
       const base = document.querySelector(".example");
@@ -236,6 +259,72 @@ try {
       .every(x => parseFloat(x) >= .08 && parseFloat(x) <= .16));
     record("system scheme observable", materials.darkMedia === (scheme === "dark"));
   }
+
+  // Exercise a genuine keyboard path, not programmatic clicks: tab from the
+  // document into the native radio group, then arrow through light/dark modes.
+  await media("light");
+  await viewport(1280);
+  await navigate(materialUrl);
+  let radioFocus = null;
+  for (let attempt = 0; attempt < 14; attempt += 1) {
+    await pressKey("\uE004"); // Tab
+    radioFocus = await evalInPage(`
+      const node = document.activeElement;
+      const label = node?.matches('.theme-switcher input') ? node.nextElementSibling : null;
+      const style = label ? getComputedStyle(label) : null;
+      return {id: node?.id, checked: node?.checked ?? false,
+        focusVisible: node?.matches(':focus-visible') ?? false,
+        labelOutline: style?.outlineStyle || 'none',
+        labelOutlineWidth: style?.outlineWidth || '0px'};
+    `);
+    if (radioFocus.id === "mode-system") break;
+  }
+  record("keyboard Tab reaches selected system radio", radioFocus?.id === "mode-system" && radioFocus.checked);
+  record("radio keyboard focus label visible",
+    radioFocus.focusVisible && radioFocus.labelOutline !== "none" && parseFloat(radioFocus.labelOutlineWidth) >= 2);
+
+  for (const [key, expected, scheme] of [
+    ["\uE014", "mode-light", "light"], // Right arrow selects next native radio
+    ["\uE014", "mode-dark", "dark"],
+    ["\uE012", "mode-light", "light"], // Left arrow restores light
+    ["\uE014", "mode-dark", "dark"],
+    [" ", "mode-dark", "dark"],       // Space activates focused radio
+  ]) {
+    await pressKey(key);
+    const selected = await evalInPage(`
+      const n = document.activeElement;
+      return {id:n?.id,checked:n?.checked,focusVisible:n?.matches(':focus-visible'),
+        scheme:getComputedStyle(document.documentElement).colorScheme};
+    `);
+    record("native keyboard selection " + expected + " via " + JSON.stringify(key),
+      selected.id === expected && selected.checked && selected.focusVisible && selected.scheme === scheme);
+  }
+
+  await media("light", "reduce", "active");
+  await navigate(materialUrl);
+  let forcedRadioFocus = null;
+  for (let attempt = 0; attempt < 14; attempt += 1) {
+    await pressKey("\uE004");
+    forcedRadioFocus = await evalInPage(`
+      const n = document.activeElement;
+      const l = n?.matches('.theme-switcher input') ? n.nextElementSibling : null;
+      return {id:n?.id, checked:n?.checked, focused:n?.matches(':focus-visible'),
+        border:l && getComputedStyle(l).borderTopStyle,
+        outline:l && getComputedStyle(l).outlineStyle};
+    `);
+    if (forcedRadioFocus.id === "mode-system") break;
+  }
+  record("forced-color reduced-motion keyboard radio focus survives",
+    forcedRadioFocus?.id === "mode-system" && forcedRadioFocus.checked &&
+    forcedRadioFocus.focused && forcedRadioFocus.border !== "none" &&
+    forcedRadioFocus.outline !== "none");
+  await pressKey("\uE014");
+  const forcedNext = await evalInPage(`
+    return {id:document.activeElement?.id,checked:document.activeElement?.checked,
+      scheme:getComputedStyle(document.documentElement).colorScheme};
+  `);
+  record("forced-color reduced-motion keyboard theme selection remains native",
+    forcedNext.id === "mode-light" && forcedNext.checked && forcedNext.scheme === "light");
 
   await media("light");
   await navigate(materialUrl);
