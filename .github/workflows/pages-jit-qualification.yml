@@ -1,0 +1,40 @@
+# Disposable, branch-only runner verification; never publish the Pages artifact.
+name: Pages JIT build and artifact qualification
+
+on:
+  push:
+    branches:
+      - ci/pages-jit-qualification-20261010
+    paths:
+      - .github/workflows/pages-jit-qualification.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phyllotaxis-pages-jit-qualification
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and upload non-published Pages artifact on JIT
+    runs-on: runner-phyllotaxis-community
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Build pinned public site
+        run: |
+          set -euo pipefail
+          nix flake check
+          nix build .#demo-site --out-link ./demo-output
+          mkdir -p ./_site
+          cp -RL ./demo-output/. ./_site/
+
+      - name: Upload Pages artifact without deploying
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          path: ./_site
