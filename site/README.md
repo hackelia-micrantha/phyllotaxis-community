@@ -22,13 +22,11 @@ The TEXT-001 page is a reviewed, **static** authoring/visual comparison. It has 
 
 ## Deployment
 
-After the required merge-gate disposition and an explicitly authorized merge, an isolated GitHub Actions workflow publishes only the flake-built output from `main`. A repo administrator must set **Settings → Pages → Build and deployment → Source: GitHub Actions** if not already configured. The workflow cannot enable Pages or change repository settings.
+The public gallery is deployed from reviewed `main` through the dedicated [Pages demo gallery workflow](../.github/workflows/pages.yml), which publishes **only** the flake-built, currently eight-file allowlist. The repository's Pages build source is configured for **GitHub Actions**. The workflow cannot change repository Pages settings.
 
-Public reference gallery and material lab **verified live in October 2026**. The latest Pages build still requires its own deployment verification after gallery-content changes:
+Both the [public reference gallery](https://hackelia-micrantha.github.io/phyllotaxis-community/) and [Gloss and Bevel material lab](https://hackelia-micrantha.github.io/phyllotaxis-community/material-playground.html) were verified live on October 8, 2026 after [PR #75](https://github.com/hackelia-micrantha/phyllotaxis-community/pull/75) and [deployment #37881415053](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37881415053). The subsequent TEXT-001 static comparison is included in the current eight-file allowlist. [Pages deployment #37990869068](https://github.com/hackelia-micrantha/phyllotaxis-community/actions/runs/37990869068) passed on public `main@5fdd25b36dcb732037184d6da35a23ab6e5f8b7b` after the merged ornamental fallback; its deployment job also verified the published `examples/text-rhythm-comparison.html` route and page marker. This is live-route verification of the static example, **not** human editorial approval, actual Safari/assistive-technology testing or adoption of a released Phyllotaxis package.
 
-`https://hackelia-micrantha.github.io/phyllotaxis-community/`
-
-The workflow does not deploy from pull requests; `pages: write` and `id-token: write` are restricted to the deployment job.
+The material lab and TEXT-001 fixture remain **experimental and non-normative**; neither consumes the released Phyllotaxis package. Pull requests only validate the gallery: they do not deploy, and `pages: write` plus `id-token: write` remain restricted to the deployment job. A new Pages deployment still requires a separately authorized, reviewed merge to `main`.
 
 ## Actual iPhone Safari handoff
 
