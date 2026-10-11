@@ -10,7 +10,8 @@ on:
       - 'tools/check-demo-site.py'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/pages.yml'
+      # Keep workflow-only changes out of the publication trigger. Qualify CI
+      # revisions on a separate non-deploying trusted branch before admission.
 
 permissions:
   contents: read
@@ -22,16 +23,14 @@ concurrency:
 jobs:
   build:
     name: Build public gallery
-    runs-on: ubuntu-latest
+    # Protected main only; use the exact repository-scoped Dubnium JIT route.
+    runs-on: runner-phyllotaxis-community
     timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
         with:
           persist-credentials: false
-
-      - name: Install Nix bootstrap
-        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
 
       - name: Build pinned public site
         run: |
