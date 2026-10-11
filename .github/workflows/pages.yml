@@ -10,7 +10,8 @@ on:
       - 'tools/check-demo-site.py'
       - 'flake.nix'
       - 'flake.lock'
-      - '.github/workflows/pages.yml'
+      # Keep workflow-only changes out of the publication trigger. Qualify CI
+      # revisions on a separate non-deploying trusted branch before admission.
 
 permissions:
   contents: read
